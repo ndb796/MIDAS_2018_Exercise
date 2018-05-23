@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.dd.processbutton.iml.ActionProcessButton;
 
 import java.io.OutputStreamWriter;
@@ -87,18 +89,23 @@ public class Register extends AppCompatActivity{
         //회원가입 Alert
         Log.d("Raon","Register Alert");
 
-        //dialog
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("회원가입 성공");
-        alertDialogBuilder.setMessage("축하합니다 회원가입 되셨습니다.")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        //회원가입 dialog
+        new AwesomeSuccessDialog(this)
+                .setTitle("회원가입 성공")
+                .setMessage("회원가입이 정상적으로 완료되었습니다")
+                .setColoredCircle(R.color.dialogSuccessBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                .setCancelable(true)
+                .setPositiveButtonText("확인")
+                .setPositiveButtonbackgroundColor(R.color.dialogSuccessBackgroundColor)
+                .setPositiveButtonTextColor(R.color.white)
+                .setPositiveButtonClick(new Closure() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                    public void exec() {
+                        //click
                     }
-                });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+                })
+                .show();
     }
 
 }

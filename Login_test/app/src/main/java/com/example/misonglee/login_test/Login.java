@@ -18,6 +18,8 @@ import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.dd.processbutton.iml.ActionProcessButton;
 
 import java.io.OutputStream;
@@ -131,20 +133,21 @@ public class Login extends AppCompatActivity {
         Log.d("Raon","login Alert");
 
         //dialog
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("로그인 실패");
-        alertDialogBuilder.setMessage("ID 혹은 PW가 등록되어있지 않습니다")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        new AwesomeWarningDialog(this)
+                .setTitle("로그인 실패")
+                .setMessage("ID 혹은 PW가 맞지 않습니다")
+                .setColoredCircle(R.color.dialogWarningBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_warning, R.color.black)
+                .setCancelable(true)
+                .setButtonText("확인")
+                .setButtonBackgroundColor(R.color.dialogWarningBackgroundColor)
+                .setWarningButtonClick(new Closure() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                    public void exec() {
+                        // click
                     }
-                });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-
-        //Dialog 템플릿
-
+                })
+                .show();
 
     }
 }
