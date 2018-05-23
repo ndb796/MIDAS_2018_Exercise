@@ -14,9 +14,20 @@ import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.dd.processbutton.iml.ActionProcessButton;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.HttpCookie;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class Register extends AppCompatActivity{
 
@@ -51,53 +62,131 @@ public class Register extends AppCompatActivity{
 
         if( string_id.length() < 5) {
             register_id.setError("5-10자의 영문 소문자, 숫자만 사용가능 합니다.");
+            return;
         }
         if( string_pw.length() < 8){
             register_pw.setError("8-12자의 영문 소문자, 숫자만 사용가능 합니다.");
+            return;
         }
 
         //DB에 정보 삽입
-        RegisterDB register_db = new RegisterDB();
-        register_db.execute();
-
-        // 성공 시 Alert
-        register_Alert();
+        RegisterDB registerDB = new RegisterDB();
+        registerDB.execute();
 
     }
 
     class RegisterDB extends AsyncTask<String, Void, String> {
 
+        String target;
+
+        // 전송할 데이터 및 URL을 사전에 정의합니다.
+        @Override
+        protected void onPreExecute() {
+            String string_id = register_id.getText().toString();
+            String string_pw = register_pw.getText().toString();
+            try {
+                /* 실 서버 */
+                // target = "http://www.dowellcomputer.com/MIDAS/userJoin.midas?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8");
+                /* 로컬 호스트 */
+                target = "http://10.0.2.2:8080/MIDAS_Challenge_Application/userJoin.midas?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         @Override
         protected String doInBackground(String... strings) {
             Log.d("Raon","Register doInBackground");
 
+            // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
             try{
-                /* DB 작업 */
-
-
-
-            }catch (Exception e){
+                // URL로 데이터를 전송합니다.
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                // 반환된 문자열을 읽어들입니다.
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                // 읽어들인 문자열을 반환합니다.
+                return stringBuilder.toString().trim();
+            } catch (Exception e){
                 Log.e("Raon", "Exception: " + e.getMessage());
             }
             return null;
         }
+
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate();
+        }
+
+        // 문자열을 JSON 형태로 처리합니다.
+        @Override
+        public void onPostExecute(String result) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("result");
+                ArrayList resultList = new ArrayList();
+                for(int i = 0; i< jsonArray.length(); i++) {
+                    resultList.add(jsonArray.getString(i));
+                }
+                // 서버로부터 반환 된 값이 1이면 회원가입 성공입니다.
+                if(resultList.get(0).equals("1")) {
+                    successAlert();
+                }
+                // 그 외에는 이미 존재하는 아이디입니다.
+                else {
+                    failAlert();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-
-
-    public void register_Alert(){
+    public void successAlert(){
         //회원가입 Alert
         Log.d("Raon","Register Alert");
 
         //회원가입 dialog
         new AwesomeSuccessDialog(this)
                 .setTitle("회원가입 성공")
-                .setMessage("회원가입이 정상적으로 완료되었습니다")
+                .setMessage("회원가입이 정상적으로 완료되었습니다.")
                 .setColoredCircle(R.color.dialogSuccessBackgroundColor)
                 .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
                 .setCancelable(true)
                 .setPositiveButtonText("확인")
                 .setPositiveButtonbackgroundColor(R.color.dialogSuccessBackgroundColor)
+                .setPositiveButtonTextColor(R.color.white)
+                .setPositiveButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        //click
+                    }
+                })
+                .show();
+    }
+
+    public void failAlert(){
+        //회원가입 Alert
+        Log.d("Raon","Register Alert");
+
+        //회원가입 dialog
+        new AwesomeSuccessDialog(this)
+                .setTitle("회원가입 실패")
+                .setMessage("이미 존재하는 아이디입니다.")
+                .setColoredCircle(R.color.dialogNoticeBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_notice, R.color.white)
+                .setCancelable(true)
+                .setPositiveButtonText("확인")
+                .setPositiveButtonbackgroundColor(R.color.dialogNoticeBackgroundColor)
                 .setPositiveButtonTextColor(R.color.white)
                 .setPositiveButtonClick(new Closure() {
                     @Override
