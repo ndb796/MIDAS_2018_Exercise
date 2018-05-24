@@ -1,9 +1,11 @@
 package com.example.misonglee.login_test;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
@@ -16,6 +18,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
@@ -40,6 +43,10 @@ public class Login extends AppCompatActivity {
 
     private AutoCompleteTextView user_id;
     private EditText user_pw;
+    private CheckBox auto_check;
+
+    private String string_id;
+    private String string_pw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,27 +56,43 @@ public class Login extends AppCompatActivity {
         user_id = (AutoCompleteTextView) findViewById(R.id.user_id);
         user_pw = (EditText) findViewById(R.id.user_pw);
 
+        //자동로그인
+        SharedPreferences autoLogin = getSharedPreferences("auto_login", Activity.MODE_PRIVATE);
+        String auto_id = autoLogin.getString("user_id",null);
+        String auto_pw = autoLogin.getString("user_pw", null);
+
+        // 자동 로그인 저장 되어 있다면
+        if(auto_id != null && auto_pw != null){
+            Log.d("Raon","Auto Login");
+            //id, pw 채우기
+            user_id.setText(auto_id);
+            user_pw.setText(auto_pw);
+            //로그인
+            CheckFromDB checkFromDB = new CheckFromDB();
+            checkFromDB.execute();
+        }
+
 
         final ActionProcessButton btnSignIn = (ActionProcessButton) findViewById(R.id.btnSignIn);
         final ActionProcessButton mvRegister = (ActionProcessButton) findViewById(R.id.mvRegister);
+
+        auto_check = (CheckBox)findViewById(R.id.auto_login);
 
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
-                String id = user_id.getText().toString();
-                String pw = user_pw.getText().toString();
-
-                Boolean check1 = Boolean.FALSE;
+                string_id = user_id.getText().toString();
+                string_pw = user_pw.getText().toString();
 
                 //id 입력 안돼있을 때
-                if(TextUtils.isEmpty(id)){
+                if(TextUtils.isEmpty(string_id)){
                     user_id.setError("ID를 입력하세요");
                     return;
                 }
                 //pw 입력 안돼있을 때
-                if(TextUtils.isEmpty(pw)){
+                if(TextUtils.isEmpty(string_pw)){
                     user_pw.setError("PW를 입력하세요");
                     return;
                 }
@@ -99,8 +122,9 @@ public class Login extends AppCompatActivity {
         // 전송할 데이터 및 서버의 URL을 사전에 정의합니다.
         @Override
         protected void onPreExecute() {
-            String string_id = user_id.getText().toString();
-            String string_pw = user_pw.getText().toString();
+            string_id = user_id.getText().toString();
+            string_pw = user_pw.getText().toString();
+
             try {
                 target = MainActivity.URL + "userLogin.midas?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8");
             } catch (Exception e) {
@@ -152,6 +176,16 @@ public class Login extends AppCompatActivity {
                 if(verify.equals("1")) {
                     // 성공 알림창을 띄웁니다.
                     successAlert();
+
+                    //자동 로그인 체크시
+                    if(auto_check.isChecked()) {
+                        SharedPreferences autoLogin = getSharedPreferences("auto_login", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor autoLogin_editor = autoLogin.edit();
+                        autoLogin_editor.putString("user_id", string_id);
+                        autoLogin_editor.putString("user_pw", string_pw);
+                        autoLogin_editor.commit();
+                    }
+
                     // 로그인 페이지로 이동합니다.
                     Intent intent = new Intent(Login.this, MainActivity.class);
                     // 메인 페이지로 넘어갈 때 아이디와 세션 정보를 저장합니다.

@@ -24,9 +24,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.0.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:design:27.0.1'
-    //button
+    //button templit
     implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
-    //fire base
     //dialog templit
     implementation 'com.github.blennerSilva:AwesomeDialog:2.0.5'
 

@@ -1,7 +1,9 @@
 package com.example.misonglee.login_test;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -36,10 +38,15 @@ public class Register extends AppCompatActivity{
     private AutoCompleteTextView register_id;
     private EditText register_pw;
 
+    private String string_id;
+    private String string_pw;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
 
         register_id = (AutoCompleteTextView) findViewById(R.id.register_id);
         register_pw = (EditText) findViewById(R.id.register_pw);
@@ -58,8 +65,8 @@ public class Register extends AppCompatActivity{
     private void user_Register(){
 
         //입력 값 예외 처리
-        String string_id = register_id.getText().toString();
-        String string_pw = register_pw.getText().toString();
+        string_id = register_id.getText().toString();
+        string_pw = register_pw.getText().toString();
 
         if( string_id.length() < 5) {
             register_id.setError("5-10자의 영문 소문자, 숫자만 사용가능 합니다.");
@@ -135,6 +142,7 @@ public class Register extends AppCompatActivity{
                 if(verify.equals("1")) {
                     // 성공 알림창을 띄웁니다.
                     successAlert();
+
                     // 로그인 페이지로 이동합니다.
                     Intent register_intent = new Intent(Register.this, Login.class);
                     startActivity(register_intent);
