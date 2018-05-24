@@ -1,0 +1,33 @@
+[ 회원 회원가입 ]
+
+URL: userJoin.midas
+파라미터: 아이디(userID), 비밀번호(userPassword)
+결과 1. 로그인 성공: {"verify":"1"}
+결과 2. 아이디 중복: {"verify":"0"}
+결과 3. 아이디 및 비밀번호 공백 오류: {"verify":"-1"}
+
+[ 회원 로그인 ]
+
+URL: userLogin.midas
+파라미터: 아이디(userID), 비밀번호(userPassword)
+결과 1. 로그인 성공: {"verify":"1","session":"고유 세션 값"}
+결과 2. 비밀번호 틀림: {"verify":"0","session":""}
+결과 3. 아이디 없음: {"verify":"-1","session":""}
+결과 4. 데이터가 온전히 전달되지 않음: {"verify":"-2","session":""}
+※ 로그인 이후에 반환되는 세션 값을 계속해서 인증에서 사용합니다.
+
+[ 회원 비밀번호 변경 ]
+
+URL: userPasswordChange.midas
+파라미터: 아이디(userID), 세션(session), 비밀번호(userPassword)
+결과 1. 비밀번호 변경 성공: {"verify":"1"}
+결과 2. 세션 인증 실패: {"verify":"0"}
+결과 3. 데이터가 온전히 전달되지 않음: {"verify":"-1"}
+
+[ 회원 탈퇴 ]
+
+URL: userDelete.midas
+파라미터: 아이디(userID), 세션(session)
+결과 1. 회원 탈퇴 성공: {"verify":"1"}
+결과 2. 세션 인증 실패: {"verify":"0"}
+결과 3. 데이터가 온전히 전달되지 않음: {"verify":"-1"}

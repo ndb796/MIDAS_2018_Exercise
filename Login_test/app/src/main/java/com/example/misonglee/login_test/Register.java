@@ -1,6 +1,7 @@
 package com.example.misonglee.login_test;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.dd.processbutton.iml.ActionProcessButton;
 
@@ -51,7 +53,6 @@ public class Register extends AppCompatActivity{
             }
         });
 
-
     }
 
     private void user_Register(){
@@ -79,16 +80,13 @@ public class Register extends AppCompatActivity{
 
         String target;
 
-        // 전송할 데이터 및 URL을 사전에 정의합니다.
+        // 전송할 데이터 및 서버의 URL을 사전에 정의합니다.
         @Override
         protected void onPreExecute() {
             String string_id = register_id.getText().toString();
             String string_pw = register_pw.getText().toString();
             try {
-                /* 실 서버 */
-                // target = "http://www.dowellcomputer.com/MIDAS/userJoin.midas?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8");
-                /* 로컬 호스트 */
-                target = "http://10.0.2.2:8080/MIDAS_Challenge_Application/userJoin.midas?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8");
+                target = MainActivity.URL + "userJoin.midas?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -132,16 +130,16 @@ public class Register extends AppCompatActivity{
         public void onPostExecute(String result) {
             try {
                 JSONObject jsonObject = new JSONObject(result);
-                JSONArray jsonArray = jsonObject.getJSONArray("result");
-                ArrayList resultList = new ArrayList();
-                for(int i = 0; i< jsonArray.length(); i++) {
-                    resultList.add(jsonArray.getString(i));
-                }
+                String verify = jsonObject.getString("verify");
                 // 서버로부터 반환 된 값이 1이면 회원가입 성공입니다.
-                if(resultList.get(0).equals("1")) {
+                if(verify.equals("1")) {
+                    // 성공 알림창을 띄웁니다.
                     successAlert();
+                    // 로그인 페이지로 이동합니다.
+                    Intent register_intent = new Intent(Register.this, Login.class);
+                    startActivity(register_intent);
                 }
-                // 그 외에는 이미 존재하는 아이디입니다.
+                // 그 외에는 이미 존재하는 아이디로 처리합니다.
                 else {
                     failAlert();
                 }
@@ -174,27 +172,27 @@ public class Register extends AppCompatActivity{
                 .show();
     }
 
-    public void failAlert(){
-        //회원가입 Alert
-        Log.d("Raon","Register Alert");
 
-        //회원가입 dialog
-        new AwesomeSuccessDialog(this)
+    public void failAlert() {
+        Log.d("Raon","login Alert");
+
+        //dialog
+        new AwesomeWarningDialog(this)
                 .setTitle("회원가입 실패")
                 .setMessage("이미 존재하는 아이디입니다.")
-                .setColoredCircle(R.color.dialogNoticeBackgroundColor)
-                .setDialogIconAndColor(R.drawable.ic_notice, R.color.white)
+                .setColoredCircle(R.color.dialogWarningBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_warning, R.color.black)
                 .setCancelable(true)
-                .setPositiveButtonText("확인")
-                .setPositiveButtonbackgroundColor(R.color.dialogNoticeBackgroundColor)
-                .setPositiveButtonTextColor(R.color.white)
-                .setPositiveButtonClick(new Closure() {
+                .setButtonText("확인")
+                .setButtonBackgroundColor(R.color.dialogWarningBackgroundColor)
+                .setWarningButtonClick(new Closure() {
                     @Override
                     public void exec() {
-                        //click
+                        // click
                     }
                 })
                 .show();
+
     }
 
 }
