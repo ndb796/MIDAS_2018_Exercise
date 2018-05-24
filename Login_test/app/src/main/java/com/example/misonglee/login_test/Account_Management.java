@@ -1,99 +1,95 @@
 package com.example.misonglee.login_test;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.dd.processbutton.iml.ActionProcessButton;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 
-public class Register extends AppCompatActivity{
+public class Account_Management extends AppCompatActivity implements View.OnClickListener {
 
-    private AutoCompleteTextView register_id;
-    private EditText register_pw;
+    private String session;
+    private String userID;
 
-    private String string_id;
-    private String string_pw;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_account_menagement);
+
+        //세션 값
+        Intent intent = getIntent();
+        session = intent.getStringExtra("session");
+        userID = intent.getStringExtra("userID");
+
+        final ActionProcessButton btnLogout = (ActionProcessButton) findViewById(R.id.btnLogout);
+        final ActionProcessButton mvChange = (ActionProcessButton) findViewById(R.id.mvChange);
+        final ActionProcessButton btnDelete = (ActionProcessButton) findViewById(R.id.btnDelete);
+
+        btnLogout.setOnClickListener(this);
+        mvChange.setOnClickListener(this);
+        btnDelete.setOnClickListener(this);
+
+    }
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+    public void onClick(View v) {
+
+        switch (v.getId()){
+
+            case R.id.btnLogout:
+                //자동 로그인 기록 지우기
+                SharedPreferences autoLogin = getSharedPreferences("auto_login", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor autoLogin_editor = autoLogin.edit();
+                //자동 로그인 기록 clear
+                autoLogin_editor.clear();
+                autoLogin_editor.commit();
+                //로그인 페이지로 이동
+                Intent register_intent = new Intent(Account_Management.this, Login.class);
+                startActivity(register_intent);
+                break;
+
+            case R.id.mvChange:
+                //수정 페이지로 이동하기
+                Intent m_intent = new Intent(Account_Management.this, Account_Change.class);
+                m_intent.putExtra("userID", userID);
+                m_intent.putExtra("session", session);
+                startActivity(m_intent);
+                break;
+
+            case R.id.btnDelete:
+                //계정 삭제하기
+                DeleteDB deleteDB = new DeleteDB();
+                deleteDB.execute();
 
 
-        register_id = (AutoCompleteTextView) findViewById(R.id.register_id);
-        register_pw = (EditText) findViewById(R.id.register_pw);
-
-        final ActionProcessButton btnRegister = (ActionProcessButton) findViewById(R.id.btnRegister);
-
-        btnRegister.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                user_Register();
-            }
-        });
-
+        }
     }
 
-    private void user_Register(){
-
-        //입력 값 예외 처리
-        string_id = register_id.getText().toString();
-        string_pw = register_pw.getText().toString();
-
-        if( string_id.length() < 5) {
-            register_id.setError("5-10자의 영문 소문자, 숫자만 사용가능 합니다.");
-            return;
-        }
-        if( string_pw.length() < 8){
-            register_pw.setError("8-12자의 영문 소문자, 숫자만 사용가능 합니다.");
-            return;
-        }
-
-        //DB에 정보 삽입
-        RegisterDB registerDB = new RegisterDB();
-        registerDB.execute();
-
-    }
-
-    class RegisterDB extends AsyncTask<String, Void, String> {
-
+    class DeleteDB extends AsyncTask<String, Void, String> {
         String target;
 
         // 전송할 데이터 및 서버의 URL을 사전에 정의합니다.
         @Override
         protected void onPreExecute() {
-            String string_id = register_id.getText().toString();
-            String string_pw = register_pw.getText().toString();
             try {
-                target = MainActivity.URL + "userJoin.midas?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8");
+                target = MainActivity.URL + "userDelete.midas?userID=" + URLEncoder.encode(userID, "UTF-8") + "&session=" + URLEncoder.encode(session, "UTF-8");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -101,7 +97,7 @@ public class Register extends AppCompatActivity{
 
         @Override
         protected String doInBackground(String... strings) {
-            Log.d("Raon","Register doInBackground");
+            Log.d("Raon","Delete doInBackground");
 
             // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
             try{
@@ -126,7 +122,6 @@ public class Register extends AppCompatActivity{
             }
             return null;
         }
-
         @Override
         public void onProgressUpdate(Void... values) {
             super.onProgressUpdate();
@@ -138,15 +133,15 @@ public class Register extends AppCompatActivity{
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 String verify = jsonObject.getString("verify");
-                // 서버로부터 반환 된 값이 1이면 회원가입 성공입니다.
-                if(verify.equals("1")) {
-                    // 성공 알림창을 띄우고 로그인 페이지로 이동.
-                    successAlert();
 
+                // 서버로부터 반환 된 값이 1이면 회원탈퇴 성공입니다.
+                if(verify.equals("1")) {
+                    // 성공 알림창을 띄우고 로그인 페이지로 이동
+                    delete_successAlert();
                 }
-                // 그 외에는 이미 존재하는 아이디로 처리합니다.
+                //회원탈퇴 실패
                 else {
-                    failAlert();
+                    delete_failAlert();
                 }
             } catch(Exception e) {
                 e.printStackTrace();
@@ -154,14 +149,10 @@ public class Register extends AppCompatActivity{
         }
     }
 
-    public void successAlert(){
-        //회원가입 Alert
-        Log.d("Raon","Register Alert");
-
-        //회원가입 dialog
+    public void delete_successAlert(){
         new AwesomeSuccessDialog(this)
-                .setTitle("회원가입 성공")
-                .setMessage("회원가입이 정상적으로 완료되었습니다.")
+                .setTitle("회원탈퇴 성공")
+                .setMessage("회원탈퇴가 정상적으로 완료되었습니다.")
                 .setColoredCircle(R.color.dialogSuccessBackgroundColor)
                 .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
                 .setCancelable(true)
@@ -171,22 +162,25 @@ public class Register extends AppCompatActivity{
                 .setPositiveButtonClick(new Closure() {
                     @Override
                     public void exec() {
+
+                        //자동로그인 기록 초기화
+                        SharedPreferences autoLogin = getSharedPreferences("auto_login", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor autoLogin_editor = autoLogin.edit();
+                        autoLogin_editor.clear();
+                        autoLogin_editor.commit();
+
                         // 로그인 페이지로 이동합니다.
-                        Intent register_intent = new Intent(Register.this, Login.class);
+                        Intent register_intent = new Intent(Account_Management.this, Login.class);
                         startActivity(register_intent);
                     }
                 })
                 .show();
     }
 
-
-    public void failAlert() {
-        Log.d("Raon","login Alert");
-
-        //dialog
+    public void delete_failAlert(){
         new AwesomeWarningDialog(this)
-                .setTitle("회원가입 실패")
-                .setMessage("이미 존재하는 아이디입니다.")
+                .setTitle("회원탈퇴 실패")
+                .setMessage("회원 탈퇴에 실패했습니다.\n 다시 시도 해주세요")
                 .setColoredCircle(R.color.dialogWarningBackgroundColor)
                 .setDialogIconAndColor(R.drawable.ic_dialog_warning, R.color.black)
                 .setCancelable(true)
@@ -199,7 +193,6 @@ public class Register extends AppCompatActivity{
                     }
                 })
                 .show();
-
     }
 
 }

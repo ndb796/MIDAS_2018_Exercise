@@ -3,8 +3,11 @@ package com.example.misonglee.login_test;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.dd.processbutton.iml.ActionProcessButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,5 +34,26 @@ public class MainActivity extends AppCompatActivity {
 
         welcome = (TextView) findViewById(R.id.welcome);
         welcome.setText("환영합니다, <" + userID + ">님!");
+
+        final ActionProcessButton btnAccountTest = (ActionProcessButton) findViewById(R.id.btnAccountTest);
+        btnAccountTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 테스트 페이지로 이동합니다.
+                Intent intent = new Intent(MainActivity.this, Account_Management.class);
+                // 테스트 페이지로 넘어갈 때 아이디와 세션 정보를 저장합니다.
+                intent.putExtra("userID", userID);
+                intent.putExtra("session", session);
+                startActivity(intent);
+            }
+        });
+
+
+
     }
+
+
+
+
 }
+

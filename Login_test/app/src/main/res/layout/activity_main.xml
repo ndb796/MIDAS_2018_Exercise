@@ -18,6 +18,19 @@
             android:id="@+id/welcome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="환영 메시지" />
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/btnAccountTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Account Test"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            custom:pb_colorNormal="@color/colorPrimary"
+            custom:pb_colorPressed="@color/colorPrimaryDark"
+            />
     </LinearLayout>
 </LinearLayout>

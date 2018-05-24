@@ -34,6 +34,14 @@
             android:label="Main">
         </activity>
 
+        <activity android:name=".Account_Management"
+            android:label="Account Management">
+        </activity>
+
+        <activity android:name=".Account_Change"
+            android:label="Account Change">
+        </activity>
+
     </application>
 
 </manifest>

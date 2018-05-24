@@ -55,6 +55,8 @@ public class Login extends AppCompatActivity {
 
         user_id = (AutoCompleteTextView) findViewById(R.id.user_id);
         user_pw = (EditText) findViewById(R.id.user_pw);
+        auto_check = (CheckBox)findViewById(R.id.auto_login);
+
 
         //자동로그인
         SharedPreferences autoLogin = getSharedPreferences("auto_login", Activity.MODE_PRIVATE);
@@ -67,6 +69,8 @@ public class Login extends AppCompatActivity {
             //id, pw 채우기
             user_id.setText(auto_id);
             user_pw.setText(auto_pw);
+            //check box
+            auto_check.setChecked(true);
             //로그인
             CheckFromDB checkFromDB = new CheckFromDB();
             checkFromDB.execute();
@@ -76,7 +80,6 @@ public class Login extends AppCompatActivity {
         final ActionProcessButton btnSignIn = (ActionProcessButton) findViewById(R.id.btnSignIn);
         final ActionProcessButton mvRegister = (ActionProcessButton) findViewById(R.id.mvRegister);
 
-        auto_check = (CheckBox)findViewById(R.id.auto_login);
 
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +178,7 @@ public class Login extends AppCompatActivity {
                 // 서버로부터 반환 된 값이 1이면 로그인 성공입니다.
                 if(verify.equals("1")) {
                     // 성공 알림창을 띄웁니다.
-                    successAlert();
+                    //successAlert();
 
                     //자동 로그인 체크시
                     if(auto_check.isChecked()) {
@@ -203,6 +206,7 @@ public class Login extends AppCompatActivity {
         }
     }
 
+/*
     public void successAlert(){
         //회원가입 Alert
         Log.d("Raon","Register Alert");
@@ -225,6 +229,7 @@ public class Login extends AppCompatActivity {
                 })
                 .show();
     }
+*/
 
     public void failAlert() {
         Log.d("Raon","login Alert");
