@@ -47,6 +47,8 @@ public class Setting_Fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d("Setting_Fragment", "onCreateView - execute");
+
         root_view = inflater.inflate(R.layout.fragment_setting, container, false);
         root_layout = (LinearLayout) root_view.findViewById(R.id.SettingRoot);
         context = container.getContext();
@@ -57,6 +59,8 @@ public class Setting_Fragment extends Fragment {
     }
 
     private void SetView(){
+        Log.d("Setting_Fragment", "SetView - execute");
+
         TextView welcome = (TextView) root_view.findViewById(R.id.welcome);
         welcome.setText("환영합니다, <" + MainActivity.userID + "> 님!");
 

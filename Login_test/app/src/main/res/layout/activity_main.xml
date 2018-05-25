@@ -61,4 +61,38 @@
         >
     </android.support.v4.view.ViewPager>
 
+    <LinearLayout
+        android:id="@+id/detailContents"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#808080"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/detailContents_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="back" />
+
+        <TextView
+            android:id="@+id/detailContents_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/detailContents_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/detailContents_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+    </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>
