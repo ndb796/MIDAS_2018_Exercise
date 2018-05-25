@@ -1,11 +1,18 @@
 package com.example.misonglee.login_test;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
@@ -20,8 +27,12 @@ public class MainActivity extends AppCompatActivity {
     public static String userID;
     public static String session;
 
-    private TextView welcome;
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private SectionsPagerAdapter sectionsPagerAdapter;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,28 +43,36 @@ public class MainActivity extends AppCompatActivity {
         userID = intent.getStringExtra("userID");
         session = intent.getStringExtra("session");
 
-        welcome = (TextView) findViewById(R.id.welcome);
-        welcome.setText("환영합니다, <" + userID + ">님!");
-
-        final ActionProcessButton btnAccountTest = (ActionProcessButton) findViewById(R.id.btnAccountTest);
-        btnAccountTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 테스트 페이지로 이동합니다.
-                Intent intent = new Intent(MainActivity.this, Account_Management.class);
-                // 테스트 페이지로 넘어갈 때 아이디와 세션 정보를 저장합니다.
-                intent.putExtra("userID", userID);
-                intent.putExtra("session", session);
-                startActivity(intent);
-            }
-        });
-
-
-
+        init();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void init(){
+        Log.d("MainActivity", "init-excute");
 
+        // toolbar 초기화
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("MIDAS_Example");
+        setSupportActionBar(toolbar);
 
+        // viewpager와 FragmentAdapter 연결
+        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        viewPager = (ViewPager)findViewById(R.id.container);
+        viewPager.setAdapter(sectionsPagerAdapter);
 
+        // tablayout과 viewPager 연결
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+        Log.d("MainActivity", "init-finish");
+    }
+
+    public static String GetUserID(){
+        return userID;
+    }
+
+    public static String GetUserPW(){
+        return session;
+    }
 }
 
