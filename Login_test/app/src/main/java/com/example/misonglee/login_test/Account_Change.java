@@ -66,6 +66,7 @@ public class Account_Change extends AppCompatActivity {
         changeDB.execute();
 
     }
+
     class ChangeDB extends AsyncTask<String, Void, String> {
 
         String target;
