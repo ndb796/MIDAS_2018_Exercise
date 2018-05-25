@@ -85,6 +85,8 @@ public class Account_Management extends AppCompatActivity implements View.OnClic
             case R.id.profileUpdate:
                 // 프로필 변경 페이지로 이동하기
                 Intent intent = new Intent(Account_Management.this, Account_Profile_Update.class);
+                intent.putExtra("userID", userID);
+                intent.putExtra("session", session);
                 startActivity(intent);
                 break;
         }
