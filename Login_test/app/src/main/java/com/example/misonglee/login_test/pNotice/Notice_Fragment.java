@@ -26,6 +26,7 @@ public class Notice_Fragment extends Fragment {
     private int items_size;
 
     public Notice_Fragment() {
+        Log.d("Notice_Fragment", "Constructor - execute");
         items = null;
         items_size = 0;
         resource = R.layout.notice_item;
@@ -39,6 +40,8 @@ public class Notice_Fragment extends Fragment {
      * items_size : 데이터 사이즈.
      * */
     public void SetItems(ArrayList<NoticeData> items, int items_size) {
+        Log.d("Notice_Fragment", "SetItems - size : " + items_size);
+
         this.items = items;
         this.items_size = items_size;
     }

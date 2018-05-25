@@ -4,7 +4,9 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
+import com.example.misonglee.login_test.pContents.Contents_Fragment;
 import com.example.misonglee.login_test.pNotice.Notice_Fragment;
 import com.example.misonglee.login_test.pSetting.Setting_Fragment;
 
@@ -18,13 +20,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
+        Log.d("SectionsPagerAdapter", position + " - Fragment choice");
 
         switch(position){
             case 0:
                 return Notice_Fragment.newInstance(position);
 
             case 1:
-                return Notice_Fragment.newInstance(position);
+                return Contents_Fragment.newInstance(position);
 
             case 2:
                 return Setting_Fragment.newInstance(position);
