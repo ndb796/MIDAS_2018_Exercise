@@ -1,42 +1,33 @@
-package com.example.misonglee.login_test;
+package com.example.misonglee.login_test.pLogin;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Point;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.dd.processbutton.iml.ActionProcessButton;
+import com.example.misonglee.login_test.MainActivity;
+import com.example.misonglee.login_test.R;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 
 
 public class Login extends AppCompatActivity {
@@ -79,8 +70,6 @@ public class Login extends AppCompatActivity {
 
         final ActionProcessButton btnSignIn = (ActionProcessButton) findViewById(R.id.btnSignIn);
         final ActionProcessButton mvRegister = (ActionProcessButton) findViewById(R.id.mvRegister);
-
-
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")

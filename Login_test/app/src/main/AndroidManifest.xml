@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         >
 
-        <activity android:name=".Login"
+        <activity android:name=".pLogin.Login"
                 android:label="Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,7 @@
         </activity>
 
 
-        <activity android:name=".Register"
+        <activity android:name=".pLogin.Register"
             android:label="Register">
         </activity>
 
