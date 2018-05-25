@@ -47,5 +47,17 @@
             custom:pb_colorPressed="@color/colorPrimaryDark"
             />
 
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/profileUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="UPDATE PROFILE"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            custom:pb_colorNormal="@color/colorPrimary"
+            custom:pb_colorPressed="@color/colorPrimaryDark"
+            />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -41,10 +41,12 @@ public class Account_Management extends AppCompatActivity implements View.OnClic
         final ActionProcessButton btnLogout = (ActionProcessButton) findViewById(R.id.btnLogout);
         final ActionProcessButton mvChange = (ActionProcessButton) findViewById(R.id.mvChange);
         final ActionProcessButton btnDelete = (ActionProcessButton) findViewById(R.id.btnDelete);
+        final ActionProcessButton profileUpdate = (ActionProcessButton) findViewById(R.id.profileUpdate);
 
         btnLogout.setOnClickListener(this);
         mvChange.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
+        profileUpdate.setOnClickListener(this);
 
     }
 
@@ -78,8 +80,13 @@ public class Account_Management extends AppCompatActivity implements View.OnClic
                 //계정 삭제하기
                 DeleteDB deleteDB = new DeleteDB();
                 deleteDB.execute();
+                break;
 
-
+            case R.id.profileUpdate:
+                // 프로필 변경 페이지로 이동하기
+                Intent intent = new Intent(Account_Management.this, Account_Profile_Update.class);
+                startActivity(intent);
+                break;
         }
     }
 
