@@ -42,17 +42,25 @@ import java.net.URLEncoder;
 
 public class Account_Profile_Update extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView nowImage;
-    String imageURL;
-    Bitmap bmImg;
-
+    // 저장장치 접근 권한 변수
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
-    ImageView imageView = null;
-    Button button = null;
-    private final int REQ_CODE_SELECT_IMAGE = 100;
-    private String img_path = new String();
+    // 이미지를 보여주는 서버 경로
+    String imageURL = MainActivity.URL + "userProfileView.midas";
+
+    // 이미지를 업로드하기 위한 서버 경로
     private String serverURL = MainActivity.URL + "userProfileUpdate.midas";
+    Bitmap bmImg = null;
+
+    // 뷰 객체 선언
+    ImageView imageView;
+    Button button;
+
+    // 이미지 선택 관련 리퀘스트 코드 정의
+    private final int REQ_CODE_SELECT_IMAGE = 100;
+
+    // 이미지 업로드 처리를 위한 추가적인 변수 선언
+    private String img_path = new String();
     private Bitmap image_bitmap_copy = null;
     private Bitmap image_bitmap = null;
     private String imageName = null;
@@ -66,25 +74,20 @@ public class Account_Profile_Update extends AppCompatActivity implements View.On
                 .permitDiskWrites()
                 .permitNetwork().build());
 
-        /* 이미지 보여주기 예제
-
-        BackgroundTask task = new BackgroundTask();
-
-        nowImage = (ImageView) findViewById(R.id.profileImage);
-        imageURL = "http://www.fnordware.com/superpng/pnggrad8rgb.jpg";
-
-        task.execute(imageURL);
-
-         */
-
         try {
+            imageURL += "?userID=" + URLEncoder.encode(MainActivity.userID, "UTF-8");
             serverURL += "?userID=" + URLEncoder.encode(MainActivity.userID, "UTF-8") + "&session=" +  URLEncoder.encode(MainActivity.session, "UTF-8");  //<<서버주소
+            imageView = (ImageView) findViewById(R.id.imageView);
+            button = (Button) findViewById(R.id.button);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
-        imageView = (ImageView) findViewById(R.id.imageView);
-        //이미지를 띄울 위젯
+        // 이미지를 선택하기 전에 이미지 보여주기
+        BackgroundTask task = new BackgroundTask();
+        task.execute(imageURL);
+
+        // 이미지를 클릭했을 때 업로드가 시작됩니다.
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +95,6 @@ public class Account_Profile_Update extends AppCompatActivity implements View.On
             }
         });
 
-        button = (Button) findViewById(R.id.button);
         //이미지 전송 버튼
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,8 +130,8 @@ public class Account_Profile_Update extends AppCompatActivity implements View.On
                     int reWidth = (int) (getWindowManager().getDefaultDisplay().getWidth());
                     int reHeight = (int) (getWindowManager().getDefaultDisplay().getHeight());
 
-                    //image_bitmap 으로 받아온 이미지의 사이즈를 임의적으로 조절함. width: 400 , height: 300
-                    image_bitmap_copy = Bitmap.createScaledBitmap(image_bitmap, 400, 300, true);
+                    //image_bitmap 으로 받아온 이미지의 사이즈를 임의적으로 조절함. width: 270 , height: 180
+                    image_bitmap_copy = Bitmap.createScaledBitmap(image_bitmap, 180, 180, true);
                     ImageView image = (ImageView) findViewById(R.id.imageView);  //이미지를 띄울 위젯 ID값
                     image.setImageBitmap(image_bitmap_copy);
 
@@ -233,8 +235,6 @@ public class Account_Profile_Update extends AppCompatActivity implements View.On
         }
     } // end of HttpFileUpload()
 
-    /*
-    이미지 가져오기 처리
     private class BackgroundTask extends AsyncTask<String, Integer,Bitmap> {
 
 
@@ -258,11 +258,10 @@ public class Account_Profile_Update extends AppCompatActivity implements View.On
         }
 
         protected void onPostExecute(Bitmap img) {
-            nowImage.setImageBitmap(bmImg);
+            imageView.setImageBitmap(bmImg);
         }
 
     }
-    */
 
     public void readFile() {
         Intent intent = new Intent(Intent.ACTION_PICK);
