@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -64,6 +65,18 @@ public class MainActivity extends AppCompatActivity {
         session = intent.getStringExtra("session");
 
         init();
+
+        // 글쓰기 버튼
+        FloatingActionButton write_button = (FloatingActionButton) findViewById(R.id.write_button);
+        write_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //글쓰기 dialog
+                Write_Content_Dialog write_dialog = new Write_Content_Dialog(MainActivity.this);
+                write_dialog.show();
+            }
+        });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
