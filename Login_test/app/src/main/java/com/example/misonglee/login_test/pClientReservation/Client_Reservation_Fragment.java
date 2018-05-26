@@ -94,22 +94,22 @@ public class Client_Reservation_Fragment extends Fragment {
 
         // 여기서 먼저 데이터를 다 받아올까...?
 
-        ArrayList<ReserveData> asdf = new ArrayList<>();
+/*        ArrayList<ReserveData> asdf = new ArrayList<>();
         ReserveData a = new ReserveData(1, 2, 2, "asdf");
         ReserveData b = new ReserveData(2, 1, 2, "bbbb");
         asdf.add(a);
         asdf.add(b);
 
-        SetListData(asdf);
+        SetListData(asdf);*/
 
 
         //user의 예약 내용을 가져옴
-        //BackgroundTask_Reservation backgroundTask_reservation = new BackgroundTask_Reservation();
-        //backgroundTask_reservation.execute();
+        BackgroundTask_Reservation backgroundTask_reservation = new BackgroundTask_Reservation();
+        backgroundTask_reservation.execute();
 
 
 
-        ArrayList<ReserveEndData> fdsa = new ArrayList<>();
+/*        ArrayList<ReserveEndData> fdsa = new ArrayList<>();
         ReserveEndData aa = new ReserveEndData("2017-03-21", 5, 1);
         ReserveEndData bb = new ReserveEndData("2017-08-21", 4, 2);
         ReserveEndData cc = new ReserveEndData("2016-03-21", 3, 3);
@@ -121,13 +121,15 @@ public class Client_Reservation_Fragment extends Fragment {
         fdsa.add(dd);
         fdsa.add(ee);
 
-        SetListEndData(fdsa);
+        SetListEndData(fdsa);*/
 
 
 
         // 사용자의 전체 예약 정보 데이터 구분
-        for(int i = 0; i<fdsa.size(); i++)
+        for(int i = 0; i<list_items.size(); i++){
+            list_items_ends.add(new ReserveEndData(list_items.get(i).reservationDate, list_items.get(i).menuID, list_items.get(i).menuCount));
             parsing(list_items_ends.get(i));
+        }
 
         root_view = inflater.inflate(R.layout.user_fragment_reserve, container, false);
         reserve_list_end_root = (LinearLayout) root_view.findViewById(R.id.user_fragment_reserve_month_root);
