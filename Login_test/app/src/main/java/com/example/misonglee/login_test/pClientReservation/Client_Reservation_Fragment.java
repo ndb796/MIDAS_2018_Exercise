@@ -52,7 +52,7 @@ public class Client_Reservation_Fragment extends Fragment {
     private ViewGroup _container;
     private int resource;
     private View root_view;
-    private ArrayList<ReserveData> list_items;
+    public static ArrayList<ReserveData> list_items;
     private ArrayList<ReserveEndData> list_items_ends;
     public static HashMap<Integer, String> list_menu;
     private int list_items_size;
@@ -372,7 +372,7 @@ public class Client_Reservation_Fragment extends Fragment {
                 int count = 0;
 
                 ArrayList<ReserveData> tmp = new ArrayList<>();
-                int menuID, menuCount,reservationProcess;
+                int menuID, menuCount,reservationProcess, reservationID;
                 String reservationDate;
 
                 while(count < jsonArray.length()) {
@@ -383,8 +383,8 @@ public class Client_Reservation_Fragment extends Fragment {
                     menuCount = object.getInt("menuCount");
                     reservationProcess = object.getInt("reservationProcess");
                     reservationDate = object.getString("reservationDate");
-                    tmp.add(new ReserveData(menuID, menuCount, reservationProcess, reservationDate));
-
+                    reservationID = object.getInt("reservationID");
+                    tmp.add(new ReserveData(menuID, menuCount, reservationProcess, reservationID,reservationDate));
 
                     count++;
                 }

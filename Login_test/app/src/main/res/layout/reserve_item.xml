@@ -8,11 +8,17 @@
     >
 
     <TextView
+        android:id="@+id/reservationID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="TextView" />
+
+    <TextView
         android:id="@+id/reserve_item_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="20dp"
         android:text="menunum" />
 
     <TextView
@@ -20,7 +26,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="20dp"
         android:text="menucount" />
 
     <TextView
@@ -28,6 +33,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="20dp"
         android:text="Process" />
+
 </LinearLayout>
