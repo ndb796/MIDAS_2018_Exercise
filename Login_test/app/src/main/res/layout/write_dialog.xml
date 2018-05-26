@@ -42,7 +42,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.1"
                 android:background="@drawable/ic_dialog_info">
-
             </ImageButton>
 
             <ImageButton
