@@ -187,7 +187,6 @@ URL: eventUpdate.midas
 결과 2. 권한 없음: {"verify":"-1"}
 
 [ 한 개의 이벤트 보기 ]
-
 URL: eventView.midas
 파라미터: 이벤트 번호(eventID)
 예시: eventView.midas?eventID=1
