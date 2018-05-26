@@ -12,11 +12,11 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/usertext"
+            android:id="@+id/subtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="User Management" />
+            android:text="Sub Manager Management" />
 
     </LinearLayout>
 
@@ -26,7 +26,7 @@
         android:layout_weight="1">
 
         <LinearLayout
-            android:id="@+id/manager_fragment_manage_user_root"
+            android:id="@+id/manager_fragment_manage_sub_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />

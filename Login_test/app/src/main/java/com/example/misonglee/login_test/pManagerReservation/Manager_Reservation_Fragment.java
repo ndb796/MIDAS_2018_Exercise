@@ -147,4 +147,6 @@ public class Manager_Reservation_Fragment extends Fragment {
             reserve_search_list_root.addView(view);
         }
     }
+
+
 }

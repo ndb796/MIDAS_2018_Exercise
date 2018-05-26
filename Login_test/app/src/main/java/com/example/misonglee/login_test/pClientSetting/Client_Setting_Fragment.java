@@ -17,6 +17,7 @@ import com.dd.processbutton.iml.ActionProcessButton;
 import com.example.misonglee.login_test.Account_Management;
 import com.example.misonglee.login_test.R;
 import com.example.misonglee.login_test.pMainActivity.MainActivity;
+import com.example.misonglee.login_test.pMainActivity.MainActivity_User;
 import com.example.misonglee.login_test.pSetting.Setting_Fragment;
 
 public class Client_Setting_Fragment extends Fragment {
@@ -58,7 +59,7 @@ public class Client_Setting_Fragment extends Fragment {
         Log.d("Setting_Fragment", "SetView - execute");
 
         TextView welcome = (TextView) root_view.findViewById(R.id.welcome);
-        welcome.setText("환영합니다, <" + MainActivity.userID + "> 님!");
+        welcome.setText("환영합니다, <" + MainActivity_User.userID + "> 님!");
 
         final ActionProcessButton btnAccountTest = (ActionProcessButton) root_view.findViewById(R.id.btnAccountTest);
         btnAccountTest.setOnClickListener(new View.OnClickListener() {
@@ -67,8 +68,8 @@ public class Client_Setting_Fragment extends Fragment {
                 // 테스트 페이지로 이동합니다.
                 Intent intent = new Intent(context, Account_Management.class);
                 // 테스트 페이지로 넘어갈 때 아이디와 세션 정보를 저장합니다.
-                intent.putExtra("userID", MainActivity.GetUserID());
-                intent.putExtra("session", MainActivity.GetUserPW());
+                intent.putExtra("userID", MainActivity_User.GetUserID());
+                intent.putExtra("session", MainActivity_User.GetUserPW());
                 startActivity(intent);
             }
         });

@@ -19,7 +19,7 @@
             android:imeActionId="6"
             android:imeActionLabel="sign in"
             android:imeOptions="actionUnspecified"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:maxLines="1"
             android:singleLine="true" />
 

@@ -141,8 +141,9 @@ public class Account_Change extends AppCompatActivity {
         // 전송할 데이터 및 서버의 URL을 사전에 정의합니다.
         @Override
         protected void onPreExecute() {
-            try {
-                target = MainActivity.URL + "userPasswordChange.midas?userID=" + URLEncoder.encode(userID, "UTF-8") + "&session=" + URLEncoder.encode(session, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8");
+            try {//예시: userUpdate.midas?userID=USER1&userPassword=12341234&userBirthday=1996-05-05&userName=홍순이&userDepartment=영업부서
+                target = MainActivity.URL + "userUpdate.midas?userID=" + URLEncoder.encode(userID, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8") + "&userBirthday=" + URLEncoder.encode(change_birthday, "UTF-8") + "&userName=" + URLEncoder.encode(string_name, "UTF-8") + "&userDepartment=" + URLEncoder.encode(change_depart, "UTF-8");
+                Log.d("Account_Change", target);
             } catch (Exception e) {
                 e.printStackTrace();
             }

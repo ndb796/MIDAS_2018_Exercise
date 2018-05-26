@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.example.misonglee.login_test.pClientMenu.Client_Menu_Fragment;
 import com.example.misonglee.login_test.pClientNotice.Client_Notice_Fragment;
+import com.example.misonglee.login_test.pManagerManageSub.Manager_Manager_Sub_Fragment;
+import com.example.misonglee.login_test.pManagerManageUser.Manager_Manager_User_Fragment;
 import com.example.misonglee.login_test.pManagerMenu.Manager_Menu_Fragment;
 import com.example.misonglee.login_test.pManagerNotice.Manager_Notice_Fragment;
 import com.example.misonglee.login_test.pManagerReservation.Manager_Reservation_Fragment;
@@ -36,10 +38,10 @@ public class SectionsPagerAdapter_Manager extends FragmentPagerAdapter{
                 return Manager_Reservation_Fragment.newInstance(position);
 
             case 3:
-                return null;
+                return Manager_Manager_User_Fragment.newInstance(position);
 
             case 4:
-                return null;
+                return Manager_Manager_Sub_Fragment.newInstance(position);
         }
         return Notice_Fragment.newInstance(position);
     }
@@ -47,7 +49,7 @@ public class SectionsPagerAdapter_Manager extends FragmentPagerAdapter{
     @Override
     public int getCount() {
         // Show 5 total pages.
-        return 5;
+        return 6;
     }
 
     /**
