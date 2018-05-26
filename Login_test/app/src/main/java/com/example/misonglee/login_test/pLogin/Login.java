@@ -17,8 +17,9 @@ import android.widget.EditText;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.dd.processbutton.iml.ActionProcessButton;
-import com.example.misonglee.login_test.MainActivity;
+import com.example.misonglee.login_test.pMainActivity.MainActivity;
 import com.example.misonglee.login_test.R;
+import com.example.misonglee.login_test.pMainActivity.MainActivity_User;
 
 import org.json.JSONObject;
 
@@ -199,10 +200,33 @@ public class Login extends AppCompatActivity {
         }
     }
 
+/*
+    public void successAlert(){
+        //회원가입 Alert
+        Log.d("Raon","Register Alert");
 
+        //회원가입 dialog
+        new AwesomeSuccessDialog(this)
+                .setTitle("로그인 성공")
+                .setMessage("로그인이 정상적으로 완료되었습니다.")
+                .setColoredCircle(R.color.dialogSuccessBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                .setCancelable(true)
+                .setPositiveButtonText("확인")
+                .setPositiveButtonbackgroundColor(R.color.dialogSuccessBackgroundColor)
+                .setPositiveButtonTextColor(R.color.white)
+                .setPositiveButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        //click
+                    }
+                })
+                .show();
+    }
+*/
 
     public void failAlert() {
-        Log.d("Login","failAlert execute");
+        Log.d("Raon","login Alert");
 
         //dialog
         new AwesomeWarningDialog(this)

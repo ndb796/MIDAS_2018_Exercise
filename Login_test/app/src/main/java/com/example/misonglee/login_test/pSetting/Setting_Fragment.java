@@ -16,12 +16,8 @@ import android.widget.TextView;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 import com.example.misonglee.login_test.Account_Management;
-import com.example.misonglee.login_test.MainActivity;
+import com.example.misonglee.login_test.pMainActivity.MainActivity;
 import com.example.misonglee.login_test.R;
-import com.example.misonglee.login_test.pNotice.NoticeData;
-import com.example.misonglee.login_test.pNotice.Notice_Fragment;
-
-import java.util.ArrayList;
 
 public class Setting_Fragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";

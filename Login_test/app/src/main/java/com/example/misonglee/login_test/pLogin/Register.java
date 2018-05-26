@@ -20,7 +20,7 @@ import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.dd.processbutton.iml.ActionProcessButton;
-import com.example.misonglee.login_test.MainActivity;
+import com.example.misonglee.login_test.pMainActivity.MainActivity;
 import com.example.misonglee.login_test.R;
 
 import org.json.JSONObject;
@@ -43,6 +43,7 @@ public class Register extends AppCompatActivity{
     private String string_id;
     private String string_pw;
     private String register_depart;
+    private String register_birthday;
 
     private int register_year, register_month, register_day;
 
@@ -96,7 +97,10 @@ public class Register extends AppCompatActivity{
                         register_year = year;
                         register_month = month+1;
                         register_day = day;
-                        outputDate.setText(register_year+"-" + register_month + "-" + register_day);
+
+                        register_birthday = String.format("%d-%02d-%02d",register_year, register_month, register_day);
+                        outputDate.setText(register_birthday);
+
                     }
                 } , 2000, 1, 1);
         dialog.show();
@@ -117,12 +121,6 @@ public class Register extends AppCompatActivity{
             return;
         }
 
-
-
-        //정보 확인 메세지
-        Toast.makeText(Register.this, "부서 : "+ register_depart + "생년월일 : "+ register_year+"-" + register_month + "-" + register_day,Toast.LENGTH_SHORT).show();
-
-
         //DB에 정보 삽입
         RegisterDB registerDB = new RegisterDB();
         registerDB.execute();
@@ -140,14 +138,8 @@ public class Register extends AppCompatActivity{
             String string_id = register_id.getText().toString();
             String string_pw = register_pw.getText().toString();
 
-            //TODO:넘겨줄 데이터들
-            //회원타입 = 무조건 일반회원으로
-            //이름 register_name.getText().toString();
-            //부서 register_depart
-            //생일 outputDate.getText().toString();
-
             try {
-                target = MainActivity.URL + "userJoin.midas?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8");
+                target = MainActivity.URL + "userJoin.midas?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8") + "&userName=" + URLEncoder.encode(register_name.getText().toString(), "UTF-8") + "&userBirthday=" + URLEncoder.encode(register_birthday, "UTF-8") + "&userDepartment=" +  URLEncoder.encode(register_depart, "UTF-8");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -196,7 +188,6 @@ public class Register extends AppCompatActivity{
                 if(verify.equals("1")) {
                     // 성공 알림창을 띄우고 로그인 페이지로 이동.
                     successAlert();
-
                 }
                 // 그 외에는 이미 존재하는 아이디로 처리합니다.
                 else {

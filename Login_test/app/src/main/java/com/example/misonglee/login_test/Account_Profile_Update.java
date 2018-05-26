@@ -1,10 +1,8 @@
 package com.example.misonglee.login_test;
 
 import android.Manifest;
-import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -23,19 +21,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
-import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
-import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
-import com.dd.processbutton.iml.ActionProcessButton;
+import com.example.misonglee.login_test.pMainActivity.MainActivity;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;

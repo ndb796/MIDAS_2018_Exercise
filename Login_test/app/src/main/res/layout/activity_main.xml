@@ -34,19 +34,19 @@
                 android:id="@+id/tabNotice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Notice" />
+                android:text="공지" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabContents"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Contents" />
+                android:text="메뉴" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabSetting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Setting" />
+                android:text="예약" />
 
 
         </android.support.design.widget.TabLayout>
@@ -67,7 +67,7 @@
         android:layout_height="match_parent"
         android:background="#808080"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <Button
             android:id="@+id/detailContents_btn"

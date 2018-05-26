@@ -12,14 +12,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.misonglee.login_test.MainActivity;
+import com.example.misonglee.login_test.pMainActivity.MainActivity;
 import com.example.misonglee.login_test.R;
-import com.example.misonglee.login_test.pNotice.NoticeData;
-import com.example.misonglee.login_test.pNotice.Notice_Fragment;
 
 import java.util.ArrayList;
 
-import static com.example.misonglee.login_test.MainActivity.CODE_SHOW_DETAIL_CONTENTS;
+import static com.example.misonglee.login_test.pMainActivity.MainActivity.CODE_SHOW_DETAIL_CONTENTS;
 
 public class Contents_Fragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -82,11 +80,11 @@ public class Contents_Fragment extends Fragment {
         root_layout = (LinearLayout) root_view.findViewById(R.id.ContentsRoot);
         context = container.getContext();
 
-        SetView();
+        //SetView();
 
         return root_view;
     }
-
+/*
     public void SetView() {
         Log.d("Contents_Fragment", "SetView-execute");
 
@@ -136,5 +134,5 @@ public class Contents_Fragment extends Fragment {
 
             root_layout.addView(view);
         }
-    }
+    }*/
 }
