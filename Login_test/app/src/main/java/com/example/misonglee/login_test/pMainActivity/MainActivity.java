@@ -67,16 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
         init();
 
-        // 글쓰기 버튼
-        FloatingActionButton write_button = (FloatingActionButton) findViewById(R.id.write_button);
-        write_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //글쓰기 dialog
-                Write_Content_Dialog write_dialog = new Write_Content_Dialog(MainActivity.this, userID, session);
-                write_dialog.show();
-            }
-        });
 
     }
 
@@ -140,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
     /* 옵션바에 대한 설정이 이루어지는 곳
      * 앱이 시작하면서 자동 실행
      * */
+
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d("MainActivity", "onCreateOptionsMenu - execute");
         MenuInflater inflater = getMenuInflater();
