@@ -96,7 +96,7 @@ public class Manager_Manager_User_Fragment extends Fragment {
                 startActivity(register_intent);
             }
         });
-        
+
 
         BackgroundTask_User backgroundTask_user = new BackgroundTask_User();
         backgroundTask_user.execute();

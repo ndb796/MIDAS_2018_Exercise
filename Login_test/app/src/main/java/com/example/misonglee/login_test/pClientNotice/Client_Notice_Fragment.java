@@ -39,7 +39,9 @@ public class Client_Notice_Fragment extends Fragment {
     private int resource_notice;
     private int resource_event;
     private View root_view;
-    private LinearLayout root_layout;
+    private LinearLayout root_notice_layout;
+    private LinearLayout root_event_layout;
+
     private ArrayList<NoticeData> notice_items;
     private ArrayList<EventData> event_items;
     private int notice_items_size;
@@ -96,7 +98,8 @@ public class Client_Notice_Fragment extends Fragment {
         Log.d("Notice_Fragment", "onCreateView-execute");
 
         root_view = inflater.inflate(R.layout.user_fragment_notice, container, false);
-        root_layout = (LinearLayout) root_view.findViewById(R.id.user_notice_root);
+        root_notice_layout = (LinearLayout) root_view.findViewById(R.id.user_notice_root);
+        root_event_layout = (LinearLayout) root_view.findViewById(R.id.user_event_root);
         context = container.getContext();
 
         BackgroundTask_Notice task = new BackgroundTask_Notice();
@@ -117,7 +120,7 @@ public class Client_Notice_Fragment extends Fragment {
             // 공지사항 처리
             case CODE_NOTICE:
                 for (int i = 0; i < notice_items_size; i++) {
-                    View view = inflater.inflate(resource_notice, root_layout, false);
+                    View view = inflater.inflate(resource_notice, root_notice_layout, false);
 
                     TextView date = (TextView) view.findViewById(R.id.user_notice_date);
                     TextView title = (TextView) view.findViewById(R.id.user_notice_title);
@@ -139,20 +142,19 @@ public class Client_Notice_Fragment extends Fragment {
                         }
                     });
 
-                    root_layout.addView(view);
+                    root_notice_layout.addView(view);
                 }
                 break;
 
             // 이벤트 사항 처리
             case CODE_EVENT:
                 for (int i = 0; i < event_items_size; i++) {
-                    View view = inflater.inflate(resource_event, root_layout, false);
+                    View view = inflater.inflate(resource_event, root_event_layout, false);
 
                     TextView message = (TextView) view.findViewById(R.id.notice_event_message);
-
                     message.setText(event_items.get(i).message);
 
-                    root_layout.addView(view);
+                    root_event_layout.addView(view);
                 }
                 break;
         }
@@ -295,11 +297,10 @@ public class Client_Notice_Fragment extends Fragment {
 
                 while(count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
-                    eventMessage = object.getString("eventMessage");
+                    eventMessage = object.getString("eventTitle");
                     tmp.add(new EventData(eventMessage));
                     count++;
                 }
-
                 fragment.SetEventData(tmp, tmp.size());
                 SetView(CODE_EVENT);
             } catch(Exception e) {
