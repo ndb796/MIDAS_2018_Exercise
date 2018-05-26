@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.misonglee.login_test.R;
+import com.example.misonglee.login_test.Write_Content_Dialog;
+import com.example.misonglee.login_test.Write_Menu_Dialog;
 import com.example.misonglee.login_test.pClientMenu.Client_Menu_Dialog;
 import com.example.misonglee.login_test.pMainActivity.MainActivity;
+import com.example.misonglee.login_test.pMainActivity.MainActivity_Manager;
 import com.example.misonglee.login_test.pNotice.NoticeData;
 import com.example.misonglee.login_test.pNotice.Notice_Fragment;
 
@@ -95,6 +99,17 @@ public class Manager_Menu_Fragment extends Fragment {
 
         BackgroundTask backgroundTask = new BackgroundTask();
         backgroundTask.execute();
+
+        // 글쓰기 버튼
+        FloatingActionButton write_button = (FloatingActionButton) root_view.findViewById(R.id.menu_write_button);
+        write_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //글쓰기 dialog
+                Write_Menu_Dialog write_dialog = new Write_Menu_Dialog(context,((MainActivity_Manager)context).GetUserID(),((MainActivity_Manager)context).GetUserPW());
+                write_dialog.show();
+            }
+        });
 
         return root_view;
     }

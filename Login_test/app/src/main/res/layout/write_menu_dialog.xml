@@ -66,16 +66,12 @@
 
         </LinearLayout>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="0.8"
-    android:orientation="horizontal"
-    >
+
     <ImageButton
         android:id="@+id/btnGallery"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
         android:src="@drawable/ic_add_photo"
         android:background="@color/white"
         />
@@ -83,6 +79,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="0.8"
             android:orientation="vertical">
 
             <EditText
@@ -92,8 +89,18 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30dp"
-                android:hint="제목을 입력하세요"/>
+                android:textSize="20dp"
+                android:hint="메뉴 이름을 입력하세요"/>
+
+            <EditText
+                android:id="@+id/write_price"
+                style="@style/FullWidthEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:hint="가격을 입력하세요"/>
 
             <EditText
                 android:id="@+id/write_content"
@@ -103,7 +110,7 @@
                 android:textColor="@color/black"
                 android:hint="메뉴 설명을 입력하세요"/>
 
-        </LinearLayout>
+
 </LinearLayout>
 
     </LinearLayout>
