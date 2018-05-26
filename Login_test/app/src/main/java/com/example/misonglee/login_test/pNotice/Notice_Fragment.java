@@ -40,7 +40,7 @@ public class Notice_Fragment extends Fragment {
         Log.d("Notice_Fragment", "Constructor - execute");
         items = null;
         items_size = 0;
-        resource = R.layout.notice_item;
+        resource = R.layout.manager_notice_item;
     }
 
     /*
@@ -177,7 +177,7 @@ public class Notice_Fragment extends Fragment {
         for (int i = 0; i < items_size; i++) {
             View view = inflater.inflate(resource, root_layout, false);
 
-            TextView date = (TextView) view.findViewById(R.id.Date);
+            /*TextView date = (TextView) view.findViewById(R.id.Date);
             TextView title = (TextView) view.findViewById(R.id.Title);
             TextView message = (TextView) view.findViewById(R.id.Message);
             LinearLayout titlebar = (LinearLayout) view.findViewById(R.id.TitleBar);
@@ -195,7 +195,7 @@ public class Notice_Fragment extends Fragment {
                     else
                         messagebar.setVisibility(View.GONE);
                 }
-            });
+            });*/
 
             root_layout.addView(view);
         }

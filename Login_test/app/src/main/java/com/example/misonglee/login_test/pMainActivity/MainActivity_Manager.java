@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.example.misonglee.login_test.R;
 import com.example.misonglee.login_test.pPagerAdapter.SectionsPagerAdapter_Manager;
-import com.example.misonglee.login_test.Write_Content_Dialog;
+import com.example.misonglee.login_test.Write_Notice_Dialog;
 import com.example.misonglee.login_test.pContents.ContentsData;
 
 public class MainActivity_Manager extends AppCompatActivity{
