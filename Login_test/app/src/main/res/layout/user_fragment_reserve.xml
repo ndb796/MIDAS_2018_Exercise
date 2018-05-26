@@ -54,7 +54,14 @@
                 android:text="left" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/user_fragment_reserve_show_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/user_fragment_reserve_show_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

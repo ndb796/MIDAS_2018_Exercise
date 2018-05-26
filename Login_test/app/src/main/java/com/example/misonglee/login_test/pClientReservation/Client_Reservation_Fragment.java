@@ -2,11 +2,13 @@ package com.example.misonglee.login_test.pClientReservation;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,7 +17,15 @@ import com.example.misonglee.login_test.R;
 import com.example.misonglee.login_test.pClientMenu.Client_Menu_Fragment;
 import com.example.misonglee.login_test.pClientMenu.MenuData;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Client_Reservation_Fragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -26,14 +36,18 @@ public class Client_Reservation_Fragment extends Fragment {
     private Context context;
     private int resource;
     private View root_view;
-    private LinearLayout root_layout;
     private ArrayList<ReserveData> list_items;
-    private ArrayList<String> list_items_ends;
+    private ArrayList<ReserveEndData> list_items_ends;
     private int list_items_size;
     private int list_items_ends_size;
 
     private ListView reserve_list;
     private Client_Reservation_ListAdapter adapter;
+    private LinearLayout reserve_list_end_root;
+    private TextView reserve_show_year;
+    private TextView reserve_show_month;
+    private Button left_btn;
+    private Button right_btn;
 
     public Client_Reservation_Fragment() {
         Log.d("Client_Reservation", "Constructor - execute");
@@ -42,9 +56,9 @@ public class Client_Reservation_Fragment extends Fragment {
         list_items_size = 0;
         list_items_ends = null;
         list_items_ends_size = 0;
-        resource = R.layout.reserve_item;
-    }
+        resource = R.layout.reserve_item_finished;
 
+    }
 
     public static Client_Reservation_Fragment newInstance(int sectionNumber) {
         Log.d("Client_Reservation", "newInstance-Number : " + sectionNumber);
@@ -69,14 +83,88 @@ public class Client_Reservation_Fragment extends Fragment {
         asdf.add(a);
         asdf.add(b);
 
+        SetListData(asdf);
+
+        ArrayList<ReserveEndData> fdsa = new ArrayList<>();
+        ReserveEndData aa = new ReserveEndData("2017-03-21", 5, 1);
+        ReserveEndData bb = new ReserveEndData("2017-08-21", 4, 2);
+        ReserveEndData cc = new ReserveEndData("2016-03-21", 3, 3);
+        ReserveEndData dd = new ReserveEndData("2018-03-21", 2, 4);
+        ReserveEndData ee = new ReserveEndData("2018-03-25", 1, 5);
+        fdsa.add(aa);
+        fdsa.add(bb);
+        fdsa.add(cc);
+        fdsa.add(dd);
+        fdsa.add(ee);
+
+        SetListEndData(fdsa);
+
+        // 사용자의 전체 예약 정보 데이터 구분
+        for(int i = 0; i<fdsa.size(); i++)
+            parsing(list_items_ends.get(i));
+
         root_view = inflater.inflate(R.layout.user_fragment_reserve, container, false);
-        root_layout = (LinearLayout) root_view.findViewById(R.id.user_fragment_reserve_month_root);
+        reserve_list_end_root = (LinearLayout) root_view.findViewById(R.id.user_fragment_reserve_month_root);
         reserve_list = (ListView) root_view.findViewById(R.id.user_fragment_reserve_list);
-        adapter = new Client_Reservation_ListAdapter(asdf);
+        adapter = new Client_Reservation_ListAdapter(list_items);
         reserve_list.setAdapter(adapter);
         context = container.getContext();
+        reserve_show_year = (TextView) root_view.findViewById(R.id.user_fragment_reserve_show_year);
+        reserve_show_month = (TextView) root_view.findViewById(R.id.user_fragment_reserve_show_month);
+        left_btn = (Button) root_view.findViewById(R.id.user_fragment_reserve_left_btn);
+        right_btn = (Button) root_view.findViewById(R.id.user_fragment_reserve_right_btn);
 
-        //SetView();
+        left_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int year = Integer.valueOf(reserve_show_year.getText().toString());
+                int month = Integer.valueOf(reserve_show_month.getText().toString());
+
+                if(month - 1 == 0){
+                    year--;
+                    month = 12;
+                }else{
+                    month--;
+                }
+
+                reserve_show_year.setText(String.valueOf(year));
+                reserve_show_month.setText(String.format("%02d", month));
+
+                SetView(String.valueOf(year), String.format("%02d", month));
+            }
+        });
+        right_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int year = Integer.valueOf(reserve_show_year.getText().toString());
+                int month = Integer.valueOf(reserve_show_month.getText().toString());
+
+                if(month + 1 == 13){
+                    year++;
+                    month = 1;
+                }else{
+                    month++;
+                }
+
+                reserve_show_year.setText(String.valueOf(year));
+                reserve_show_month.setText(String.format("%02d", month));
+
+                SetView(String.valueOf(year), String.format("%02d", month));
+            }
+        });
+
+        // 현재 날짜 구하기.
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String getTime = sdf.format(date);
+        String[] values = getTime.split("-");
+        String year = values[0];
+        final String month = values[1];
+
+        reserve_show_year.setText(year);
+        reserve_show_month.setText(month);
+
+        SetView(year, month);
 
         return root_view;
     }
@@ -87,63 +175,48 @@ public class Client_Reservation_Fragment extends Fragment {
         list_items_size = data.size();
     }
 
-    public void SetListEndData(ArrayList<String> data) {
+    public void SetListEndData(ArrayList<ReserveEndData> data) {
         list_items_ends = data;
         list_items_ends_size = data.size();
     }
 
-    public void SetView(int Codenum) {
-        Log.d("Client_Notice_Fragment", "SetView-execute : " + Codenum );
+    public void SetView(String year, String month) {
+        Log.d("Client_Notice_Fragment", "SetView-execute");
+        Log.d("Client_Notice_Fragment", year + " " + month);
 
+        reserve_list_end_root.removeAllViews();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        for(int i = 0; i < list_items_size; i++){
-            View view = inflater.inflate(resource, root_layout, false);
+        for (int i = 0; i < list_items_ends_size; i++) {
+            Log.d("Client_Notice_Fragment", "ehfdkdkfkehfkefhk");
+            if(list_items_ends.get(i).year.equals(year) == true){
+                Log.d("Client_Notice_Fragment", "년도 같음");
+                if(list_items_ends.get(i).month.equals(month) == true){
+                    Log.d("Client_Notice_Fragment", "달도 같음");
+                    View view = inflater.inflate(resource, reserve_list_end_root, false);
 
-            TextView text;
+                    TextView date = (TextView) view.findViewById(R.id.reserve_item_finished_date);
+                    TextView menu = (TextView) view.findViewById(R.id.reserve_item_finished_menu);
+                    TextView count = (TextView) view.findViewById(R.id.reserve_item_finished_count);
+
+                    date.setText(list_items_ends.get(i).date);
+                    menu.setText(Integer.toString(list_items_ends.get(i).menuNum));
+                    count.setText(Integer.toString(list_items_ends.get(i).menuCount));
+
+                    reserve_list_end_root.addView(view);
+                }
+            }
         }
-/*        switch (Codenum){
-            // 공지사항 처리
-            case CODE_RESERVE_LIST:
-                for (int i = 0; i < list_items_size; i++) {
+    }
 
+    private void parsing(final ReserveEndData data) {
 
-                    TextView menu = (TextView) view.findViewById(R.id.Date);
-                    TextView title = (TextView) view.findViewById(R.id.Title);
-                    TextView message = (TextView) view.findViewById(R.id.Message);
-                    LinearLayout titlebar = (LinearLayout) view.findViewById(R.id.TitleBar);
-                    final LinearLayout messagebar = (LinearLayout) view.findViewById(R.id.MessageBar);
-
-                    date.setText(list_items.get(i).date);
-                    title.setText(list_items.get(i).title);
-                    message.setText(list_items.get(i).message);
-                    messagebar.setVisibility(View.GONE);
-                    titlebar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (messagebar.getVisibility() == View.GONE)
-                                messagebar.setVisibility(View.VISIBLE);
-                            else
-                                messagebar.setVisibility(View.GONE);
-                        }
-                    });
-
-                    root_layout.addView(view);
-                }
-                break;
-
-            // 이벤트 사항 처리
-            case CODE_RESERVE_TOTAL:
-                for (int i = 0; i < event_items_size; i++) {
-                    View view = inflater.inflate(resource_event, root_layout, false);
-
-                    TextView message = (TextView) view.findViewById(R.id.notice_event_message);
-
-                    message.setText(event_items.get(i).message);
-
-                    root_layout.addView(view);
-                }
-                break;
-        }*/
+        String date = data.date;
+        String[] values = date.split("-");
+        String year = values[0];
+        final String month = values[1];
+        Log.d("parsing", year + month);
+        data.year = year;
+        data.month = month;
     }
 }
