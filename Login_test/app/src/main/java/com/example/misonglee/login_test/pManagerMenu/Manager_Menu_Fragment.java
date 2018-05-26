@@ -143,7 +143,6 @@ public class Manager_Menu_Fragment extends Fragment {
 
             }
 
-
             name.setText(items.get(i).name);
             price.setText(items.get(i).price);
             discount_rate.setText(items.get(i).discount_rate);
