@@ -49,9 +49,6 @@ public class Write_Content_Dialog extends Dialog implements View.OnClickListener
             case R.id.write_cancle:
                 cancel();
                 break;
-            case R.id.write_save:
-                save_content();
-                break;
             case R.id.write_upload:
                 upload_content();
                 break;
@@ -66,24 +63,8 @@ public class Write_Content_Dialog extends Dialog implements View.OnClickListener
         //글 업로드
 
 
-    }
-
-
-    public void save_content(){
-        Log.d("Write_Content_Dialog", "save_content - execute");
-
-        /* 글 임시저장 구현 생각해보기
-
-
-        SharedPreferences save_content = getSharedPreferences("save_content", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor autoLogin_editor = save_content.edit();
-
-        //autoLogin_editor.putString("user", userID);
-        autoLogin_editor.putString("title", string_title);
-        autoLogin_editor.putString("content", string_content);
-        autoLogin_editor.commit();
-        */
 
     }
+
 
 }
