@@ -2,14 +2,17 @@
 
 URL: userJoin.midas
 파라미터: 아이디(userID), 비밀번호(userPassword), 생년월일(userBirthday), 이름(userName), 부서(userDepartment)
+예시: userJoin.midas?userID=USER&userPassword=USER&userBirthday=1996-12-22&userName=나동빈&userDepartment=개발부서
 결과 1. 로그인 성공: {"verify":"1"}
 결과 2. 아이디 중복: {"verify":"0"}
 결과 3. 아이디 및 비밀번호 공백 오류: {"verify":"-1"}
+참고: 생년월일은 반드시 XXXX-XX-XX 형식으로 보내주셔야 합니다.
 
 [ 회원 로그인 ]
 
 URL: userLogin.midas
 파라미터: 아이디(userID), 비밀번호(userPassword)
+예시: userLogin.midas?userID=USER&userPassword=USER
 결과 1. 로그인 성공: {"verify":"1","session":"고유 세션 값"}
 결과 2. 비밀번호 틀림: {"verify":"0","session":""}
 결과 3. 아이디 없음: {"verify":"-1","session":""}
@@ -20,6 +23,7 @@ URL: userLogin.midas
 
 URL: userPasswordChange.midas
 파라미터: 아이디(userID), 세션(session), 비밀번호(userPassword)
+예시: userPasswordChange.midas?userID=USER&session=7ff28a0a3936401621196778f65facca1d541d76219e4844cfac43d3a1fddaf8&userPassword=USER
 결과 1. 비밀번호 변경 성공: {"verify":"1"}
 결과 2. 세션 인증 실패: {"verify":"0"}
 결과 3. 데이터가 온전히 전달되지 않음: {"verify":"-1"}
@@ -28,6 +32,7 @@ URL: userPasswordChange.midas
 
 URL: userDelete.midas
 파라미터: 아이디(userID), 세션(session)
+예시: userDelete.midas?userID=USER&session=7ff28a0a3936401621196778f65facca1d541d76219e4844cfac43d3a1fddaf8
 결과 1. 회원 탈퇴 성공: {"verify":"1"}
 결과 2. 세션 인증 실패: {"verify":"0"}
 결과 3. 데이터가 온전히 전달되지 않음: {"verify":"-1"}
@@ -35,16 +40,19 @@ URL: userDelete.midas
 [ 회원 프로필 사진 수정 ]
 
 URL: userProfileUpdate.midas
-파라미터: 프로필 사진 파일
+파라미터: 아이디(userID), 세션(session), 프로필 사진 파일
+예시: userProfileUpdate.midas?userID=USER&session=7ff28a0a3936401621196778f65facca1d541d76219e4844cfac43d3a1fddaf8
 결과 1. 수정 성공: {"verify":"1"}
 결과 2. 업로드 실패: {"verify":"2"}
 결과 3. 세션 인증 실패: {"verify":"0"}
 결과 4. 데이터가 온전히 전달되지 않음: {"verify":"-1"}
+참고: 별도의 이미지 사진 파일을 함께 전송해야 합니다.
 
 [ 회원 프로필 사진 조회 ]
 
 URL: userProfileView.midas
 파라미터: 아아디(userID)
+예시: userProfileView.midas?userID=USER
 결과 1. 회원 프로필 사진 (이미지 파일)
 
 [ 공지사항 조회 ]
@@ -65,3 +73,28 @@ URL: noticeListView.midas
 		"noticeDate": "2018-05-26"
 	}, ...]
 }
+
+[ 공지사항 작성 ]
+
+URL: noticeWrite.midas
+파라미터: 회원 아이디(userID), 세션(session), 공지사항 제목(noticeTitle), 공지사항 내용(noticeContent)
+예시: noticeWrite.midas?userID=ADMIN&session=b15aa215a48e76d27425c5e5f8b6542f09fd74a4e1c76e19d56a2e1ae05f10c0&noticeTitle=제목&noticeContent=내용
+결과 1. 작성 성공: {"verify":"1"}
+결과 2. 권한 없음: {"verify":"-1"}
+
+[ 공지사항 삭제 ]
+
+URL: noticeDelete.midas
+파라미터: 회원 아이디(userID), 세션(session), 공지사항 번호(noticeID)
+예시: noticeDelete.midas?userID=ADMIN&session=b15aa215a48e76d27425c5e5f8b6542f09fd74a4e1c76e19d56a2e1ae05f10c0&noticeID=1
+결과 1. 작성 성공: {"verify":"1"}
+결과 2. 없는 게시글: {"verify":"0"}
+결과 3. 권한 없음: {"verify":"-1"}
+
+[ 공지사항 수정 ]
+
+URL: noticeUpdate.midas
+파라미터: 회원 아이디(userID), 세션(session), 공지사항 번호(noticeID), 공지사항 제목(noticeTitle), 공지사항 내용(noticeContent)
+예시: noticeUpdate.midas?userID=ADMIN&session=b15aa215a48e76d27425c5e5f8b6542f09fd74a4e1c76e19d56a2e1ae05f10c0&noticeID=1&noticeTitle=제목&noticeContent=내용
+결과 1. 작성 성공: {"verify":"1"}
+결과 2. 권한 없음: {"verify":"-1"}
