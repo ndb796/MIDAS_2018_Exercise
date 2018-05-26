@@ -3,6 +3,7 @@ package com.example.misonglee.login_test.pManagerNotice;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -115,6 +116,17 @@ public class Manager_Notice_Fragment extends Fragment {
         BackgroundTask_Event task2 = new BackgroundTask_Event();
         task2.execute();
 
+        // 글쓰기 버튼
+        FloatingActionButton write_button = (FloatingActionButton) root_view.findViewById(R.id.notice_write_button);
+        write_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //글쓰기 dialog
+                Write_Content_Dialog write_dialog = new Write_Content_Dialog(context, ((MainActivity_Manager)context).GetUserID(), ((MainActivity_Manager)context).GetUserPW());
+                write_dialog.show();
+            }
+        });
+
         return root_view;
     }
 
@@ -138,6 +150,7 @@ public class Manager_Notice_Fragment extends Fragment {
 
                     final String string_title = notice_items.get(i).title;
                     final String string_message = notice_items.get(i).message;
+                    final int int_id = notice_items.get(i).id;
 
 
                     date.setText(notice_items.get(i).date);
@@ -161,10 +174,10 @@ public class Manager_Notice_Fragment extends Fragment {
                             Log.d("Manager_Notice_Fragment", "button click -execute : " );
 
                             //글쓰기 dialog
-                            //Write_Content_Dialog write_dialog = new Write_Content_Dialog(context, ((MainActivity_Manager)context).GetUserID(), ((MainActivity_Manager)context).GetUserPW());
-                            //write_dialog.setContent(string_title, string_message, int_id);
-                            //write_dialog.show();
-                            
+                            Write_Content_Dialog write_dialog = new Write_Content_Dialog(context, ((MainActivity_Manager)context).GetUserID(), ((MainActivity_Manager)context).GetUserPW());
+                            write_dialog.setContent(string_title, string_message, int_id);
+                            write_dialog.show();
+
                         }
                     });
 
@@ -253,7 +266,7 @@ public class Manager_Notice_Fragment extends Fragment {
                     noticeContent = object.getString("noticeContent");
                     noticeDate = object.getString("noticeDate");
                     noticeID = object.getInt("noticeID");
-                    tmp.add(new NoticeData(noticeDate, noticeTitle, noticeContent));
+                    tmp.add(new NoticeData(noticeDate, noticeTitle, noticeContent, noticeID));
                     count++;
                 }
 

@@ -131,6 +131,7 @@ public class Notice_Fragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("list");
                 int count = 0;
+                int noticeID;
                 String noticeTitle, noticeContent, noticeDate;
                 ArrayList<NoticeData> tmp = new ArrayList<>();
 
@@ -139,7 +140,9 @@ public class Notice_Fragment extends Fragment {
                     noticeTitle = object.getString("noticeTitle");
                     noticeContent = object.getString("noticeContent");
                     noticeDate = object.getString("noticeDate");
-                    tmp.add(new NoticeData(noticeDate, noticeTitle, noticeContent));
+                    noticeID = object.getInt("noticeID");
+
+                    tmp.add(new NoticeData(noticeDate, noticeTitle, noticeContent, noticeID));
                     count++;
                 }
 

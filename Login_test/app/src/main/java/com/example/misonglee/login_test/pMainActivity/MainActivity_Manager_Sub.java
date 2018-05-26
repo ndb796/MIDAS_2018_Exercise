@@ -66,17 +66,6 @@ public class MainActivity_Manager_Sub extends AppCompatActivity {
 
         init();
 
-        // 글쓰기 버튼
-        FloatingActionButton write_button = (FloatingActionButton) findViewById(R.id.write_button);
-        write_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //글쓰기 dialog
-                Write_Content_Dialog write_dialog = new Write_Content_Dialog(MainActivity_Manager_Sub.this);
-                write_dialog.show();
-            }
-        });
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

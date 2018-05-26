@@ -57,6 +57,7 @@ public class MainActivity_Manager extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("MainActivity_Manager", "onCreate - execute");
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.manager_activity_main);
 
         // 로그인 시 전달 받은 세션 값도 함께 저장합니다.
@@ -66,16 +67,6 @@ public class MainActivity_Manager extends AppCompatActivity{
 
         init();
 
-        // 글쓰기 버튼
-        FloatingActionButton write_button = (FloatingActionButton) findViewById(R.id.write_button);
-        write_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //글쓰기 dialog
-                Write_Content_Dialog write_dialog = new Write_Content_Dialog(MainActivity_Manager.this);
-                write_dialog.show();
-            }
-        });
 
     }
 

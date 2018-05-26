@@ -2,21 +2,46 @@ package com.example.misonglee.login_test.pManagerMenu;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.misonglee.login_test.R;
+import com.example.misonglee.login_test.Write_Content_Dialog;
+import com.example.misonglee.login_test.Write_Menu_Dialog;
 import com.example.misonglee.login_test.pClientMenu.Client_Menu_Dialog;
+import com.example.misonglee.login_test.pMainActivity.MainActivity;
+import com.example.misonglee.login_test.pMainActivity.MainActivity_Manager;
+import com.example.misonglee.login_test.pNotice.NoticeData;
+import com.example.misonglee.login_test.pNotice.Notice_Fragment;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Manager_Menu_Fragment extends Fragment {
+
+    public static Manager_Menu_Fragment fragment = null;
+
+    // 이미지를 보여주는 서버 경로
+    String imageURL = MainActivity.URL + "upload/";
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -54,17 +79,11 @@ public class Manager_Menu_Fragment extends Fragment {
      * */
     public static Manager_Menu_Fragment newInstance(int sectionNumber) {
         Log.d("Manager_Menu_Fragment", "newInstance-Number : " + sectionNumber);
+        fragment = new Manager_Menu_Fragment();
 
-        Manager_Menu_Fragment fragment = new Manager_Menu_Fragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
-
-        // 임시로 지정
-        ArrayList<MenuData> tmp = new ArrayList<>();
-        tmp.add(new MenuData("아메리카노","1234", "10","[공지] 안녕하세요", "여기는 본문 내용입니다."));
-        tmp.add(new MenuData("자바칩 플랫치노", "4432", "15","[공지] 아아아아아", "여기는 본문 내용입니다."));
-        fragment.SetItems(tmp, tmp.size());
 
         return fragment;
     }
@@ -78,7 +97,19 @@ public class Manager_Menu_Fragment extends Fragment {
         root_layout = (LinearLayout) root_view.findViewById(R.id.manager_menu_root);
         context = container.getContext();
 
-        SetView();
+        BackgroundTask backgroundTask = new BackgroundTask();
+        backgroundTask.execute();
+
+        // 글쓰기 버튼
+        FloatingActionButton write_button = (FloatingActionButton) root_view.findViewById(R.id.menu_write_button);
+        write_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //글쓰기 dialog
+                Write_Menu_Dialog write_dialog = new Write_Menu_Dialog(context,((MainActivity_Manager)context).GetUserID(),((MainActivity_Manager)context).GetUserPW());
+                write_dialog.show();
+            }
+        });
 
         return root_view;
     }
@@ -96,9 +127,36 @@ public class Manager_Menu_Fragment extends Fragment {
             TextView discount_rate = (TextView) view.findViewById(R.id.contents_discount_rateMsg);
             TextView detail = (TextView) view.findViewById(R.id.contents_detailMsg);
             TextView picture = (TextView) view.findViewById(R.id.contents_pictureMsg);
-
-
+            final ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
             // final LinearLayout content_layout = (LinearLayout) view.findViewById(R.id.contents_item);
+
+            final int temp = i;
+
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        URL url = new URL(imageURL + items.get(temp).picture);
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setDoInput(true);
+                        conn.connect();
+
+                        InputStream is = conn.getInputStream();
+                        Bitmap bitmap = BitmapFactory.decodeStream(is);
+
+                        Bitmap bitmapCopy = Bitmap.createScaledBitmap(bitmap, 240, 200, true);
+                        imageView.setImageBitmap(bitmapCopy);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
+            try {
+                thread.join();
+            } catch (Exception e) {
+
+            }
 
             name.setText(items.get(i).name);
             price.setText(items.get(i).price);
@@ -129,4 +187,83 @@ public class Manager_Menu_Fragment extends Fragment {
             root_layout.addView(view);
         }
     }
+
+    class BackgroundTask extends AsyncTask<String, Void, String> {
+
+        String target;
+
+        // 전송할 데이터 및 서버의 URL을 사전에 정의합니다.
+        @Override
+        protected void onPreExecute() {
+            try {
+                target = MainActivity.URL + "menuListView.midas";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            Log.d("Raon","ChangeDB doInBackground");
+
+            // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
+            try{
+                // URL로 데이터를 전송합니다.
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                // 반환된 문자열을 읽어들입니다.
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                // 읽어들인 문자열을 반환합니다.
+                return stringBuilder.toString().trim();
+            } catch (Exception e){
+                Log.e("Raon", "Exception: " + e.getMessage());
+            }
+
+            return null;
+        }
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate();
+        }
+
+        // 문자열을 JSON 형태로 처리합니다.
+        @Override
+        public void onPostExecute(String result) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("list");
+                int count = 0;
+                String menuTitle, menuPrice, menuDiscount, menuInformation, menuProfile;
+                ArrayList<MenuData> tmp = new ArrayList<>();
+
+                while(count < jsonArray.length()) {
+                    JSONObject object = jsonArray.getJSONObject(count);
+
+                    menuTitle = object.getString("menuTitle");
+                    menuPrice = object.getString("menuPrice");
+                    menuInformation = object.getString("menuInformation");
+                    menuProfile = object.getString("menuProfile");
+
+                    // 임시로 지정
+                    tmp.add(new MenuData(menuTitle,menuPrice, "",menuInformation, menuProfile));
+                    count++;
+                }
+
+                fragment.SetItems(tmp, tmp.size());
+                SetView();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
