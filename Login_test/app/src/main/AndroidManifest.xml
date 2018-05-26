@@ -60,6 +60,10 @@
             android:label="Account Profile Update">
         </activity>
 
+        <activity android:name=".Write_Menu_Dialog"
+            android:label="Account Profile Update">
+        </activity>
+
     </application>
 
 </manifest>
