@@ -15,8 +15,15 @@
             android:id="@+id/usertext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:text="User Management" />
+
+        <Button
+            android:id="@+id/manage_user_adduser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ADD" />
 
     </LinearLayout>
 

@@ -43,7 +43,7 @@ public class Client_Menu_Fragment extends Fragment {
     public static Client_Menu_Fragment fragment = null;
 
     // 이미지를 보여주는 서버 경로
-    String imageURL = MainActivity.URL + "upload/";
+    String imageURL = MainActivity_User.URL + "upload/";
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -86,12 +86,6 @@ public class Client_Menu_Fragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
-
-        // 임시로 지정
-        ArrayList<MenuData> tmp = new ArrayList<>();
-        tmp.add(new MenuData("아메리카노","1234", "10","[공지] 안녕하세요", "여기는 본문 내용입니다.","11"));
-        tmp.add(new MenuData("자바칩 플랫치노", "4432", "15","[공지] 아아아아아", "여기는 본문 내용입니다.","12"));
-        fragment.SetItems(tmp, tmp.size());
 
         return fragment;
     }
@@ -190,7 +184,7 @@ public class Client_Menu_Fragment extends Fragment {
         @Override
         protected void onPreExecute() {
             try {
-                target = MainActivity.URL + "menuListView.midas?userID=" + MainActivity.GetUserID();
+                target = MainActivity_User.URL + "menuListView.midas?userID=" + MainActivity_User.GetUserID();
             } catch (Exception e) {
                 e.printStackTrace();
             }
