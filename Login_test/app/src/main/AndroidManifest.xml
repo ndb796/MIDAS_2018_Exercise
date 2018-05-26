@@ -32,8 +32,20 @@
             android:label="Register">
         </activity>
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".pMainActivity.MainActivity"
             android:label="Main">
+        </activity>
+
+        <activity android:name=".pMainActivity.MainActivity_User"
+            android:label="Main_User">
+        </activity>
+
+        <activity android:name=".pMainActivity.MainActivity_Manager"
+            android:label="Main_Manager">
+        </activity>
+
+        <activity android:name=".pMainActivity.MainActivity_Manager_Sub"
+            android:label="Main_Manager_Sub">
         </activity>
 
         <activity android:name=".Account_Management"

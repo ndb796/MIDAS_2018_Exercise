@@ -17,8 +17,9 @@ import android.widget.EditText;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.dd.processbutton.iml.ActionProcessButton;
-import com.example.misonglee.login_test.MainActivity;
+import com.example.misonglee.login_test.pMainActivity.MainActivity;
 import com.example.misonglee.login_test.R;
+import com.example.misonglee.login_test.pMainActivity.MainActivity_User;
 
 import org.json.JSONObject;
 
@@ -179,7 +180,7 @@ public class Login extends AppCompatActivity {
                     }
 
                     // 로그인 페이지로 이동합니다.
-                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    Intent intent = new Intent(Login.this, MainActivity_User.class);
                     // 메인 페이지로 넘어갈 때 아이디와 세션 정보를 저장합니다.
                     intent.putExtra("userID", user_id.getText().toString());
                     intent.putExtra("session", session);
