@@ -28,7 +28,9 @@ public class Client_Reservation_Fragment extends Fragment {
     private View root_view;
     private LinearLayout root_layout;
     private ArrayList<ReserveData> list_items;
+    private ArrayList<String> list_items_ends;
     private int list_items_size;
+    private int list_items_ends_size;
 
     private ListView reserve_list;
     private Client_Reservation_ListAdapter adapter;
@@ -38,6 +40,8 @@ public class Client_Reservation_Fragment extends Fragment {
 
         list_items = null;
         list_items_size = 0;
+        list_items_ends = null;
+        list_items_ends_size = 0;
         resource = R.layout.reserve_item;
     }
 
@@ -80,8 +84,12 @@ public class Client_Reservation_Fragment extends Fragment {
     // Reserve List를 보여주는 메뉴.
     public void SetListData(ArrayList<ReserveData> data) {
         list_items = data;
-        adapter = new Client_Reservation_ListAdapter(data);
-        reserve_list.setAdapter(adapter);
+        list_items_size = data.size();
+    }
+
+    public void SetListEndData(ArrayList<String> data) {
+        list_items_ends = data;
+        list_items_ends_size = data.size();
     }
 
     public void SetView(int Codenum) {
@@ -89,11 +97,16 @@ public class Client_Reservation_Fragment extends Fragment {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        for(int i = 0; i < list_items_size; i++){
+            View view = inflater.inflate(resource, root_layout, false);
+
+            TextView text;
+        }
 /*        switch (Codenum){
             // 공지사항 처리
             case CODE_RESERVE_LIST:
                 for (int i = 0; i < list_items_size; i++) {
-                    View view = inflater.inflate(resource, root_layout, false);
+
 
                     TextView menu = (TextView) view.findViewById(R.id.Date);
                     TextView title = (TextView) view.findViewById(R.id.Title);

@@ -55,9 +55,9 @@ public class Client_Reservation_ListAdapter extends BaseAdapter {
         TextView menu_count = (TextView) view.findViewById(R.id.reserve_item_menucount);
         TextView process = (TextView) view.findViewById(R.id.reserve_item_process);
 
-        menu.setText(items.get(position).menuNum);
-        menu_count.setText(items.get(position).menuCount);
-        process.setText(items.get(position).reservationProcess);
+        menu.setText(Integer.toString(items.get(position).menuNum));
+        menu_count.setText(Integer.toString(items.get(position).menuCount));
+        process.setText(Integer.toString(items.get(position).reservationProcess));
 
         return view;
     }
