@@ -1,7 +1,7 @@
 [ 회원 회원가입 ]
 
 URL: userJoin.midas
-파라미터: 아이디(userID), 비밀번호(userPassword)
+파라미터: 아이디(userID), 비밀번호(userPassword), 생년월일(userBirthday), 이름(userName), 부서(userDepartment)
 결과 1. 로그인 성공: {"verify":"1"}
 결과 2. 아이디 중복: {"verify":"0"}
 결과 3. 아이디 및 비밀번호 공백 오류: {"verify":"-1"}
@@ -31,6 +31,21 @@ URL: userDelete.midas
 결과 1. 회원 탈퇴 성공: {"verify":"1"}
 결과 2. 세션 인증 실패: {"verify":"0"}
 결과 3. 데이터가 온전히 전달되지 않음: {"verify":"-1"}
+
+[ 회원 프로필 사진 수정 ]
+
+URL: userProfileUpdate.midas
+파라미터: 프로필 사진 파일
+결과 1. 수정 성공: {"verify":"1"}
+결과 2. 업로드 실패: {"verify":"2"}
+결과 3. 세션 인증 실패: {"verify":"0"}
+결과 4. 데이터가 온전히 전달되지 않음: {"verify":"-1"}
+
+[ 회원 프로필 사진 조회 ]
+
+URL: userProfileView.midas
+파라미터: 아아디(userID)
+결과 1. 회원 프로필 사진 (이미지 파일)
 
 [ 공지사항 조회 ]
 
