@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.misonglee.login_test.R;
 import com.example.misonglee.login_test.SectionsPagerAdapter;
+import com.example.misonglee.login_test.SectionsPagerAdapter_Manager;
 import com.example.misonglee.login_test.Write_Content_Dialog;
 import com.example.misonglee.login_test.pContents.ContentsData;
 
@@ -48,16 +49,16 @@ public class MainActivity_Manager extends AppCompatActivity{
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private SectionsPagerAdapter sectionsPagerAdapter;
+    private SectionsPagerAdapter_Manager sectionsPagerAdapter;
     private LinearLayout detailcontents;
     private Button detailcontents_btn;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("MainActivity", "onCreate - execute");
+        Log.d("MainActivity_Manager", "onCreate - execute");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.manager_activity_main);
 
         // 로그인 시 전달 받은 세션 값도 함께 저장합니다.
         Intent intent = getIntent();
@@ -81,7 +82,7 @@ public class MainActivity_Manager extends AppCompatActivity{
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void init() {
-        Log.d("MainActivity", "init - execute");
+        Log.d("MainActivity_Manager", "init - execute");
 
         // toolbar 초기화
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -89,7 +90,7 @@ public class MainActivity_Manager extends AppCompatActivity{
         setSupportActionBar(toolbar);
 
         // viewpager와 FragmentAdapter 연결
-        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        sectionsPagerAdapter = new SectionsPagerAdapter_Manager(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(sectionsPagerAdapter);
 
@@ -102,16 +103,6 @@ public class MainActivity_Manager extends AppCompatActivity{
         // Handler 초기화
         messageHandler = new MessageHandler();
 
-        // datail page ID 초기화
-        detailcontents = (LinearLayout) findViewById(R.id.detailContents);
-        detailcontents_btn = (Button) findViewById(R.id.detailContents_btn);
-        detailcontents_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                detailcontents.setVisibility(View.GONE);
-            }
-        });
-
         initActionbar();
     }
 
@@ -119,7 +110,7 @@ public class MainActivity_Manager extends AppCompatActivity{
      * 세부사항은 values->strings, styles를 확인할 것!
      * */
     private void initActionbar() {
-        Log.d("MainActivity", "initActionbar - execute");
+        Log.d("MainActivity_Manager", "initActionbar - execute");
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -140,7 +131,7 @@ public class MainActivity_Manager extends AppCompatActivity{
      * 앱이 시작하면서 자동 실행
      * */
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d("MainActivity", "onCreateOptionsMenu - execute");
+        Log.d("MainActivity_Manager", "onCreateOptionsMenu - execute");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -149,7 +140,7 @@ public class MainActivity_Manager extends AppCompatActivity{
     /* 기본적으로 false반환. 제대로 실행이 되었다면, true를 반환해줘야 한다.*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("MainActivity", "onOptionsItemSelected - execute");
+        Log.d("MainActivity_Manager", "onOptionsItemSelected - execute");
 
         switch (item.getItemId()) {
             case R.id.item1:
@@ -172,7 +163,7 @@ public class MainActivity_Manager extends AppCompatActivity{
 
     /* 지금은 받아온 데이터로 처리하지만, 나중에는 data를 토대로 정보를 찾아 출력해주는 걸로 바꾸면 됩니다. */
     private void ShowDetailContents(ContentsData data) {
-        Log.d("MainActivity", "ShowDetailContents - execute");
+        Log.d("MainActivity_Manager", "ShowDetailContents - execute");
 
         TextView date = (TextView) findViewById(R.id.detailContents_date);
         TextView title = (TextView) findViewById(R.id.detailContents_title);

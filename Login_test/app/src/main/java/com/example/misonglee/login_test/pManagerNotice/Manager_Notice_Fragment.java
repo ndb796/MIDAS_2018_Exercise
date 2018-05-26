@@ -1,4 +1,4 @@
-package com.example.misonglee.login_test.pClientNotice;
+package com.example.misonglee.login_test.pManagerNotice;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -26,9 +26,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class Client_Notice_Fragment extends Fragment {
+public class Manager_Notice_Fragment extends Fragment {
 
-    public static Client_Notice_Fragment fragment = null;
+    public static Manager_Notice_Fragment fragment = null;
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     public static final int CODE_NOTICE = 1001;
@@ -45,8 +45,8 @@ public class Client_Notice_Fragment extends Fragment {
     private int notice_items_size;
     private int event_items_size;
 
-    public Client_Notice_Fragment() {
-        Log.d("Notice_Fragment", "Constructor - execute");
+    public Manager_Notice_Fragment() {
+        Log.d("Manager_Notice_Fragment", "Constructor - execute");
         notice_items = null;
         notice_items_size = 0;
         event_items = null;
@@ -63,14 +63,14 @@ public class Client_Notice_Fragment extends Fragment {
      * items_size : 데이터 사이즈.
      * */
     public void SetNoticeData(ArrayList<NoticeData> items, int items_size) {
-        Log.d("Notice_Fragment", "SetItems - size : " + items_size);
+        Log.d("Manager_Notice_Fragment", "SetItems - size : " + items_size);
 
         this.notice_items = items;
         this.notice_items_size = items_size;
     }
 
     public void SetEventData(ArrayList<EventData> items, int items_size) {
-        Log.d("Notice_Fragment", "SetItems - size : " + items_size);
+        Log.d("Manager_Notice_Fragment", "SetItems - size : " + items_size);
 
         this.event_items = items;
         this.event_items_size = items_size;
@@ -79,9 +79,9 @@ public class Client_Notice_Fragment extends Fragment {
     /*
      * 새로운 Fragment Instance 생성 후 반환
      * */
-    public static Client_Notice_Fragment newInstance(int sectionNumber) {
-        Log.d("Notice_Fragment", "newInstance-Number : "+sectionNumber);
-        fragment = new Client_Notice_Fragment();
+    public static Manager_Notice_Fragment newInstance(int sectionNumber) {
+        Log.d("Manager_Notice_Fragment", "newInstance-Number : "+sectionNumber);
+        fragment = new Manager_Notice_Fragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -102,8 +102,8 @@ public class Client_Notice_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.d("Notice_Fragment", "onCreateView-execute");
 
-        root_view = inflater.inflate(R.layout.user_fragment_notice, container, false);
-        root_layout = (LinearLayout) root_view.findViewById(R.id.user_notice_root);
+        root_view = inflater.inflate(R.layout.manager_fragment_notice, container, false);
+        root_layout = (LinearLayout) root_view.findViewById(R.id.manager_notice_root);
         context = container.getContext();
 
         BackgroundTask_Notice task = new BackgroundTask_Notice();
@@ -116,7 +116,7 @@ public class Client_Notice_Fragment extends Fragment {
     }
 
     public void SetView(int Codenum) {
-        Log.d("Client_Notice_Fragment", "SetView-execute : " + Codenum );
+        Log.d("Manager_Notice_Fragment", "SetView-execute : " + Codenum );
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 

@@ -19,6 +19,7 @@ import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.dd.processbutton.iml.ActionProcessButton;
 import com.example.misonglee.login_test.pMainActivity.MainActivity;
 import com.example.misonglee.login_test.R;
+import com.example.misonglee.login_test.pMainActivity.MainActivity_Manager;
 import com.example.misonglee.login_test.pMainActivity.MainActivity_User;
 
 import org.json.JSONObject;
@@ -165,6 +166,7 @@ public class Login extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(result);
                 String verify = jsonObject.getString("verify");
                 String session = jsonObject.getString("session");
+                int user_type = jsonObject.getInt("userType");
 
 
                 //자동 로그인 체크시
@@ -179,16 +181,29 @@ public class Login extends AppCompatActivity {
                 /*
                 * 서버 반환값에 따라 이동 Activity 달라짐~
                 * */
-
                 switch (verify){
-                    case "1":
-                        // 메인 페이지로 이동합니다.
-                        Intent intent = new Intent(Login.this, MainActivity.class);
-                        // 메인 페이지로 넘어갈 때 아이디와 세션 정보를 저장합니다.
-                        intent.putExtra("userID", user_id.getText().toString());
-                        intent.putExtra("session", session);
-                        startActivity(intent);
-                        break;
+                    case "1" :
+                            switch(user_type){
+                                case 0:
+                                    Log.d("Login", "유저가 접속합니다.");
+                                    // 메인 페이지로 이동합니다.
+                                    Intent intent_user = new Intent(Login.this, MainActivity_User.class);
+                                    // 메인 페이지로 넘어갈 때 아이디와 세션 정보를 저장합니다.
+                                    intent_user.putExtra("userID", user_id.getText().toString());
+                                    intent_user.putExtra("session", session);
+                                    startActivity(intent_user);
+                                    break;
+                                case 1:
+                                    Log.d("Login", "관리자가 접속합니다.");
+                                    // 메인 페이지로 이동합니다.
+                                    Intent intent_manager = new Intent(Login.this, MainActivity_Manager.class);
+                                    // 메인 페이지로 넘어갈 때 아이디와 세션 정보를 저장합니다.
+                                    intent_manager.putExtra("userID", user_id.getText().toString());
+                                    intent_manager.putExtra("session", session);
+                                    startActivity(intent_manager);
+                                    break;
+                            }
+                            break;
                     // 그 외에는 로그인 실패 알림창을 띄웁니다.
                     default:
                         failAlert();
@@ -200,33 +215,10 @@ public class Login extends AppCompatActivity {
         }
     }
 
-/*
-    public void successAlert(){
-        //회원가입 Alert
-        Log.d("Raon","Register Alert");
 
-        //회원가입 dialog
-        new AwesomeSuccessDialog(this)
-                .setTitle("로그인 성공")
-                .setMessage("로그인이 정상적으로 완료되었습니다.")
-                .setColoredCircle(R.color.dialogSuccessBackgroundColor)
-                .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
-                .setCancelable(true)
-                .setPositiveButtonText("확인")
-                .setPositiveButtonbackgroundColor(R.color.dialogSuccessBackgroundColor)
-                .setPositiveButtonTextColor(R.color.white)
-                .setPositiveButtonClick(new Closure() {
-                    @Override
-                    public void exec() {
-                        //click
-                    }
-                })
-                .show();
-    }
-*/
 
     public void failAlert() {
-        Log.d("Raon","login Alert");
+        Log.d("Login","failAlert execute");
 
         //dialog
         new AwesomeWarningDialog(this)

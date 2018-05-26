@@ -58,7 +58,7 @@ public class MainActivity_User extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("MainActivity_User", "onCreate - execute");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.user_activity_main);
 
         // 로그인 시 전달 받은 세션 값도 함께 저장합니다.
         Intent intent = getIntent();
@@ -102,16 +102,6 @@ public class MainActivity_User extends AppCompatActivity {
 
         // Handler 초기화
         messageHandler = new MessageHandler();
-
-        // datail page ID 초기화
-        detailcontents = (LinearLayout) findViewById(R.id.detailContents);
-        detailcontents_btn = (Button) findViewById(R.id.detailContents_btn);
-        detailcontents_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                detailcontents.setVisibility(View.GONE);
-            }
-        });
 
         initActionbar();
     }
