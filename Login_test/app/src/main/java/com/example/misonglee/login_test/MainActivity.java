@@ -30,9 +30,9 @@ import com.example.misonglee.login_test.pContents.ContentsData;
 public class MainActivity extends AppCompatActivity {
 
     /* 로컬 서버 */
-    public static String URL = "http://10.0.2.2:8080/MIDAS_Challenge_Application/";
+    //public static String URL = "http://10.0.2.2:8080/MIDAS_Challenge_Application/";
     /* 카페24 호스팅 서버(나동빈) */
-    // public static String URL = "http://www.dowellcomputer.com/MIDAS/";
+    public static String URL = "http://www.dowellcomputer.com/MIDAS/";
 
     /* 아이디와 세션 값은 서버와 통신할 때마다 파라미터로 보내줘야 합니다. */
     public static String userID;
