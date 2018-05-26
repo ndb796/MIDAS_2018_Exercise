@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -129,6 +130,7 @@ public class Manager_Notice_Fragment extends Fragment {
                     TextView date = (TextView) view.findViewById(R.id.Date);
                     TextView title = (TextView) view.findViewById(R.id.Title);
                     TextView message = (TextView) view.findViewById(R.id.Message);
+                    Button button = (Button) view.findViewById(R.id.notice_item_setting);
                     LinearLayout titlebar = (LinearLayout) view.findViewById(R.id.TitleBar);
                     final LinearLayout messagebar = (LinearLayout) view.findViewById(R.id.MessageBar);
 
@@ -143,6 +145,13 @@ public class Manager_Notice_Fragment extends Fragment {
                                 messagebar.setVisibility(View.VISIBLE);
                             else
                                 messagebar.setVisibility(View.GONE);
+                        }
+                    });
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // 공지사항 세팅 버튼 누르면 작업하는 곳.
+
                         }
                     });
 

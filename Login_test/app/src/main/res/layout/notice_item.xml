@@ -59,6 +59,13 @@
             android:layout_weight="4"
             android:text="Title" />
 
+        <Button
+            android:id="@+id/notice_item_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="setting" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
