@@ -209,7 +209,6 @@ public class Write_Menu_Dialog extends Dialog implements View.OnClickListener {
             }
         }
 
-
         @Override
         protected String doInBackground(String... strings) {
             Log.d("ModifyDB", "doInBackground - execute");
@@ -350,7 +349,7 @@ public class Write_Menu_Dialog extends Dialog implements View.OnClickListener {
     public void successAlert(String title, String message){
         Log.d("Write_Content_Dialog","successAlert execute");
 
-        //회원가입 dialog
+        //dialog
         new AwesomeSuccessDialog(context)
                 .setTitle(title)
                 .setMessage(message)

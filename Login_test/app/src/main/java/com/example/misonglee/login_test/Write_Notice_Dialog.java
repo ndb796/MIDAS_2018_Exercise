@@ -76,7 +76,6 @@ public class Write_Notice_Dialog extends Dialog implements View.OnClickListener 
         write_upload.setOnClickListener(this);
 
 
-
     }
 
     @Override

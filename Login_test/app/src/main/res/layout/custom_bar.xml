@@ -23,7 +23,8 @@
         android:textColor="#ffffff"
         android:background="@color/colorPrimaryDark"
         android:id="@+id/barText"
-        android:textSize="30dp"
+        android:autoSizeMaxTextSize="30dp"
+        android:autoSizeMinTextSize="10dp"
         android:textStyle="bold"/>
 
 </LinearLayout>

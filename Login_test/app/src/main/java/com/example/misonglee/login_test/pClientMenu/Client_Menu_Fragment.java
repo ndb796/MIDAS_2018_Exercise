@@ -21,6 +21,7 @@ import com.example.misonglee.login_test.R;
 import com.example.misonglee.login_test.pContents.ContentsData;
 import com.example.misonglee.login_test.pContents.Contents_Fragment;
 import com.example.misonglee.login_test.pMainActivity.MainActivity;
+import com.example.misonglee.login_test.pMainActivity.MainActivity_Manager;
 import com.example.misonglee.login_test.pMainActivity.MainActivity_User;
 import com.example.misonglee.login_test.pManagerMenu.Manager_Menu_Fragment;
 
@@ -35,6 +36,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import static com.example.misonglee.login_test.pMainActivity.MainActivity.CODE_SHOW_DETAIL_CONTENTS;
+import static com.example.misonglee.login_test.pMainActivity.MainActivity.userID;
 
 public class Client_Menu_Fragment extends Fragment {
 
@@ -87,8 +89,8 @@ public class Client_Menu_Fragment extends Fragment {
 
         // 임시로 지정
         ArrayList<MenuData> tmp = new ArrayList<>();
-        tmp.add(new MenuData("아메리카노","1234", "10","[공지] 안녕하세요", "여기는 본문 내용입니다."));
-        tmp.add(new MenuData("자바칩 플랫치노", "4432", "15","[공지] 아아아아아", "여기는 본문 내용입니다."));
+        tmp.add(new MenuData("아메리카노","1234", "10","[공지] 안녕하세요", "여기는 본문 내용입니다.","11"));
+        tmp.add(new MenuData("자바칩 플랫치노", "4432", "15","[공지] 아아아아아", "여기는 본문 내용입니다.","12"));
         fragment.SetItems(tmp, tmp.size());
 
         return fragment;
@@ -155,12 +157,14 @@ public class Client_Menu_Fragment extends Fragment {
             }
 
             // final LinearLayout content_layout = (LinearLayout) view.findViewById(R.id.contents_item);
-
             name.setText(items.get(i).name);
             price.setText(items.get(i).price);
             discount_rate.setText(items.get(i).discount_rate);
             detail.setText(items.get(i).detail);
             picture.setText(items.get(i).picture);
+
+            final String menuID = items.get(i).menuID;
+
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -168,16 +172,7 @@ public class Client_Menu_Fragment extends Fragment {
                     String name = ((TextView)v.findViewById(R.id.contents_nameMsg)).getText().toString();
                     String price = ((TextView)v.findViewById(R.id.contents_priceMsg)).getText().toString();
 
-                    final Client_Menu_Dialog client_menu_dialog = new Client_Menu_Dialog(context, name, price);
-                    client_menu_dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialogInterface) {
-                            String name = client_menu_dialog.getName();
-                            String price = client_menu_dialog.getResult();
-
-                            // name이랑 price를 가지고 서버로 데이터 전송하기.
-                        }
-                    });
+                    final Client_Menu_Dialog client_menu_dialog = new Client_Menu_Dialog(context, name, price, menuID,((MainActivity_User)context).GetUserID(),((MainActivity_User)context).GetUserPW());
                     client_menu_dialog.show();
                 }
             });
@@ -185,6 +180,7 @@ public class Client_Menu_Fragment extends Fragment {
             root_layout.addView(view);
         }
     }
+
 
     class BackgroundTask extends AsyncTask<String, Void, String> {
 
@@ -199,6 +195,7 @@ public class Client_Menu_Fragment extends Fragment {
                 e.printStackTrace();
             }
         }
+
 
         @Override
         protected String doInBackground(String... strings) {
@@ -240,7 +237,7 @@ public class Client_Menu_Fragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("list");
                 int count = 0;
-                String menuTitle, menuPrice, menuDiscount, menuInformation, menuProfile;
+                String menuTitle, menuPrice, menuDiscount, menuInformation, menuProfile, menuID;
                 ArrayList<MenuData> tmp = new ArrayList<>();
 
                 while(count < jsonArray.length()) {
@@ -250,9 +247,10 @@ public class Client_Menu_Fragment extends Fragment {
                     menuPrice = object.getString("menuPrice");
                     menuInformation = object.getString("menuInformation");
                     menuProfile = object.getString("menuProfile");
+                    menuID = object.getString("menuID");
 
                     // 임시로 지정
-                    tmp.add(new MenuData(menuTitle,menuPrice, "", menuInformation, menuProfile));
+                    tmp.add(new MenuData(menuTitle,menuPrice, "", menuInformation, menuProfile,menuID));
                     count++;
                 }
 
