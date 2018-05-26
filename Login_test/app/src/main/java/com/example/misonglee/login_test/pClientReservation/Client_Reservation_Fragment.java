@@ -59,8 +59,17 @@ public class Client_Reservation_Fragment extends Fragment {
 
         // 여기서 먼저 데이터를 다 받아올까...?
 
-        root_view = inflater.inflate(R.layout.user_fragment_menu, container, false);
+        ArrayList<ReserveData> asdf = new ArrayList<>();
+        ReserveData a = new ReserveData(1, 2, 2, "asdf");
+        ReserveData b = new ReserveData(2, 1, 2, "bbbb");
+        asdf.add(a);
+        asdf.add(b);
+
+        root_view = inflater.inflate(R.layout.user_fragment_reserve, container, false);
         root_layout = (LinearLayout) root_view.findViewById(R.id.user_fragment_reserve_month_root);
+        reserve_list = (ListView) root_view.findViewById(R.id.user_fragment_reserve_list);
+        adapter = new Client_Reservation_ListAdapter(asdf);
+        reserve_list.setAdapter(adapter);
         context = container.getContext();
 
         //SetView();
