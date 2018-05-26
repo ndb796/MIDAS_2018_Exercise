@@ -9,6 +9,7 @@ import com.example.misonglee.login_test.pClientMenu.Client_Menu_Fragment;
 import com.example.misonglee.login_test.pClientNotice.Client_Notice_Fragment;
 import com.example.misonglee.login_test.pManagerMenu.Manager_Menu_Fragment;
 import com.example.misonglee.login_test.pManagerNotice.Manager_Notice_Fragment;
+import com.example.misonglee.login_test.pManagerReservation.Manager_Reservation_Fragment;
 import com.example.misonglee.login_test.pNotice.Notice_Fragment;
 import com.example.misonglee.login_test.pSetting.Setting_Fragment;
 
@@ -32,15 +33,21 @@ public class SectionsPagerAdapter_Manager extends FragmentPagerAdapter{
                 return Manager_Menu_Fragment.newInstance(position);
 
             case 2:
-                return Setting_Fragment.newInstance(position);
+                return Manager_Reservation_Fragment.newInstance(position);
+
+            case 3:
+                return null;
+
+            case 4:
+                return null;
         }
         return Notice_Fragment.newInstance(position);
     }
 
     @Override
     public int getCount() {
-        // Show 3 total pages.
-        return 3;
+        // Show 5 total pages.
+        return 5;
     }
 
     /**

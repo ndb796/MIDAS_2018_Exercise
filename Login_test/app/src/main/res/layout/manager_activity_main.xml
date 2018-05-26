@@ -48,6 +48,23 @@
                 android:layout_height="wrap_content"
                 android:text="예약" />
 
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabManageUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="유저관리" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabManageManager"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="관리자관리" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabStatistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="통계" />
 
         </android.support.design.widget.TabLayout>
 

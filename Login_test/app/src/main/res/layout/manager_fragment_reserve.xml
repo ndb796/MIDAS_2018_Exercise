@@ -44,35 +44,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="월별 구매내역" />
+                android:text="판매 데이터" />
 
-            <Button
-                android:id="@+id/manager_fragment_reserve_left_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="left" />
-
-            <TextView
-                android:id="@+id/manager_fragment_reserve_show_year"
+            <EditText
+                android:id="@+id/manager_fragment_reserve_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/manager_fragment_reserve_show_month"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Month" />
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name" />
 
             <Button
-                android:id="@+id/manager_fragment_reserve_right_btn"
+                android:id="@+id/manager_fragment_reserve_search_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="right" />
+                android:text="Search" />
+
         </LinearLayout>
 
         <ScrollView
@@ -81,11 +70,10 @@
             android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/manager_fragment_reserve_search_root"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/manager_fragment_reserve_month_root"
-                />
+                android:orientation="vertical" />
         </ScrollView>
 
     </LinearLayout>

@@ -8,6 +8,7 @@ import android.util.Log;
 import com.example.misonglee.login_test.pClientMenu.Client_Menu_Fragment;
 import com.example.misonglee.login_test.pClientNotice.Client_Notice_Fragment;
 import com.example.misonglee.login_test.pClientReservation.Client_Reservation_Fragment;
+import com.example.misonglee.login_test.pClientSetting.Client_Setting_Fragment;
 import com.example.misonglee.login_test.pContents.Contents_Fragment;
 import com.example.misonglee.login_test.pNotice.Notice_Fragment;
 import com.example.misonglee.login_test.pSetting.Setting_Fragment;
@@ -35,15 +36,15 @@ public class SectionsPagerAdapter_Client extends FragmentPagerAdapter{
                 return Client_Reservation_Fragment.newInstance(position);
 
             case 3:
-                return Setting_Fragment.newInstance(position);
+                return Client_Setting_Fragment.newInstance(position);
         }
         return Notice_Fragment.newInstance(position);
     }
 
     @Override
     public int getCount() {
-        // Show 3 total pages.
-        return 3;
+        // Show 4 total pages.
+        return 4;
     }
 
     /**
