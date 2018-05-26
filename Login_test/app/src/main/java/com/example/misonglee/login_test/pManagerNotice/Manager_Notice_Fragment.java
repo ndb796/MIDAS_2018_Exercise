@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.misonglee.login_test.R;
+import com.example.misonglee.login_test.Write_Content_Dialog;
 import com.example.misonglee.login_test.pMainActivity.MainActivity;
+import com.example.misonglee.login_test.pMainActivity.MainActivity_Manager;
 import com.example.misonglee.login_test.pNotice.EventData;
 import com.example.misonglee.login_test.pNotice.NoticeData;
 
@@ -134,9 +136,14 @@ public class Manager_Notice_Fragment extends Fragment {
                     LinearLayout titlebar = (LinearLayout) view.findViewById(R.id.TitleBar);
                     final LinearLayout messagebar = (LinearLayout) view.findViewById(R.id.MessageBar);
 
+                    final String string_title = notice_items.get(i).title;
+                    final String string_message = notice_items.get(i).message;
+                    final int int_id = notice_items.get(i).id;
+
+
                     date.setText(notice_items.get(i).date);
-                    title.setText(notice_items.get(i).title);
-                    message.setText(notice_items.get(i).message);
+                    title.setText(string_title);
+                    message.setText(string_message);
                     messagebar.setVisibility(View.GONE);
                     titlebar.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -147,11 +154,18 @@ public class Manager_Notice_Fragment extends Fragment {
                                 messagebar.setVisibility(View.GONE);
                         }
                     });
+
                     button.setOnClickListener(new View.OnClickListener() {
+
                         @Override
                         public void onClick(View view) {
-                            // 공지사항 세팅 버튼 누르면 작업하는 곳.
+                            Log.d("Manager_Notice_Fragment", "button click -execute : " );
 
+                            //글쓰기 dialog
+                            Write_Content_Dialog write_dialog = new Write_Content_Dialog(context, ((MainActivity_Manager)context).GetUserID(), ((MainActivity_Manager)context).GetUserPW());
+                            write_dialog.setContent(string_title, string_message, int_id);
+                            write_dialog.show();
+                            
                         }
                     });
 
@@ -231,6 +245,7 @@ public class Manager_Notice_Fragment extends Fragment {
                 JSONArray jsonArray = jsonObject.getJSONArray("list");
                 int count = 0;
                 String noticeTitle, noticeContent, noticeDate;
+                int noticeID;
                 ArrayList<NoticeData> tmp = new ArrayList<>();
 
                 while(count < jsonArray.length()) {
@@ -238,7 +253,8 @@ public class Manager_Notice_Fragment extends Fragment {
                     noticeTitle = object.getString("noticeTitle");
                     noticeContent = object.getString("noticeContent");
                     noticeDate = object.getString("noticeDate");
-                    tmp.add(new NoticeData(noticeDate, noticeTitle, noticeContent));
+                    noticeID = object.getInt("noticeID");
+                    tmp.add(new NoticeData(noticeDate, noticeTitle, noticeContent, noticeID));
                     count++;
                 }
 
