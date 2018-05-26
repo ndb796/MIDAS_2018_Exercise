@@ -18,7 +18,9 @@ import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.example.misonglee.login_test.R;
+import com.example.misonglee.login_test.pClientReservation.ReserveData;
 import com.example.misonglee.login_test.pMainActivity.MainActivity;
+import com.example.misonglee.login_test.pMainActivity.MainActivity_User;
 
 import org.json.JSONObject;
 
@@ -110,8 +112,9 @@ public class Client_Menu_Dialog extends Dialog {
 
                 ReserveDB reserveDB = new ReserveDB();
                 reserveDB.execute();
+                //MainActivity_User.list_items.add(new ReserveData(menuID, menuCount, 0)))
                 //result = true;
-                //dismiss();
+                dismiss();
             }
         });
 
@@ -197,6 +200,7 @@ public class Client_Menu_Dialog extends Dialog {
                                 }
                             })
                             .show();
+                    MainActivity_User.sectionsPagerAdapter.notifyDataSetChanged();
                 }
                 else{
                     //실패 Alert

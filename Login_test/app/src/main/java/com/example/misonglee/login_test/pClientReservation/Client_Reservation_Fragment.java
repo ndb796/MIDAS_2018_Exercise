@@ -65,12 +65,15 @@ public class Client_Reservation_Fragment extends Fragment {
     private Button left_btn;
     private Button right_btn;
 
+    private String year;
+    private String month;
+
     public Client_Reservation_Fragment() {
         Log.d("Client_Reservation", "Constructor - execute");
 
         list_items = null;
         list_items_size = 0;
-        list_items_ends = null;
+        list_items_ends = new ArrayList<>();
         list_items_ends_size = 0;
         resource = R.layout.reserve_item_finished;
 
@@ -91,56 +94,19 @@ public class Client_Reservation_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.d("Client_Menu_Fragment", "onCreateView-execute");
 
-
-        // 여기서 먼저 데이터를 다 받아올까...?
-
-/*        ArrayList<ReserveData> asdf = new ArrayList<>();
-        ReserveData a = new ReserveData(1, 2, 2, "asdf");
-        ReserveData b = new ReserveData(2, 1, 2, "bbbb");
-        asdf.add(a);
-        asdf.add(b);
-
-        SetListData(asdf);*/
-
-
         //user의 예약 내용을 가져옴
         BackgroundTask_Reservation backgroundTask_reservation = new BackgroundTask_Reservation();
         backgroundTask_reservation.execute();
 
-
-
-/*        ArrayList<ReserveEndData> fdsa = new ArrayList<>();
-        ReserveEndData aa = new ReserveEndData("2017-03-21", 5, 1);
-        ReserveEndData bb = new ReserveEndData("2017-08-21", 4, 2);
-        ReserveEndData cc = new ReserveEndData("2016-03-21", 3, 3);
-        ReserveEndData dd = new ReserveEndData("2018-03-21", 2, 4);
-        ReserveEndData ee = new ReserveEndData("2018-03-25", 1, 5);
-        fdsa.add(aa);
-        fdsa.add(bb);
-        fdsa.add(cc);
-        fdsa.add(dd);
-        fdsa.add(ee);
-
-        SetListEndData(fdsa);*/
-
-
-
-        // 사용자의 전체 예약 정보 데이터 구분
-        for(int i = 0; i<list_items.size(); i++){
-            list_items_ends.add(new ReserveEndData(list_items.get(i).reservationDate, list_items.get(i).menuID, list_items.get(i).menuCount));
-            parsing(list_items_ends.get(i));
-        }
-
+        list_items = MainActivity_User.list_items;
+        context = container.getContext();
         root_view = inflater.inflate(R.layout.user_fragment_reserve, container, false);
         reserve_list_end_root = (LinearLayout) root_view.findViewById(R.id.user_fragment_reserve_month_root);
         reserve_list = (ListView) root_view.findViewById(R.id.user_fragment_reserve_list);
-        adapter = new Client_Reservation_ListAdapter(list_items);
-        reserve_list.setAdapter(adapter);
         reserve_show_year = (TextView) root_view.findViewById(R.id.user_fragment_reserve_show_year);
         reserve_show_month = (TextView) root_view.findViewById(R.id.user_fragment_reserve_show_month);
         left_btn = (Button) root_view.findViewById(R.id.user_fragment_reserve_left_btn);
         right_btn = (Button) root_view.findViewById(R.id.user_fragment_reserve_right_btn);
-
 
         left_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,16 +158,21 @@ public class Client_Reservation_Fragment extends Fragment {
         reserve_show_year.setText(year);
         reserve_show_month.setText(month);
 
-        SetView(year, month);
-
+        //SetView(year, month);
+        this.year = year;
+        this.month = month;
 
         return root_view;
     }
 
     // Reserve List를 보여주는 메뉴.
     public void SetListData(ArrayList<ReserveData> data) {
+        Log.d("asdfasdf", "setListData + " + data);
         list_items = data;
         list_items_size = data.size();
+        MainActivity_User.list_items = data;
+
+        SetView(year, month);
     }
 
     public void SetListEndData(ArrayList<ReserveEndData> data) {
@@ -209,18 +180,23 @@ public class Client_Reservation_Fragment extends Fragment {
         list_items_ends_size = data.size();
     }
 
-
-
-
     public void SetView(String year, String month) {
         Log.d("Client_Notice_Fragment", "SetView-execute");
         Log.d("Client_Notice_Fragment", year + " " + month);
 
+        // 사용자의 전체 예약 정보 데이터 구분
+        for(int i = 0; i<list_items.size(); i++){
+            list_items_ends.add(new ReserveEndData(list_items.get(i).reservationDate, list_items.get(i).menuID, list_items.get(i).menuCount));
+            parsing(list_items_ends.get(i));
+        }
+
         reserve_list_end_root.removeAllViews();
+        adapter = new Client_Reservation_ListAdapter(list_items);
+        reserve_list.setAdapter(adapter);
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        for (int i = 0; i < list_items_ends_size; i++) {
-            Log.d("Client_Notice_Fragment", "ehfdkdkfkehfkefhk");
+        for (int i = 0; i < list_items_size; i++) {
             if(list_items_ends.get(i).year.equals(year) == true){
                 Log.d("Client_Notice_Fragment", "년도 같음");
                 if(list_items_ends.get(i).month.equals(month) == true){
@@ -240,8 +216,6 @@ public class Client_Reservation_Fragment extends Fragment {
             }
         }
     }
-
-
 
     private void parsing(final ReserveEndData data) {
 

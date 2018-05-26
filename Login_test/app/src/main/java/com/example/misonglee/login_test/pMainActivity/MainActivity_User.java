@@ -23,9 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.misonglee.login_test.R;
+import com.example.misonglee.login_test.pClientReservation.ReserveData;
 import com.example.misonglee.login_test.pPagerAdapter.SectionsPagerAdapter_Client;
 import com.example.misonglee.login_test.Write_Notice_Dialog;
 import com.example.misonglee.login_test.pContents.ContentsData;
+
+import java.util.ArrayList;
 
 public class MainActivity_User extends AppCompatActivity {
 
@@ -48,9 +51,12 @@ public class MainActivity_User extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private SectionsPagerAdapter_Client sectionsPagerAdapter;
+    public static SectionsPagerAdapter_Client sectionsPagerAdapter;
     private LinearLayout detailcontents;
     private Button detailcontents_btn;
+
+    public String[] menu = {"아메리카노", "카페라때", "딸기스무디", "카라멜마끼아또", "리얼초코", "초코프라페", "그린티"};
+    public static ArrayList<ReserveData> list_items;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override

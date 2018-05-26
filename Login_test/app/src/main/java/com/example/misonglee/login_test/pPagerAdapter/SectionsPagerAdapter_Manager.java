@@ -1,12 +1,15 @@
 package com.example.misonglee.login_test.pPagerAdapter;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 import com.example.misonglee.login_test.pClientMenu.Client_Menu_Fragment;
 import com.example.misonglee.login_test.pClientNotice.Client_Notice_Fragment;
+import com.example.misonglee.login_test.pClientReservation.Client_Reservation_Fragment;
 import com.example.misonglee.login_test.pManagerManageSub.Manager_Manager_Sub_Fragment;
 import com.example.misonglee.login_test.pManagerManageUser.Manager_Manager_User_Fragment;
 import com.example.misonglee.login_test.pManagerMenu.Manager_Menu_Fragment;
@@ -15,7 +18,7 @@ import com.example.misonglee.login_test.pManagerReservation.Manager_Reservation_
 import com.example.misonglee.login_test.pNotice.Notice_Fragment;
 import com.example.misonglee.login_test.pSetting.Setting_Fragment;
 
-public class SectionsPagerAdapter_Manager extends FragmentPagerAdapter{
+public class SectionsPagerAdapter_Manager extends FragmentStatePagerAdapter {
 
     public SectionsPagerAdapter_Manager(FragmentManager fm) {
         super(fm);
@@ -67,4 +70,5 @@ public class SectionsPagerAdapter_Manager extends FragmentPagerAdapter{
         }
         return null;
     }
+
 }
