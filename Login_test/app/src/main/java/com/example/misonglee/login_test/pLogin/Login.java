@@ -168,7 +168,6 @@ public class Login extends AppCompatActivity {
                 String session = jsonObject.getString("session");
                 int user_type = jsonObject.getInt("userType");
 
-
                 //자동 로그인 체크시
                 if(auto_check.isChecked()) {
                     SharedPreferences autoLogin = getSharedPreferences("auto_login", Activity.MODE_PRIVATE);
@@ -181,6 +180,7 @@ public class Login extends AppCompatActivity {
                 /*
                 * 서버 반환값에 따라 이동 Activity 달라짐~
                 * */
+
                 switch (verify){
                     case "1" :
                             switch(user_type){
@@ -215,7 +215,30 @@ public class Login extends AppCompatActivity {
         }
     }
 
+/*
+    public void successAlert(){
+        //회원가입 Alert
+        Log.d("Raon","Register Alert");
 
+        //회원가입 dialog
+        new AwesomeSuccessDialog(this)
+                .setTitle("로그인 성공")
+                .setMessage("로그인이 정상적으로 완료되었습니다.")
+                .setColoredCircle(R.color.dialogSuccessBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                .setCancelable(true)
+                .setPositiveButtonText("확인")
+                .setPositiveButtonbackgroundColor(R.color.dialogSuccessBackgroundColor)
+                .setPositiveButtonTextColor(R.color.white)
+                .setPositiveButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        //click
+                    }
+                })
+                .show();
+    }
+*/
 
     public void failAlert() {
         Log.d("Login","failAlert execute");

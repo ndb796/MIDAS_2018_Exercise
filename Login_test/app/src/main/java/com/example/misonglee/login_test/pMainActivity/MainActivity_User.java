@@ -23,8 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.misonglee.login_test.R;
-import com.example.misonglee.login_test.SectionsPagerAdapter;
-import com.example.misonglee.login_test.SectionsPagerAdapter_Client;
+import com.example.misonglee.login_test.pPagerAdapter.SectionsPagerAdapter_Client;
 import com.example.misonglee.login_test.Write_Content_Dialog;
 import com.example.misonglee.login_test.pContents.ContentsData;
 
@@ -66,18 +65,6 @@ public class MainActivity_User extends AppCompatActivity {
         session = intent.getStringExtra("session");
 
         init();
-
-        // 글쓰기 버튼
-        FloatingActionButton write_button = (FloatingActionButton) findViewById(R.id.write_button);
-        write_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //글쓰기 dialog
-                Write_Content_Dialog write_dialog = new Write_Content_Dialog(MainActivity_User.this);
-                write_dialog.show();
-            }
-        });
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

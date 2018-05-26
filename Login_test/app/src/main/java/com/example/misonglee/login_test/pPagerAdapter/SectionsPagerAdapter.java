@@ -1,4 +1,4 @@
-package com.example.misonglee.login_test;
+package com.example.misonglee.login_test.pPagerAdapter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
