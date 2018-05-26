@@ -1,5 +1,6 @@
 package com.example.misonglee.login_test.pMainActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -70,6 +71,7 @@ public class MainActivity_Manager extends AppCompatActivity{
 
     }
 
+    @SuppressLint("ResourceAsColor")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void init() {
         Log.d("MainActivity_Manager", "init - execute");
@@ -103,9 +105,11 @@ public class MainActivity_Manager extends AppCompatActivity{
         Log.d("MainActivity_Manager", "initActionbar - execute");
 
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(R.layout.custom_bar);
 
-        actionBar.setTitle("MIDAS_3조");
-        actionBar.setIcon(R.mipmap.ic_launcher);
+        //actionBar.setTitle("MIDAS_3조");
+        //actionBar.setIcon(R.mipmap.ic_launcher);
 
         // 앱의 왼쪽 위, 홈버튼을 사용하려면 활성화ㄱㄱ
         /*actionBar.setHomeAsUpIndicator(R.mipmap.ic_launcher);

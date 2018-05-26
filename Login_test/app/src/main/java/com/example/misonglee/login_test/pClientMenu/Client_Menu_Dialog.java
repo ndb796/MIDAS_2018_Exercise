@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 
 import com.example.misonglee.login_test.R;
 
-import org.w3c.dom.Text;
 
 public class Client_Menu_Dialog extends Dialog {
 
@@ -30,6 +30,7 @@ public class Client_Menu_Dialog extends Dialog {
     private Button cancel_btn;
 
     public Client_Menu_Dialog(@NonNull Context context, String name, String price) {
+
         super(context);
 
         this.name = name;

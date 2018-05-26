@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimaryDark">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorPrimaryDark"
         android:layout_marginLeft="10dp"
         android:src="@drawable/ic_cafe"
         >
@@ -21,7 +21,7 @@
         android:layout_gravity="center"
         android:text="MIDAS CAFE"
         android:textColor="#ffffff"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorPrimaryDark"
         android:id="@+id/barText"
         android:textSize="30dp"
         android:textStyle="bold"/>

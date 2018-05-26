@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.dd.processbutton.iml.ActionProcessButton;
 import com.example.misonglee.login_test.R;
 
 public class Manager_Menu_Dialog extends Dialog {
@@ -24,11 +26,13 @@ public class Manager_Menu_Dialog extends Dialog {
     private Spinner spinner;
     private ArrayAdapter<Integer> adapter;
     private TextView price_result;
-    private Button okay_btn;
-    private Button cancel_btn;
+    private TextView barText;
+    private ActionProcessButton okay_btn;
+    private ActionProcessButton cancel_btn;
 
     public Manager_Menu_Dialog(@NonNull Context context, String name, String price) {
-        super(context);
+
+        super(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
 
         this.name = name;
         this.price = price;
@@ -39,19 +43,26 @@ public class Manager_Menu_Dialog extends Dialog {
         adapter = new ArrayAdapter<Integer>(context, android.R.layout.simple_spinner_item, item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        setTitle(name);
+
+        //no Action bar로 만들것
+        //setTitle(name);
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("Manager_Menu_Dialog", "onCreate - execute");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manager_menu_dialog);
 
+
         spinner = (Spinner) findViewById(R.id.manager_dialog_spinner);
         price_result = (TextView) findViewById(R.id.manager_menu_dialog_priceresult);
-        okay_btn = (Button) findViewById(R.id.manager_menu_dialog_btn_okay);
-        cancel_btn = (Button) findViewById(R.id.manager_menu_dialog_btn_cancel);
+        okay_btn = (ActionProcessButton) findViewById(R.id.manager_menu_dialog_btn_okay);
+        cancel_btn = (ActionProcessButton) findViewById(R.id.manager_menu_dialog_btn_cancel);
+        barText = (TextView)findViewById(R.id.barText);
+        barText.setText(name + "주문");
 
         Log.d("asdfasdf", "asdfasdf" + price + "asdfasdf" + price_result);
 
