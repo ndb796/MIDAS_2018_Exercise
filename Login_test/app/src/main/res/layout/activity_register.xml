@@ -31,10 +31,18 @@
         android:layout_weight="0.6"
         android:layout_gravity="center"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ID와 PW를 등록해주세요"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         >
 
         <AutoCompleteTextView
@@ -67,19 +75,82 @@
 
     </android.support.design.widget.TextInputLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:text="사용자 정보를 입력해 주세요"/>
 
-    <com.dd.processbutton.iml.ActionProcessButton
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/register_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="이름을 입력해주세요"
+                android:imeActionId="6"
+                android:imeActionLabel="sign in"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/register_depart"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            >
+        </android.support.v7.widget.AppCompatSpinner>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/outputDate"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="0.8"
+                android:textSize="20dp"
+                android:text="생년월일을 입력하세요."/>
+
+            <Button
+                android:onClick="InputDate"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:background="@color/colorPrimary"
+                android:text="날짜 선택"
+                android:textColor="#FFFFFF"
+                android:textSize="20dp"/>
+
+        </LinearLayout>
+
+        <com.dd.processbutton.iml.ActionProcessButton
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="Register"
+            android:layout_marginTop="80dp"
+            android:text="Register"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         custom:pb_colorNormal="@color/colorPrimary"
         custom:pb_colorPressed="@color/colorPrimaryDark"
         />
+
     </LinearLayout>
 
         <LinearLayout

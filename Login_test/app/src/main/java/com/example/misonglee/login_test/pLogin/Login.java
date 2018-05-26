@@ -127,7 +127,7 @@ public class Login extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            Log.d("Raon","Register doInBackground");
+            Log.d("CheckFromDB","doInBackground execute");
 
             // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
             try{
@@ -165,31 +165,35 @@ public class Login extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(result);
                 String verify = jsonObject.getString("verify");
                 String session = jsonObject.getString("session");
-                // 서버로부터 반환 된 값이 1이면 로그인 성공입니다.
-                if(verify.equals("1")) {
-                    // 성공 알림창을 띄웁니다.
-                    //successAlert();
 
-                    //자동 로그인 체크시
-                    if(auto_check.isChecked()) {
-                        SharedPreferences autoLogin = getSharedPreferences("auto_login", Activity.MODE_PRIVATE);
-                        SharedPreferences.Editor autoLogin_editor = autoLogin.edit();
-                        autoLogin_editor.putString("user_id", string_id);
-                        autoLogin_editor.putString("user_pw", string_pw);
-                        autoLogin_editor.commit();
-                    }
 
-                    // 로그인 페이지로 이동합니다.
-                    Intent intent = new Intent(Login.this, MainActivity_User.class);
-                    // 메인 페이지로 넘어갈 때 아이디와 세션 정보를 저장합니다.
-                    intent.putExtra("userID", user_id.getText().toString());
-                    intent.putExtra("session", session);
-                    startActivity(intent);
+                //자동 로그인 체크시
+                if(auto_check.isChecked()) {
+                    SharedPreferences autoLogin = getSharedPreferences("auto_login", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor autoLogin_editor = autoLogin.edit();
+                    autoLogin_editor.putString("user_id", string_id);
+                    autoLogin_editor.putString("user_pw", string_pw);
+                    autoLogin_editor.commit();
                 }
-                // 그 외에는 로그인 실패 알림창을 띄웁니다.
-                else {
-                    failAlert();
+
+                /*
+                * 서버 반환값에 따라 이동 Activity 달라짐~
+                * */
+
+                switch (verify){
+                    case "1":
+                        // 메인 페이지로 이동합니다.
+                        Intent intent = new Intent(Login.this, MainActivity.class);
+                        // 메인 페이지로 넘어갈 때 아이디와 세션 정보를 저장합니다.
+                        intent.putExtra("userID", user_id.getText().toString());
+                        intent.putExtra("session", session);
+                        startActivity(intent);
+                        break;
+                    // 그 외에는 로그인 실패 알림창을 띄웁니다.
+                    default:
+                        failAlert();
                 }
+
             } catch(Exception e) {
                 e.printStackTrace();
             }

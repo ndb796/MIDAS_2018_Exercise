@@ -1,13 +1,20 @@
 package com.example.misonglee.login_test.pLogin;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
@@ -29,9 +36,16 @@ public class Register extends AppCompatActivity{
 
     private AutoCompleteTextView register_id;
     private EditText register_pw;
+    private EditText register_name;
+
+    private TextView outputDate;
 
     private String string_id;
     private String string_pw;
+    private String register_depart;
+    private String register_birthday;
+
+    private int register_year, register_month, register_day;
 
 
     @Override
@@ -39,11 +53,30 @@ public class Register extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
         register_id = (AutoCompleteTextView) findViewById(R.id.register_id);
         register_pw = (EditText) findViewById(R.id.register_pw);
+        outputDate = (TextView)findViewById(R.id.outputDate);
+        register_name = (EditText) findViewById(R.id.register_name);
 
         final ActionProcessButton btnRegister = (ActionProcessButton) findViewById(R.id.btnRegister);
+        final Spinner spinner_depart = (Spinner) findViewById(R.id.register_depart);
+        final String [] depart = {"개발부서", "영업부서","인사부서"};
+
+        //부서 보여주기
+        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, depart);
+        spinner_depart.setAdapter(adapter);
+        spinner_depart.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                register_depart = (String)depart[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         btnRegister.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -52,6 +85,25 @@ public class Register extends AppCompatActivity{
             }
         });
 
+    }
+
+
+    public void InputDate(View view){
+        //날짜 선택하기
+        final String[] string_year = new String[1];
+        DatePickerDialog dialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        register_year = year;
+                        register_month = month+1;
+                        register_day = day;
+
+                        register_birthday = String.format("%d-%02d-%02d",register_year, register_month, register_day);
+                        outputDate.setText(register_birthday);
+
+                    }
+                } , 2000, 1, 1);
+        dialog.show();
     }
 
     private void user_Register(){
@@ -82,10 +134,12 @@ public class Register extends AppCompatActivity{
         // 전송할 데이터 및 서버의 URL을 사전에 정의합니다.
         @Override
         protected void onPreExecute() {
+
             String string_id = register_id.getText().toString();
             String string_pw = register_pw.getText().toString();
+
             try {
-                target = MainActivity.URL + "userJoin.midas?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8");
+                target = MainActivity.URL + "userJoin.midas?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8") + "&userName=" + URLEncoder.encode(register_name.getText().toString(), "UTF-8") + "&userBirthday=" + URLEncoder.encode(register_birthday, "UTF-8") + "&userDepartment=" +  URLEncoder.encode(register_depart, "UTF-8");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -93,7 +147,7 @@ public class Register extends AppCompatActivity{
 
         @Override
         protected String doInBackground(String... strings) {
-            Log.d("Raon","Register doInBackground");
+            Log.d("RegisterDB","doInBackground execute");
 
             // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
             try{
@@ -114,7 +168,7 @@ public class Register extends AppCompatActivity{
                 // 읽어들인 문자열을 반환합니다.
                 return stringBuilder.toString().trim();
             } catch (Exception e){
-                Log.e("Raon", "Exception: " + e.getMessage());
+                Log.e("RegisterDB", "Exception: " + e.getMessage());
             }
             return null;
         }
@@ -134,7 +188,6 @@ public class Register extends AppCompatActivity{
                 if(verify.equals("1")) {
                     // 성공 알림창을 띄우고 로그인 페이지로 이동.
                     successAlert();
-
                 }
                 // 그 외에는 이미 존재하는 아이디로 처리합니다.
                 else {
@@ -148,7 +201,7 @@ public class Register extends AppCompatActivity{
 
     public void successAlert(){
         //회원가입 Alert
-        Log.d("Raon","Register Alert");
+        Log.d("Register","Register Alert execute");
 
         //회원가입 dialog
         new AwesomeSuccessDialog(this)
@@ -171,9 +224,8 @@ public class Register extends AppCompatActivity{
                 .show();
     }
 
-
     public void failAlert() {
-        Log.d("Raon","login Alert");
+        Log.d("Register","login Alert execute");
 
         //dialog
         new AwesomeWarningDialog(this)
@@ -191,7 +243,6 @@ public class Register extends AppCompatActivity{
                     }
                 })
                 .show();
-
     }
 
 }
