@@ -72,7 +72,7 @@ public class MainActivity_Manager extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 //글쓰기 dialog
-                Write_Content_Dialog write_dialog = new Write_Content_Dialog(MainActivity_Manager.this);
+                Write_Content_Dialog write_dialog = new Write_Content_Dialog(MainActivity_Manager.this, userID, session);
                 write_dialog.show();
             }
         });

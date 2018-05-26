@@ -165,7 +165,7 @@ public class Manager_Notice_Fragment extends Fragment {
                             Write_Content_Dialog write_dialog = new Write_Content_Dialog(context, ((MainActivity_Manager)context).GetUserID(), ((MainActivity_Manager)context).GetUserPW());
                             write_dialog.setContent(string_title, string_message, int_id);
                             write_dialog.show();
-                            
+
                         }
                     });
 
