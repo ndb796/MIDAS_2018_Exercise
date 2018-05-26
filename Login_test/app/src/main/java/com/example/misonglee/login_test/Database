@@ -1,0 +1,138 @@
+DROP DATABASE IF EXISTS MIDAS; # 데이터베이스 삭제하여 초기화 처리하기
+CREATE DATABASE MIDAS; # 데이터베이스 생성하기
+USE MIDAS; # 데이터베이스에 접속하기
+
+DROP TABLE IF EXISTS MIDAS_USER;
+CREATE TABLE MIDAS_USER (
+	userID VARCHAR(30) NOT NULL, # 사용자 아이디
+	userPassword VARCHAR(64), # 사용자 비밀번호
+	userProfile VARCHAR(2048), # 사용자 프로필 이미지 경로 (현재 사용되지 않음)
+	userBirthday DATETIME, # 사용자 생년월일
+	userName VARCHAR(30), # 사용자 이름
+	userDepartment VARCHAR(30), # 사용자 부서 ("개발부서", "영업부서", "인사부서")
+	userType INT, # 사용자 타입 (0: 회원, 1: 총 관리자, 2: 서브 관리자)
+	PRIMARY KEY (userID)
+) ENGINE = InnoDB;
+
+DROP TABLE IF EXISTS MIDAS_NOTICE;
+CREATE TABLE MIDAS_NOTICE (
+	noticeID INT NOT NULL, # 공지사항 번호
+	noticeTitle VARCHAR(256), # 공지사항 제목
+	noticeContent VARCHAR(2048), # 공지사항 내용
+	noticeDate DATETIME, # 공지사항 날짜
+	PRIMARY KEY (noticeID)
+) ENGINE = InnoDB;
+
+DROP TABLE IF EXISTS MIDAS_MENU;
+CREATE TABLE MIDAS_MENU (
+	menuID INT NOT NULL, # 메뉴 번호
+	menuTitle VARCHAR(2048), # 메뉴 제목
+	menuInformation VARCHAR(2048), # 메뉴 내용
+	menuProfile VARCHAR(2048), # 메뉴 프로필 이미지 경로
+	menuPrice INT, # 메뉴 가격
+	PRIMARY KEY (menuID)
+) ENGINE = InnoDB;
+
+DROP TABLE IF EXISTS MIDAS_EVENT;
+CREATE TABLE MIDAS_EVENT (
+	eventID INT NOT NULL, # 이벤트 번호
+	menuID INT, # 메뉴 번호 (-1: 전체 메뉴, 나머지: 해당 메뉴)
+	eventTitle VARCHAR(256), # 이벤트 제목
+	eventType INT, # 이벤트 대상 (0: 전체 회원, 1: 생일인 회원, 2: 개발 부서 전체, 3: 인사 부서 전체, 4: 영업 부서 전체)
+	eventDiscount INT, # 할인율
+	eventStartDate DATETIME, # 이벤트 시작 날짜
+	eventEndDate DATETIME, # 이벤트 종료 날짜
+	PRIMARY KEY (eventID)
+) ENGINE = InnoDB;
+
+DROP TABLE IF EXISTS MIDAS_RESERVATION;
+CREATE TABLE MIDAS_RESERVATION (
+	reservationID INT NOT NULL, # 예약 번호
+	userID VARCHAR(30), # 회원 아이디
+	menuID INT, # 메뉴 번호
+	menuCount INT, # 메뉴 개수
+	totalPrice INT, # 총 금액
+	reservationProcess INT, # 예약 처리 현황 (0: 접수, 1: 제작중, 2: 제작완료, 3: 테이크 아웃)
+	reservationDate DATETIME, # 예약 주문 시간
+	PRIMARY KEY (reservationID)
+) ENGINE = InnoDB;
+
+DROP TABLE IF EXISTS MIDAS_LOG;
+CREATE TABLE MIDAS_LOG (
+	logID INT NOT NULL, # 로그 번호
+	userID VARCHAR(30), # 회원 아이디
+	logType VARCHAR(128), # 로그 타입
+	logContent VARCHAR(2048), # 로그 내용
+	PRIMARY KEY (logID)
+) ENGINE = InnoDB;
+
+# 덤프 데이터: 총 관리자 1명
+INSERT INTO MIDAS_USER VALUES ('ADMIN', '123123', NULL, '1990-12-05', '박남정', '개발부서', 1);
+
+# 덤프 데이터: 서브 관리자 3명
+INSERT INTO MIDAS_USER VALUES ('SUB1', '123123', NULL, '1996-05-27', '홍길동', '개발부서', 2);
+INSERT INTO MIDAS_USER VALUES ('SUB2', '123123', NULL, '1996-03-08', '이순신', '영업부서', 2);
+INSERT INTO MIDAS_USER VALUES ('SUB3', '123123', NULL, '1992-05-22', '유성룡', '인사부서', 2);
+
+# 덤프 데이터: 회원 20명
+INSERT INTO MIDAS_USER VALUES ('USER1', '123123', NULL, '1993-06-30', '유관순', '인사부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER2', '123123', NULL, '1994-03-20', '김성호', '개발부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER3', '123123', NULL, '1995-04-28', '김성명', '영업부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER4', '123123', NULL, '1996-05-30', '황지훈', '개발부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER5', '123123', NULL, '1993-05-25', '장승훈', '영업부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER6', '123123', NULL, '1995-05-27', '이태일', '개발부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER7', '123123', NULL, '1990-02-10', '서광민', '인사부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER8', '123123', NULL, '1980-05-30', '정승환', '개발부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER9', '123123', NULL, '1973-07-30', '정회진', '인사부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER10', '123123', NULL, '1976-11-20', '김유별', '개발부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER11', '123123', NULL, '1984-10-24', '김가은', '인사부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER12', '123123', NULL, '1980-09-25', '김민성', '인사부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER13', '123123', NULL, '1993-08-02', '김국진', '영업부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER14', '123123', NULL, '1992-05-05', '김광국', '개발부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER15', '123123', NULL, '1991-04-20', '나동빈', '영업부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER16', '123123', NULL, '1998-08-12', '나상현', '인사부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER17', '123123', NULL, '1993-02-15', '민아린', '개발부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER18', '123123', NULL, '1992-01-20', '소지섭', '인사부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER19', '123123', NULL, '1991-04-13', '박태환', '인사부서', 0);
+INSERT INTO MIDAS_USER VALUES ('USER20', '123123', NULL, '1994-05-23', '김연아', '개발부서', 0);
+
+# 덤프 데이터: 공지사항 4개
+INSERT INTO MIDAS_NOTICE VALUES ('1', '[공지] 안녕하세요, 환영합니다.', '접속을 환영합니다. 본 어플리케이션은 MIDAS 사원을 위한 무료 어플리케이션이며 누구든지 자유롭게 이용하실 수 있습니다.', '2018-05-02');
+INSERT INTO MIDAS_NOTICE VALUES ('2', '[공지] 새로운 관리자를 선출합니다.', '서비스 운영에 도움을 줄 수 있는 관리자를 선출합니다. 관리자 역할을 성실히 수행하실 수 있는 분들은 많은 지원 부탁드립니다.', '2018-05-25');
+INSERT INTO MIDAS_NOTICE VALUES ('3', '[이벤트] 6월부터  9월까지 아메리카노 30% 할인 이벤트!', '6월부터 MIDAS 사원들을 위해 아메리카노 30% 할인 이벤트를 진행합니다.', '2018-05-26');
+INSERT INTO MIDAS_NOTICE VALUES ('4', '[이벤트] 7월은 개발부서를 위한 전체 메뉴 20% 할인 이벤트!', '7월은 개발부서에게 전체 메뉴가 20% 할인이 적용되어 제공됩니다. 많은 예약 주문을 기대합니다.', '2018-05-27');
+
+# 덤프 데이터: 메뉴 7개
+INSERT INTO MIDAS_MENU VALUES ('1', '아메리카노', '아메리카노 메뉴입니다.', '1.png', '3200');
+INSERT INTO MIDAS_MENU VALUES ('2', '카페라떼', '카페라떼 메뉴입니다.', '2.png', '3800');
+INSERT INTO MIDAS_MENU VALUES ('3', '딸기 스무디', '딸기 스무디 메뉴입니다.', '3.png', '4500');
+INSERT INTO MIDAS_MENU VALUES ('4', '카라멜 마끼야또', '카라멜 마끼야또 메뉴입니다.', '4.png', '3800');
+INSERT INTO MIDAS_MENU VALUES ('5', '리얼 초코', '리얼 초코 메뉴입니다', '5.png', '3900');
+INSERT INTO MIDAS_MENU VALUES ('6', '초코 프라페', '초코 프라페 메뉴입니다.', '6.jpg', '4400');
+INSERT INTO MIDAS_MENU VALUES ('7', '그린티', '그린티 메뉴입니다.', '7.png', '3750');
+
+# 덤프 데이터: 이벤트 4개
+INSERT INTO MIDAS_EVENT VALUES ('1', '1', '[이벤트] 6월부터  9월까지 아메리카노 30% 할인 이벤트!', '0', '30', '2018-06-01', '2018-09-30');
+INSERT INTO MIDAS_EVENT VALUES ('2', '-1', '[이벤트] 7월은 개발부서를 위한 전체 메뉴 20% 할인 이벤트!', '2', '20', '2018-07-01', '2018-07-31');
+INSERT INTO MIDAS_EVENT VALUES ('3', '2', '[이벤트] 5월은 카페라떼 10% 할인 이벤트!', '0', '10', '2018-05-01', '2018-05-31');
+INSERT INTO MIDAS_EVENT VALUES ('4', '-1', '[이벤트] 5월은 개발부서를 위한 전체 메뉴 20% 할인 이벤트!', '2', '20', '2018-05-01', '2018-05-31');
+
+# 덤프 데이터: 예약 주문 10개
+INSERT INTO MIDAS_RESERVATION VALUES ('1', 'USER1', '1', '3', '8800', 3, '2018-05-21');
+INSERT INTO MIDAS_RESERVATION VALUES ('2', 'USER1', '2', '4', '11000', 3, '2018-05-22');
+INSERT INTO MIDAS_RESERVATION VALUES ('3', 'USER1', '1', '1', '3200', 3, '2018-05-25');
+INSERT INTO MIDAS_RESERVATION VALUES ('4', 'USER2', '1', '3', '8800', 3, '2018-05-21');
+INSERT INTO MIDAS_RESERVATION VALUES ('5', 'USER2', '2', '4', '11000', 3, '2018-05-22');
+INSERT INTO MIDAS_RESERVATION VALUES ('6', 'USER2', '1', '1', '3200', 3, '2018-05-25');
+INSERT INTO MIDAS_RESERVATION VALUES ('7', 'USER2', '2', '1', '3000', 3, '2018-05-25');
+INSERT INTO MIDAS_RESERVATION VALUES ('8', 'USER3', '1', '3', '8800', 3, '2018-05-21');
+INSERT INTO MIDAS_RESERVATION VALUES ('9', 'USER3', '2', '4', '11000', 3, '2018-05-24');
+INSERT INTO MIDAS_RESERVATION VALUES ('10', 'USER3', '1', '1', '3200', 3, '2018-05-25');
+
+# 덤프 데이터: 로그 6개
+INSERT INTO MIDAS_LOG VALUES ('1', 'SUB1', '[회원 삭제]', '서브 관리자 SUB1이(가) 회원 USER11을(를) 삭제했습니다.');
+INSERT INTO MIDAS_LOG VALUES ('2', 'SUB1', '[메뉴 삭제]', '서브 관리자 SUB1이(가) 메뉴 아메리카노을(를) 삭제했습니다.');
+INSERT INTO MIDAS_LOG VALUES ('3', 'SUB1', '[메뉴 수정]', '서브 관리자 SUB1이(가) 메뉴 카페라떼을(를) 수정했습니다.');
+INSERT INTO MIDAS_LOG VALUES ('4', 'SUB2', '[메뉴 수정]', '서브 관리자 SUB2이(가) 메뉴 카페라떼을(를) 수정했습니다.');
+INSERT INTO MIDAS_LOG VALUES ('5', 'SUB2', '[메뉴 수정]', '서브 관리자 SUB2이(가) 메뉴 카페라떼을(를) 수정했습니다.');
+INSERT INTO MIDAS_LOG VALUES ('6', 'SUB3', '[메뉴 수정]', '서브 관리자 SUB3이(가) 메뉴 카페라떼을(를) 수정했습니다.');
