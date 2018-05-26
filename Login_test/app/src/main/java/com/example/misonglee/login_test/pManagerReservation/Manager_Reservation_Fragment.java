@@ -67,8 +67,15 @@ public class Manager_Reservation_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.d("Client_Menu_Fragment", "onCreateView-execute");
 
-        // 여기서 먼저 데이터를 다 받아올까...?
 
+
+        //예약 내용을 다 가져온다
+
+
+
+
+        /*
+        // 여기서 먼저 데이터를 다 받아올까...?
         ArrayList<ReserveData> asdf = new ArrayList<>();
         ReserveData a = new ReserveData(1, 2, 2, "asdf");
         ReserveData b = new ReserveData(2, 1, 2, "bbbb");
@@ -76,6 +83,8 @@ public class Manager_Reservation_Fragment extends Fragment {
         asdf.add(b);
 
         SetListData(asdf);
+        */
+
 
         ArrayList<ReserveEndData> fdsa = new ArrayList<>();
         ReserveEndData aa = new ReserveEndData("2017-03-21", 5, 1);
@@ -111,6 +120,11 @@ public class Manager_Reservation_Fragment extends Fragment {
 
         // 일단 먼저 전체 유저에 대한 정보를 획득한다!
         SetView();
+
+
+
+
+
 
         return root_view;
     }

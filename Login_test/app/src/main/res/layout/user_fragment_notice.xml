@@ -11,12 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:padding="20dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/user_notice_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginBottom="15dp"
+            android:textStyle="bold"
             android:text="Notice" />
 
         <ScrollView
@@ -36,12 +41,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:padding="20dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/user_event_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:layout_marginBottom="15dp"
             android:text="Event" />
 
         <ScrollView
@@ -53,6 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
+
         </ScrollView>
     </LinearLayout>
 
