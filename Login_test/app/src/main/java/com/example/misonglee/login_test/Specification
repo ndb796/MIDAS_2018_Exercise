@@ -8,6 +8,14 @@ URL: userJoin.midas
 결과 3. 아이디 및 비밀번호 공백 오류: {"verify":"-1"}
 참고: 생년월일은 반드시 XXXX-XX-XX 형식으로 보내주셔야 합니다.
 
+[ 회원 정보 수정 ]
+
+URL: userUpdate.midas
+파라미터: 아이디(userID), 비밀번호(userPassword), 생년월일(userBirthday), 이름(userName), 부서(userDepartment)
+예시: userUpdate.midas?userID=USER1&userPassword=12341234&userBirthday=1996-05-05&userName=홍순이&userDepartment=영업부서
+결과 1. 로그인 성공: {"verify":"1"}
+결과 2. 아이디 없음: {"verify":"0"}
+
 [ 회원 로그인 ]
 
 URL: userLogin.midas
@@ -285,3 +293,145 @@ URL: menuUpdate.midas
 결과 1. 작성 성공: {"verify":"1"}
 결과 2. 권한 없음: {"verify":"0"}
 결과 3. 전달되지 않은 데이터가 있음: {"verify":"-1"}
+
+[ 예약 하기 ]
+
+URL: reservationReserve.midas
+파라미터: 회원 아이디(userID), 세션(session), 메뉴 번호(menuID), 개수(menuCount)
+예시: reservationReserve.midas?userID=USER1&session=0eed5e2e380bda0fb3966d2277593d4c3ec016fff52dbf64e4bdd16829419052&menuID=1&menuCount=1
+     reservationReserve.midas?userID=USER3&session=74cff4e15ff2eae8fb2c36f90c50a61f9dee2abe52da64d65dbf60fc309bd40f&menuID=1&menuCount=1
+결과 1: 예약 성공: {"verify":"1"}
+참고: 위 데이터만 보내도 알아서 할인율이 적용되어 주문이 이루어집니다.
+         여러 개의 할인이 적용된 경우 가장 할인율이 높은 것으로 주문이 이루어집니다.
+
+[ 주문 접수 상태(0번 상태)로 변경하기 ]
+
+URL: reservationSet0.midas
+파라미터: 회원 아이디(userID), 세션(session), 예약 번호(reservationID)
+예시: reservationSet0.midas?userID=USER1&session=0eed5e2e380bda0fb3966d2277593d4c3ec016fff52dbf64e4bdd16829419052&reservationID=1
+결과 1: 변경 성공: {"verify":"1"}
+
+[ 제작 중(1번 상태)로 변경하기 ]
+
+URL: reservationSet1.midas
+파라미터: 회원 아이디(userID), 세션(session), 예약 번호(reservationID)
+예시: reservationSet1.midas?userID=USER1&session=0eed5e2e380bda0fb3966d2277593d4c3ec016fff52dbf64e4bdd16829419052&reservationID=1
+결과 1: 변경 성공: {"verify":"1"}
+
+[ 제작 완료(2번 상태)로 변경하기 ]
+
+URL: reservationSet2.midas
+파라미터: 회원 아이디(userID), 세션(session), 예약 번호(reservationID)
+예시: reservationSet2.midas?userID=USER1&session=0eed5e2e380bda0fb3966d2277593d4c3ec016fff52dbf64e4bdd16829419052&reservationID=1
+결과 1: 변경 성공: {"verify":"1"}
+
+[ 테이크 아웃 완료(3번 상태)로 변경하기 ]
+
+URL: reservationComplete.midas
+파라미터: 회원 아이디(userID), 세션(session), 예약 번호(reservationID)
+예시: reservationComplete.midas?userID=USER1&session=0eed5e2e380bda0fb3966d2277593d4c3ec016fff52dbf64e4bdd16829419052&reservationID=1
+결과 1: 변경 성공: {"verify":"1"}
+
+[ 사용자 아이디로 전체 주문 결과 목록 확인하기 ]
+
+URL: reservationListCompletedByUserIDView.midas
+파라미터: 회원 아이디(userID)
+예시: reservationListCompletedByUserIDView.midas?userID=USER1
+결과 1. 주문 결과 목록:
+{
+	"list": [{
+		"reservationID": "2",
+		"userID": "USER1",
+		"menuID": "2",
+		"menuCount": "4",
+		"totalPrice": "11000",
+		"reservationProcess": "3",
+		"reservationDate": "2018-05-22"
+	}, {
+		"reservationID": "3",
+		"userID": "USER1",
+		"menuID": "1",
+		"menuCount": "1",
+		"totalPrice": "3200",
+		"reservationProcess": "3",
+		"reservationDate": "2018-05-25"
+	}, ...]
+}
+
+[ 사용자 이름으로 전체 주문 결과 목록 확인하기 ]
+
+URL: reservationListCompletedByUserNameView.midas
+파라미터: 회원 이름(userName)
+예시: reservationListCompletedByUserNameView.midas?userName=유관순
+결과 1. 주문 결과 목록:
+{
+	"list": [{
+		"reservationID": "2",
+		"userID": "USER1",
+		"menuID": "2",
+		"menuCount": "4",
+		"totalPrice": "11000",
+		"reservationProcess": "3",
+		"reservationDate": "2018-05-22"
+	}, {
+		"reservationID": "3",
+		"userID": "USER1",
+		"menuID": "1",
+		"menuCount": "1",
+		"totalPrice": "3200",
+		"reservationProcess": "3",
+		"reservationDate": "2018-05-25"
+	}, ...]
+}
+
+[ 사용자 아이디로 진행 중인 예약 목록 확인하기 ]
+
+URL: reservationListProcessingByUserIDView.midas
+파라미터: 회원 아이디(userID)
+예시: reservationListProcessingByUserIDView.midas?userID=USER1
+결과 1. 예약 목록:
+{
+	"list": [{
+		"reservationID": "1",
+		"userID": "USER1",
+		"menuID": "1",
+		"menuCount": "3",
+		"totalPrice": "8800",
+		"reservationProcess": "2",
+		"reservationDate": "2018-05-21"
+	}, {
+		"reservationID": "11",
+		"userID": "USER1",
+		"menuID": "1",
+		"menuCount": "1",
+		"totalPrice": "3200",
+		"reservationProcess": "0",
+		"reservationDate": "2018-05-27"
+	}, ...]
+}
+
+[ 모든 사용자에 대한 전체 주문 결과 목록 확인하기 ]
+
+URL: reservationListCompletedByAllUserView.midas
+파라미터: 회원 아이디(userID)
+예시: reservationListCompletedByAllUserView.midas?userID=USER1
+결과 1. 주문 결과 목록:
+{
+	"list": [{
+		"reservationID": "2",
+		"userID": "USER1",
+		"menuID": "2",
+		"menuCount": "4",
+		"totalPrice": "11000",
+		"reservationProcess": "3",
+		"reservationDate": "2018-05-22"
+	}, {
+		"reservationID": "3",
+		"userID": "USER1",
+		"menuID": "1",
+		"menuCount": "1",
+		"totalPrice": "3200",
+		"reservationProcess": "3",
+		"reservationDate": "2018-05-25"
+	}, ...]
+}
