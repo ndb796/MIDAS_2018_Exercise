@@ -2,7 +2,6 @@ package com.example.misonglee.login_test;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,13 +9,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
-import com.example.misonglee.login_test.pLogin.Login;
-import com.example.misonglee.login_test.pLogin.Register;
 import com.example.misonglee.login_test.pMainActivity.MainActivity;
 
 import org.json.JSONObject;
@@ -52,7 +48,7 @@ public class Write_Notice_Dialog extends Dialog implements View.OnClickListener 
         Log.d("Write_Content_Dialog", "onCreate - execute");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.write_dialog);
+        setContentView(R.layout.write_notice_dialog);
 
         write_title = (EditText) findViewById(R.id.write_title);
         write_content = (EditText) findViewById(R.id.write_content);
@@ -73,7 +69,6 @@ public class Write_Notice_Dialog extends Dialog implements View.OnClickListener 
         modify.setOnClickListener(this);
         delete.setOnClickListener(this);
         write_upload.setOnClickListener(this);
-
 
     }
 
