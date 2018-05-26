@@ -2,21 +2,32 @@ package com.example.misonglee.login_test.pManagerMenu;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.misonglee.login_test.R;
 import com.example.misonglee.login_test.pClientMenu.Client_Menu_Dialog;
+import com.example.misonglee.login_test.pMainActivity.MainActivity;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Manager_Menu_Fragment extends Fragment {
+
+    // 이미지를 보여주는 서버 경로
+    String imageURL = MainActivity.URL + "upload/";
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -62,8 +73,8 @@ public class Manager_Menu_Fragment extends Fragment {
 
         // 임시로 지정
         ArrayList<MenuData> tmp = new ArrayList<>();
-        tmp.add(new MenuData("아메리카노","1234", "10","[공지] 안녕하세요", "여기는 본문 내용입니다."));
-        tmp.add(new MenuData("자바칩 플랫치노", "4432", "15","[공지] 아아아아아", "여기는 본문 내용입니다."));
+        tmp.add(new MenuData("아메리카노","1234", "10","[공지] 안녕하세요", "1.png"));
+        tmp.add(new MenuData("자바칩 플랫치노", "4432", "15","[공지] 아아아아아", "2.png"));
         fragment.SetItems(tmp, tmp.size());
 
         return fragment;
@@ -96,9 +107,38 @@ public class Manager_Menu_Fragment extends Fragment {
             TextView discount_rate = (TextView) view.findViewById(R.id.contents_discount_rateMsg);
             TextView detail = (TextView) view.findViewById(R.id.contents_detailMsg);
             TextView picture = (TextView) view.findViewById(R.id.contents_pictureMsg);
-
-
+            final ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
             // final LinearLayout content_layout = (LinearLayout) view.findViewById(R.id.contents_item);
+
+            final int temp = i;
+            Log.d("Dongbin", items.get(temp).picture);
+
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        URL url = new URL(imageURL + items.get(temp).picture);
+                        Log.d("Dongbin", url.getPath());
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setDoInput(true);
+                        conn.connect();
+
+                        InputStream is = conn.getInputStream();
+                        Bitmap bitmap = BitmapFactory.decodeStream(is);
+
+                        imageView.setImageBitmap(bitmap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
+            try {
+                thread.join();
+            } catch (Exception e) {
+
+            }
+
 
             name.setText(items.get(i).name);
             price.setText(items.get(i).price);
