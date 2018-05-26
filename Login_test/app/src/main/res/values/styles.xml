@@ -10,7 +10,7 @@
 
     <style name="AppTheme.AppBarOverlay" parent="AppTheme">
         <item name="colorPrimary">#c5d1ff</item>
-        <item name="colorPrimaryDark">#1c23a9</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 

@@ -99,10 +99,14 @@ public class MainActivity_User extends AppCompatActivity {
     private void initActionbar() {
         Log.d("MainActivity_User", "initActionbar - execute");
 
+        //custom actionBar!
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(R.layout.custom_bar);
 
-        actionBar.setTitle("MIDAS_3조");
-        actionBar.setIcon(R.mipmap.ic_launcher);
+        //ActionBar actionBar = getSupportActionBar();
+        //actionBar.setTitle("MIDAS_3조");
+        //actionBar.setIcon(R.mipmap.ic_launcher);
 
         // 앱의 왼쪽 위, 홈버튼을 사용하려면 활성화ㄱㄱ
         /*actionBar.setHomeAsUpIndicator(R.mipmap.ic_launcher);

@@ -4,15 +4,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -125,7 +128,7 @@ public class Manager_Menu_Fragment extends Fragment {
             TextView name = (TextView) view.findViewById(R.id.contents_nameMsg);
             TextView price = (TextView) view.findViewById(R.id.contents_priceMsg);
             TextView discount_rate = (TextView) view.findViewById(R.id.contents_discount_rateMsg);
-            TextView detail = (TextView) view.findViewById(R.id.contents_detailMsg);
+            final TextView detail = (TextView) view.findViewById(R.id.contents_detailMsg);
             TextView picture = (TextView) view.findViewById(R.id.contents_pictureMsg);
             final ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
             // final LinearLayout content_layout = (LinearLayout) view.findViewById(R.id.contents_item);
@@ -164,23 +167,19 @@ public class Manager_Menu_Fragment extends Fragment {
             detail.setText(items.get(i).detail);
             picture.setText(items.get(i).picture);
 
+            final String menuID = items.get(i).menuID;
+
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String name = ((TextView)v.findViewById(R.id.contents_nameMsg)).getText().toString();
                     String price = ((TextView)v.findViewById(R.id.contents_priceMsg)).getText().toString();
+                    String detail = ((TextView)v.findViewById(R.id.contents_detailMsg)).getText().toString();
 
-                    final Manager_Menu_Dialog manager_menu_dialog = new Manager_Menu_Dialog(context, name, price);
-                    manager_menu_dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialogInterface) {
-                            String name = manager_menu_dialog.getName();
-                            String price = manager_menu_dialog.getResult();
-
-                            // name이랑 price를 가지고 서버로 데이터 전송하기.
-                        }
-                    });
-                    manager_menu_dialog.show();
+                    //글쓰기 dialog
+                    Write_Menu_Dialog write_dialog = new Write_Menu_Dialog(context,((MainActivity_Manager)context).GetUserID(),((MainActivity_Manager)context).GetUserPW());
+                    write_dialog.setContent(name, detail,price, menuID);
+                    write_dialog.show();
                 }
             });
 
@@ -242,7 +241,7 @@ public class Manager_Menu_Fragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("list");
                 int count = 0;
-                String menuTitle, menuPrice, menuDiscount, menuInformation, menuProfile;
+                String menuTitle, menuPrice, menuDiscount, menuInformation, menuProfile, menuID;
                 ArrayList<MenuData> tmp = new ArrayList<>();
 
                 while(count < jsonArray.length()) {
@@ -252,9 +251,10 @@ public class Manager_Menu_Fragment extends Fragment {
                     menuPrice = object.getString("menuPrice");
                     menuInformation = object.getString("menuInformation");
                     menuProfile = object.getString("menuProfile");
+                    menuID = object.getString("menuID");
 
                     // 임시로 지정
-                    tmp.add(new MenuData(menuTitle,menuPrice, "",menuInformation, menuProfile));
+                    tmp.add(new MenuData(menuTitle,menuPrice, "",menuInformation, menuProfile, menuID));
                     count++;
                 }
 
