@@ -44,10 +44,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="PW" />
+                android:text="ID" />
 
             <TextView
-                android:id="@+id/text_pwMsg"
+                android:id="@+id/text_idMsg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"

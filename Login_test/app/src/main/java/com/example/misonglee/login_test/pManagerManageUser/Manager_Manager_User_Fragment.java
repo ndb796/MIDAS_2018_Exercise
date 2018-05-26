@@ -61,6 +61,9 @@ public class Manager_Manager_User_Fragment extends Fragment {
     private Button adduser_btn;
     private EditText search_text;
 
+    private String select_id;
+
+
     public Manager_Manager_User_Fragment() {
 
         list_items = null;
@@ -93,17 +96,7 @@ public class Manager_Manager_User_Fragment extends Fragment {
                 startActivity(register_intent);
             }
         });
-/*        search_text = (EditText) rootView.findViewById(R.id.manager_fragment_manage_user_search);
-        search_btn = (Button) rootView.findViewById(R.id.manager_fragment_manage_user_search_btn);
-
-        search_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = search_text.getText().toString();
-
-                // name 기반으로 정보 받아오기.
-            }
-        });*/
+        
 
         BackgroundTask_User backgroundTask_user = new BackgroundTask_User();
         backgroundTask_user.execute();
@@ -119,12 +112,12 @@ public class Manager_Manager_User_Fragment extends Fragment {
             View view = inflater.inflate(item_resource, rootLayout, false);
 
             TextView name = (TextView) view.findViewById(R.id.text_nameMsg);
-            TextView pw = (TextView) view.findViewById(R.id.text_pwMsg);
+            TextView id = (TextView) view.findViewById(R.id.text_idMsg);
             TextView birthday = (TextView) view.findViewById(R.id.text_birthdayMsg);
             TextView depart = (TextView) view.findViewById(R.id.text_departMsg);
 
             name.setText(list_items.get(i).name);
-            pw.setText(list_items.get(i).pw);
+            id.setText(list_items.get(i).userID);
             birthday.setText(list_items.get(i).birthday);
             depart.setText(list_items.get(i).depart);
 
@@ -136,7 +129,12 @@ public class Manager_Manager_User_Fragment extends Fragment {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
         super.onCreateContextMenu(menu, v, menuInfo);
+
+        TextView tv_id = (TextView)v.findViewById(R.id.text_idMsg);
+        select_id = tv_id.getText().toString();
+
 
         menu.setHeaderTitle("Menu");
         menu.add(0, 1, 100, "수정");
@@ -148,13 +146,12 @@ public class Manager_Manager_User_Fragment extends Fragment {
         switch (item.getItemId()) {
             case 1://수정
                 Intent m_intent = new Intent(context, Account_Change.class);
-                m_intent.putExtra("userID", MainActivity_Manager.GetUserID());
-                m_intent.putExtra("session", MainActivity_Manager.GetUserPW());
+                m_intent.putExtra("userID", select_id);
                 startActivity(m_intent);
                 return true;
             case 2://삭제
                 DeleteDB deleteDB = new DeleteDB();
-                deleteDB.execute();
+                deleteDB.execute(select_id);
                 return true;
         }
 
@@ -182,7 +179,7 @@ public class Manager_Manager_User_Fragment extends Fragment {
 
         @Override
         protected String doInBackground(String... strings) {
-            Log.d("Raon", "ChangeDB doInBackground");
+            Log.d("Manager_User", "ChangeDB doInBackground");
 
             // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
             try {
@@ -203,7 +200,7 @@ public class Manager_Manager_User_Fragment extends Fragment {
                 // 읽어들인 문자열을 반환합니다.
                 return stringBuilder.toString().trim();
             } catch (Exception e) {
-                Log.e("Raon", "Exception: " + e.getMessage());
+                Log.e("Manager_User", "Exception: " + e.getMessage());
             }
 
             return null;
@@ -222,7 +219,7 @@ public class Manager_Manager_User_Fragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("list");
                 int count = 0;
-                String userName, userPassword, userBirthday, userDepart;
+                String userName, userPassword, userBirthday, userDepart, userID;
                 ArrayList<UserData> tmp = new ArrayList<>();
 
                 while (count < jsonArray.length()) {
@@ -232,7 +229,8 @@ public class Manager_Manager_User_Fragment extends Fragment {
                     userBirthday = object.getString("userBirthday");
                     userDepart = object.getString("userDepartment");
                     userName = object.getString("userName");
-                    tmp.add(new UserData(userName, userPassword, userBirthday, userDepart));
+                    userID = object.getString("userID");
+                    tmp.add(new UserData(userName, userPassword, userBirthday, userDepart,userID));
                     count++;
                 }
 
@@ -247,15 +245,6 @@ public class Manager_Manager_User_Fragment extends Fragment {
     class DeleteDB extends AsyncTask<String, Void, String> {
         String target;
 
-        // 전송할 데이터 및 서버의 URL을 사전에 정의합니다.
-        @Override
-        protected void onPreExecute() {
-            try {
-                target = MainActivity.URL + "userDelete.midas?userID=" + URLEncoder.encode(MainActivity_Manager.GetUserID(), "UTF-8") + "&session=" + URLEncoder.encode(MainActivity_Manager.GetUserPW(), "UTF-8");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
         @Override
         protected String doInBackground(String... strings) {
@@ -263,6 +252,9 @@ public class Manager_Manager_User_Fragment extends Fragment {
 
             // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
             try {
+                //선택한 사용자 id, pw 받아서 삭제 하기
+                target = MainActivity.URL + "userDelete.midas?userID=" + URLEncoder.encode(strings[0], "UTF-8");
+
                 // URL로 데이터를 전송합니다.
                 URL url = new URL(target);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
