@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/MessageBar"
+        android:id="@+id/manager_notice_messageBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
@@ -20,10 +20,10 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TitleBar">
+        app:layout_constraintTop_toBottomOf="@+id/manager_notice_titleBar">
 
         <TextView
-            android:id="@+id/Message"
+            android:id="@+id/manager_notice_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -31,7 +31,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/TitleBar"
+        android:id="@+id/manager_notice_titleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -44,7 +44,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/Date"
+            android:id="@+id/manager_notice_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -52,7 +52,7 @@
             android:text="Date" />
 
         <TextView
-            android:id="@+id/Title"
+            android:id="@+id/manager_notice_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -60,7 +60,7 @@
             android:text="Title" />
 
         <Button
-            android:id="@+id/notice_item_setting"
+            android:id="@+id/manager_notice_item_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"

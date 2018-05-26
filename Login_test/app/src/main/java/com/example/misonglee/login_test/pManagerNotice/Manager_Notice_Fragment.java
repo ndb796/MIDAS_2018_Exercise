@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.misonglee.login_test.R;
-import com.example.misonglee.login_test.Write_Content_Dialog;
+import com.example.misonglee.login_test.Write_Notice_Dialog;
 import com.example.misonglee.login_test.pMainActivity.MainActivity;
 import com.example.misonglee.login_test.pMainActivity.MainActivity_Manager;
 import com.example.misonglee.login_test.pNotice.EventData;
@@ -55,7 +55,7 @@ public class Manager_Notice_Fragment extends Fragment {
         notice_items_size = 0;
         event_items = null;
         notice_items_size = 0;
-        resource_notice = R.layout.notice_item;
+        resource_notice = R.layout.manager_notice_item;
         resource_event = R.layout.notice_item_event;
     }
 
@@ -122,7 +122,7 @@ public class Manager_Notice_Fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //글쓰기 dialog
-                Write_Content_Dialog write_dialog = new Write_Content_Dialog(context, ((MainActivity_Manager)context).GetUserID(), ((MainActivity_Manager)context).GetUserPW());
+                Write_Notice_Dialog write_dialog = new Write_Notice_Dialog(context, ((MainActivity_Manager)context).GetUserID(), ((MainActivity_Manager)context).GetUserPW());
                 write_dialog.show();
             }
         });
@@ -141,12 +141,12 @@ public class Manager_Notice_Fragment extends Fragment {
                 for (int i = 0; i < notice_items_size; i++) {
                     View view = inflater.inflate(resource_notice, root_layout, false);
 
-                    TextView date = (TextView) view.findViewById(R.id.Date);
-                    TextView title = (TextView) view.findViewById(R.id.Title);
-                    TextView message = (TextView) view.findViewById(R.id.Message);
-                    Button button = (Button) view.findViewById(R.id.notice_item_setting);
-                    LinearLayout titlebar = (LinearLayout) view.findViewById(R.id.TitleBar);
-                    final LinearLayout messagebar = (LinearLayout) view.findViewById(R.id.MessageBar);
+                    TextView date = (TextView) view.findViewById(R.id.manager_notice_date);
+                    TextView title = (TextView) view.findViewById(R.id.manager_notice_title);
+                    TextView message = (TextView) view.findViewById(R.id.manager_notice_message);
+                    Button button = (Button) view.findViewById(R.id.manager_notice_item_setting);
+                    LinearLayout titlebar = (LinearLayout) view.findViewById(R.id.manager_notice_titleBar);
+                    final LinearLayout messagebar = (LinearLayout) view.findViewById(R.id.manager_notice_messageBar);
 
                     final String string_title = notice_items.get(i).title;
                     final String string_message = notice_items.get(i).message;
@@ -174,7 +174,7 @@ public class Manager_Notice_Fragment extends Fragment {
                             Log.d("Manager_Notice_Fragment", "button click -execute : " );
 
                             //글쓰기 dialog
-                            Write_Content_Dialog write_dialog = new Write_Content_Dialog(context, ((MainActivity_Manager)context).GetUserID(), ((MainActivity_Manager)context).GetUserPW());
+                            Write_Notice_Dialog write_dialog = new Write_Notice_Dialog(context, ((MainActivity_Manager)context).GetUserID(), ((MainActivity_Manager)context).GetUserPW());
                             write_dialog.setContent(string_title, string_message, int_id);
                             write_dialog.show();
 

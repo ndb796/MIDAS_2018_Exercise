@@ -21,7 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.misonglee.login_test.R;
-import com.example.misonglee.login_test.Write_Content_Dialog;
+import com.example.misonglee.login_test.Write_Notice_Dialog;
 import com.example.misonglee.login_test.Write_Menu_Dialog;
 import com.example.misonglee.login_test.pClientMenu.Client_Menu_Dialog;
 import com.example.misonglee.login_test.pMainActivity.MainActivity;

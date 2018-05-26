@@ -51,7 +51,7 @@ public class Client_Notice_Fragment extends Fragment {
         notice_items_size = 0;
         event_items = null;
         notice_items_size = 0;
-        resource_notice = R.layout.notice_item;
+        resource_notice = R.layout.user_notice_item;
         resource_event = R.layout.notice_item_event;
     }
 
@@ -86,13 +86,6 @@ public class Client_Notice_Fragment extends Fragment {
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
 
-        /*
-        ArrayList<NoticeData> tmp = new ArrayList<>();
-        tmp.add(new NoticeData("2018-08-05", "[공지] 안녕하세요", "여기는 본문 내용입니다."));
-        tmp.add(new NoticeData("2018-08-01", "[공지] 아아아아아", "여기는 본문 내용입니다."));
-        fragment.SetItems(tmp, tmp.size());
-        */
-
         return fragment;
     }
 
@@ -126,11 +119,11 @@ public class Client_Notice_Fragment extends Fragment {
                 for (int i = 0; i < notice_items_size; i++) {
                     View view = inflater.inflate(resource_notice, root_layout, false);
 
-                    TextView date = (TextView) view.findViewById(R.id.Date);
-                    TextView title = (TextView) view.findViewById(R.id.Title);
-                    TextView message = (TextView) view.findViewById(R.id.Message);
-                    LinearLayout titlebar = (LinearLayout) view.findViewById(R.id.TitleBar);
-                    final LinearLayout messagebar = (LinearLayout) view.findViewById(R.id.MessageBar);
+                    TextView date = (TextView) view.findViewById(R.id.user_notice_date);
+                    TextView title = (TextView) view.findViewById(R.id.user_notice_title);
+                    TextView message = (TextView) view.findViewById(R.id.user_notice_message);
+                    LinearLayout titlebar = (LinearLayout) view.findViewById(R.id.user_notice_titleBar);
+                    final LinearLayout messagebar = (LinearLayout) view.findViewById(R.id.user_notice_messageBar);
 
                     date.setText(notice_items.get(i).date);
                     title.setText(notice_items.get(i).title);

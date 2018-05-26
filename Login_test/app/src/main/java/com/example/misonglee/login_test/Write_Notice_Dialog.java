@@ -28,7 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class Write_Content_Dialog extends Dialog implements View.OnClickListener {
+public class Write_Notice_Dialog extends Dialog implements View.OnClickListener {
 
     private EditText write_title;
     private EditText write_content;
@@ -40,7 +40,7 @@ public class Write_Content_Dialog extends Dialog implements View.OnClickListener
     public int content_num;
 
 
-    public Write_Content_Dialog(@NonNull Context _context, String _userID, String _session) {
+    public Write_Notice_Dialog(@NonNull Context _context, String _userID, String _session) {
         super(_context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
         context = _context;
         userID = _userID;

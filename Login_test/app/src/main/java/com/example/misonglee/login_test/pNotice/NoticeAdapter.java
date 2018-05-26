@@ -43,16 +43,16 @@ public class NoticeAdapter extends BaseAdapter{
             if (inflater == null) {
                 inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             }
-            convertView = inflater.inflate(R.layout.notice_item, parent, false);
+            convertView = inflater.inflate(R.layout.manager_notice_item, parent, false);
         }
 
-        TextView date = (TextView) convertView.findViewById(R.id.Date);
-        TextView title = (TextView) convertView.findViewById(R.id.Title);
-        TextView message = (TextView) convertView.findViewById(R.id.Message);
+        //TextView date = (TextView) convertView.findViewById(R.id.Date);
+        //TextView title = (TextView) convertView.findViewById(R.id.Title);
+        //TextView message = (TextView) convertView.findViewById(R.id.Message);
 
-        date.setText(datas.get(position).date);
-        title.setText(datas.get(position).title);
-        message.setText(datas.get(position).message);
+        //date.setText(datas.get(position).date);
+        //title.setText(datas.get(position).title);
+        //message.setText(datas.get(position).message);
 
         return convertView;
     }
