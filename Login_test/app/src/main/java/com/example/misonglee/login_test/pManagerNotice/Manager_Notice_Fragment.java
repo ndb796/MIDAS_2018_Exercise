@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.misonglee.login_test.R;
+import com.example.misonglee.login_test.Write_Event_Dialog;
 import com.example.misonglee.login_test.Write_Notice_Dialog;
 import com.example.misonglee.login_test.pMainActivity.MainActivity;
 import com.example.misonglee.login_test.pMainActivity.MainActivity_Manager;
@@ -43,7 +44,8 @@ public class Manager_Notice_Fragment extends Fragment {
     private int resource_notice;
     private int resource_event;
     private View root_view;
-    private LinearLayout root_layout;
+    private LinearLayout root_notice_layout;
+    private LinearLayout root_event_layout;
     private ArrayList<NoticeData> notice_items;
     private ArrayList<EventData> event_items;
     private int notice_items_size;
@@ -107,7 +109,8 @@ public class Manager_Notice_Fragment extends Fragment {
         Log.d("Notice_Fragment", "onCreateView-execute");
 
         root_view = inflater.inflate(R.layout.manager_fragment_notice, container, false);
-        root_layout = (LinearLayout) root_view.findViewById(R.id.manager_notice_root);
+        root_notice_layout = (LinearLayout) root_view.findViewById(R.id.manager_notice_root);
+        root_event_layout = (LinearLayout) root_view.findViewById(R.id.manager_event_root);
         context = container.getContext();
 
         BackgroundTask_Notice task = new BackgroundTask_Notice();
@@ -116,9 +119,9 @@ public class Manager_Notice_Fragment extends Fragment {
         BackgroundTask_Event task2 = new BackgroundTask_Event();
         task2.execute();
 
-        // 글쓰기 버튼
-        FloatingActionButton write_button = (FloatingActionButton) root_view.findViewById(R.id.notice_write_button);
-        write_button.setOnClickListener(new View.OnClickListener() {
+        //notice 글쓰기 버튼
+        FloatingActionButton notice_write_button = (FloatingActionButton) root_view.findViewById(R.id.notice_write_button);
+        notice_write_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //글쓰기 dialog
@@ -127,6 +130,16 @@ public class Manager_Notice_Fragment extends Fragment {
             }
         });
 
+        //event 글쓰기 버튼
+        FloatingActionButton event_write_button = (FloatingActionButton) root_view.findViewById(R.id.event_write_button);
+        event_write_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //글쓰기 dialog
+                Write_Event_Dialog write_event_dialog = new Write_Event_Dialog(context, ((MainActivity_Manager)context).GetUserID(), ((MainActivity_Manager)context).GetUserPW());
+                write_event_dialog.show();
+            }
+        });
         return root_view;
     }
 
@@ -139,7 +152,7 @@ public class Manager_Notice_Fragment extends Fragment {
             // 공지사항 처리
             case CODE_NOTICE:
                 for (int i = 0; i < notice_items_size; i++) {
-                    View view = inflater.inflate(resource_notice, root_layout, false);
+                    View view = inflater.inflate(resource_notice, root_notice_layout, false);
 
                     TextView date = (TextView) view.findViewById(R.id.manager_notice_date);
                     TextView title = (TextView) view.findViewById(R.id.manager_notice_title);
@@ -181,20 +194,20 @@ public class Manager_Notice_Fragment extends Fragment {
                         }
                     });
 
-                    root_layout.addView(view);
+                    root_notice_layout.addView(view);
                 }
                 break;
 
             // 이벤트 사항 처리
             case CODE_EVENT:
                 for (int i = 0; i < event_items_size; i++) {
-                    View view = inflater.inflate(resource_event, root_layout, false);
+                    View view = inflater.inflate(resource_event, root_event_layout, false);
 
                     TextView message = (TextView) view.findViewById(R.id.notice_event_message);
 
                     message.setText(event_items.get(i).message);
 
-                    root_layout.addView(view);
+                    root_event_layout.addView(view);
                 }
                 break;
         }
@@ -337,7 +350,7 @@ public class Manager_Notice_Fragment extends Fragment {
 
                 while(count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
-                    eventMessage = object.getString("eventMessage");
+                    eventMessage = object.getString("eventTitle");
                     tmp.add(new EventData(eventMessage));
                     count++;
                 }
@@ -349,4 +362,5 @@ public class Manager_Notice_Fragment extends Fragment {
             }
         }
     }
+
 }
