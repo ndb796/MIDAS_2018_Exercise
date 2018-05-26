@@ -62,6 +62,14 @@ public class Write_Menu_Dialog extends Dialog implements View.OnClickListener {
         ImageButton write_upload = (ImageButton)findViewById(R.id.write_upload);
         ImageButton btnGallery = (ImageButton)findViewById(R.id.btnGallery);
 
+
+        if(string_title!=null && string_content!=null && string_price!=null && string_menuId!=null){
+            write_title.setText(string_title);
+            write_content.setText(string_content);
+            write_price.setText(string_price);
+        }
+
+
         write_cancle.setOnClickListener(this);
         modify.setOnClickListener(this);
         delete.setOnClickListener(this);

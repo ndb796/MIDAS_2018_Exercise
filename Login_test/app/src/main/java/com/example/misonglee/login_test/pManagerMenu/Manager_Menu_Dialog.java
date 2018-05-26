@@ -46,7 +46,6 @@ public class Manager_Menu_Dialog extends Dialog {
 
         //no Action bar로 만들것
         //setTitle(name);
-
     }
 
     @Override

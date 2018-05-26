@@ -26,12 +26,13 @@ public class Client_Menu_Dialog extends Dialog {
     private Spinner spinner;
     private ArrayAdapter<Integer> adapter;
     private TextView price_result;
+    private TextView barText;
     private Button okay_btn;
     private Button cancel_btn;
 
     public Client_Menu_Dialog(@NonNull Context context, String name, String price) {
 
-        super(context);
+        super(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
 
         this.name = name;
         this.price = price;
@@ -42,7 +43,7 @@ public class Client_Menu_Dialog extends Dialog {
         adapter = new ArrayAdapter<Integer>(context, android.R.layout.simple_spinner_item, item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        setTitle(name);
+        //setTitle(name);
     }
 
     @Override
@@ -55,6 +56,8 @@ public class Client_Menu_Dialog extends Dialog {
         price_result = (TextView) findViewById(R.id.user_menu_dialog_priceresult);
         okay_btn = (Button) findViewById(R.id.user_menu_dialog_btn_okay);
         cancel_btn = (Button) findViewById(R.id.user_menu_dialog_btn_cancel);
+        barText = (TextView)findViewById(R.id.barText);
+        barText.setText(name + "주문");
 
         price_result.setText(String.valueOf(Integer.valueOf(price) * 1));
         spinner.setAdapter(adapter);

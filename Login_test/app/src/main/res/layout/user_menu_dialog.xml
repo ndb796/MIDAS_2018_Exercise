@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/colorPrimaryDark"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_cafe"
+            >
+        </ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_gravity="center"
+            android:textColor="#ffffff"
+            android:background="@color/colorPrimaryDark"
+            android:id="@+id/barText"
+            android:textSize="30dp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         android:orientation="horizontal">
 
         <TextView
@@ -14,6 +46,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
             android:text="수량" />
 
         <Spinner
@@ -27,7 +62,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:padding="10dp"
         android:orientation="horizontal">
 
         <TextView
@@ -35,6 +70,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
             android:text="가격" />
 
         <TextView
@@ -42,26 +80,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
             android:text="TextView" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
         android:orientation="horizontal">
 
-        <Button
+        <com.dd.processbutton.iml.ActionProcessButton
             android:id="@+id/user_menu_dialog_btn_okay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="예약" />
+            android:text="예약"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            custom:pb_colorNormal="@color/colorPrimary"
+            custom:pb_colorPressed="@color/colorPrimaryDark"
+            />
 
-        <Button
+        <com.dd.processbutton.iml.ActionProcessButton
             android:id="@+id/user_menu_dialog_btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="취소" />
+            android:text="취소"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            custom:pb_colorNormal="@color/colorPrimary"
+            custom:pb_colorPressed="@color/colorPrimaryDark"
+            />
     </LinearLayout>
+
 </LinearLayout>
