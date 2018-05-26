@@ -183,7 +183,7 @@ public class Login extends AppCompatActivity {
                 switch (verify){
                     case "1":
                         // 메인 페이지로 이동합니다.
-                        Intent intent = new Intent(Login.this, MainActivity.class);
+                        Intent intent = new Intent(Login.this, MainActivity_User.class);
                         // 메인 페이지로 넘어갈 때 아이디와 세션 정보를 저장합니다.
                         intent.putExtra("userID", user_id.getText().toString());
                         intent.putExtra("session", session);
