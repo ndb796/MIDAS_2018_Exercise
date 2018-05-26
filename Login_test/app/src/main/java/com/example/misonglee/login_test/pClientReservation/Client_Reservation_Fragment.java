@@ -177,13 +177,13 @@ public class Client_Reservation_Fragment extends Fragment {
         list_items = data;
         list_items_size = data.size();
         MainActivity_User.list_items = data;
-
-        SetView(year, month);
     }
 
     public void SetListEndData(ArrayList<ReserveEndData> data) {
         list_items_ends = data;
         list_items_ends_size = data.size();
+        Log.d("Client_Notice_Fragment", list_items_ends_size + " ");
+        SetView(year, month);
     }
 
     public void SetView(String year, String month) {
@@ -191,8 +191,7 @@ public class Client_Reservation_Fragment extends Fragment {
         Log.d("Client_Notice_Fragment", year + " " + month);
 
         // 사용자의 전체 예약 정보 데이터 구분
-        for(int i = 0; i<list_items.size(); i++){
-            list_items_ends.add(new ReserveEndData(list_items.get(i).reservationDate, list_items.get(i).menuID, list_items.get(i).menuCount));
+        for(int i = 0; i<list_items_ends_size; i++){
             parsing(list_items_ends.get(i));
         }
 
@@ -202,7 +201,8 @@ public class Client_Reservation_Fragment extends Fragment {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        for (int i = 0; i < list_items_size; i++) {
+        for (int i = 0; i < list_items_ends_size; i++) {
+            Log.d("Client_Notice_Fragment", "asdfasdfasdf");
             if(list_items_ends.get(i).year.equals(year) == true){
                 Log.d("Client_Notice_Fragment", "년도 같음");
                 if(list_items_ends.get(i).month.equals(month) == true){
@@ -390,6 +390,8 @@ public class Client_Reservation_Fragment extends Fragment {
                 }
                 //fragment.SetListData(tmp);
                 SetListData(tmp);
+                BackgroundTask_Complete_Reservation backgroundTask_complete_reservation = new BackgroundTask_Complete_Reservation();
+                backgroundTask_complete_reservation.execute();
 
             } catch(Exception e) {
                 e.printStackTrace();
@@ -397,4 +399,85 @@ public class Client_Reservation_Fragment extends Fragment {
         }
     }
 
+    class BackgroundTask_Complete_Reservation extends AsyncTask<String, Void, String> {
+
+        String target;
+
+        // 전송할 데이터 및 서버의 URL을 사전에 정의합니다.
+        @Override
+        protected void onPreExecute() {
+            try {
+                target = MainActivity.URL + "reservationListCompletedByUserIDView.midas?userID="+ URLEncoder.encode(((MainActivity_User)context).GetUserID(),"UTF-8");
+                Log.d("Reservation",target);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            Log.d("Reservation"," doInBackground");
+
+            // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
+            try{
+                // URL로 데이터를 전송합니다.
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                // 반환된 문자열을 읽어들입니다.
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                // 읽어들인 문자열을 반환합니다.
+                return stringBuilder.toString().trim();
+            } catch (Exception e){
+                Log.e("Reservation", "Exception: " + e.getMessage());
+            }
+            return null;
+        }
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate();
+        }
+
+        // 문자열을 JSON 형태로 처리합니다.
+        @Override
+        public void onPostExecute(String result) {
+            try {
+                Log.d("Reservation"," onPostExecute");
+
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("list");
+                int count = 0;
+
+                ArrayList<ReserveEndData> tmp = new ArrayList<>();
+                int menuID, menuCount,reservationProcess, reservationID;
+                String reservationDate;
+
+                while(count < jsonArray.length()) {
+                    JSONObject object = jsonArray.getJSONObject(count);
+
+
+                    menuID = object.getInt("menuID");
+                    menuCount = object.getInt("menuCount");
+                    reservationDate = object.getString("reservationDate");
+                    reservationID = object.getInt("reservationID");
+                    tmp.add(new ReserveEndData(reservationDate, menuID, menuCount,reservationID));
+
+                    count++;
+                }
+                //fragment.SetListData(tmp);
+                SetListEndData(tmp);
+
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

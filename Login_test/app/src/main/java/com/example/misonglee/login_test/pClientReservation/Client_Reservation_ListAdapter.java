@@ -66,7 +66,7 @@ public class Client_Reservation_ListAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.reserve_item, viewGroup, false);
         }
 
-        TextView reserID = (TextView) view.findViewById(R.id.reservationID);
+        final TextView reserID = (TextView) view.findViewById(R.id.reservationID);
         TextView menu = (TextView) view.findViewById(R.id.reserve_item_menu);
         TextView menu_count = (TextView) view.findViewById(R.id.reserve_item_menucount);
         TextView process = (TextView) view.findViewById(R.id.reserve_item_process);
@@ -96,8 +96,10 @@ public class Client_Reservation_ListAdapter extends BaseAdapter {
                 Log.d("ClientReservation", "click되었습니다.");
                 TextView process = (TextView) view.findViewById(R.id.reserve_item_process);
                 TextView id = (TextView) view.findViewById(R.id.reservationID);
+                reservationID = Integer.valueOf(id.getText().toString());
                 Log.d("ClientReservation", process.getText().toString());
                 if (process.getText().toString().equals("제작 완료") == true) {
+                    Log.d("ClientReservation", "알람실행!");
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                             context);
 
@@ -123,7 +125,7 @@ public class Client_Reservation_ListAdapter extends BaseAdapter {
                                             // 다이얼로그를 취소한다
                                             dialog.cancel();
                                         }
-                                    });
+                                    }).show();
 
                 }
 
@@ -141,6 +143,8 @@ public class Client_Reservation_ListAdapter extends BaseAdapter {
         protected void onPreExecute() {
             try {
                 target = MainActivity_User.URL + "reservationComplete.midas?userID=" + MainActivity_User.GetUserID() + "&session="+MainActivity_User.GetUserPW()+"&reservationID=" + reservationID;
+                Log.d("Raon",target);
+                Log.d("Raon",reservationID +" ");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -185,16 +189,7 @@ public class Client_Reservation_ListAdapter extends BaseAdapter {
         public void onPostExecute(String result) {
             try {
                 JSONObject jsonObject = new JSONObject(result);
-                JSONArray jsonArray = jsonObject.getJSONArray("list");
-                int count = 0;
-                String menuTitle, menuPrice, menuDiscount, menuInformation, menuProfile, menuID;
-                ArrayList<MenuData> tmp = new ArrayList<>();
 
-                while(count < jsonArray.length()) {
-                    JSONObject object = jsonArray.getJSONObject(count);
-
-                    count++;
-                }
             } catch(Exception e) {
                 e.printStackTrace();
             }

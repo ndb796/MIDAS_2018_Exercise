@@ -1,15 +1,17 @@
 package com.example.misonglee.login_test.pManagerReservation;
 
 public class ReserveData {
-    int menuNum;
+    int menuID;
     int menuCount;
     int reservationProcess;
+    int reservationID;
     String reservationDate;
 
-    public ReserveData(int menuNum, int menuCount, int reservationProcess, String reservationDate) {
-        this.menuNum = menuNum;
+    public ReserveData(int menuID, int menuCount, int reservationProcess, int reservationID, String reservationDate) {
+        this.menuID = menuID;
         this.menuCount = menuCount;
         this.reservationProcess = reservationProcess;
+        this.reservationID = reservationID;
         this.reservationDate = reservationDate;
     }
 }

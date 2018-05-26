@@ -54,13 +54,16 @@ public class Manager_Reservation_Fragment extends Fragment {
     private Button reserve_search_btn;
     private EditText search_text;
 
+    private String name;
+
 
     public Manager_Reservation_Fragment() {
         Log.d("Client_Reservation", "Constructor - execute");
 
+        list_menu = new HashMap<>();
         list_items = null;
         list_items_size = 0;
-        search_list_items = null;
+        search_list_items = new ArrayList<>();
         search_list_items_size = 0;
 
         // 주문이 끝난 layout 정보 획득
@@ -103,8 +106,11 @@ public class Manager_Reservation_Fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // 유저 이름을 서버로 보내서, 해당 정보를 획득한 뒤, SetView 한다.
-                String name = search_text.getText().toString();
+                name = search_text.getText().toString();
                 Log.d("ㅁㄴㅇㄻㄴㅇㄹ", name);
+
+                BackgroundTask_Complete_Search backgroundTask_complete_search = new BackgroundTask_Complete_Search();
+                backgroundTask_complete_search.execute();
             }
         });
 
@@ -130,7 +136,6 @@ public class Manager_Reservation_Fragment extends Fragment {
         adapter = new Manager_Reservation_ListAdapter(list_items);
         reserve_list.setAdapter(adapter);
 
-        reserve_search_list_root.removeAllViews();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for (int i = 0; i < search_list_items_size; i++) {
@@ -236,7 +241,7 @@ public class Manager_Reservation_Fragment extends Fragment {
         @Override
         protected void onPreExecute() {
             try {
-                target = MainActivity_Manager.URL + "reservationListProcessingByUserIDView.midas?userID="+ URLEncoder.encode(((MainActivity_User)context).GetUserID(),"UTF-8");
+                target = MainActivity_Manager.URL + "reservationListByAllUserView.midas";
                 Log.d("Reservation",target);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -320,7 +325,89 @@ public class Manager_Reservation_Fragment extends Fragment {
         @Override
         protected void onPreExecute() {
             try {
-                target = MainActivity.URL + "reservationListCompletedByAllUserView.midas?userID="+ URLEncoder.encode(((MainActivity_User)context).GetUserID(),"UTF-8");
+                target = MainActivity.URL + "reservationListCompletedByAllUserView.midas?userID="+ URLEncoder.encode(((MainActivity_Manager)context).GetUserID(),"UTF-8");
+                Log.d("Reservation",target);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            Log.d("Reservation"," doInBackground");
+
+            // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
+            try{
+                // URL로 데이터를 전송합니다.
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                // 반환된 문자열을 읽어들입니다.
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                // 읽어들인 문자열을 반환합니다.
+                return stringBuilder.toString().trim();
+            } catch (Exception e){
+                Log.e("Reservation", "Exception: " + e.getMessage());
+            }
+            return null;
+        }
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate();
+        }
+
+        // 문자열을 JSON 형태로 처리합니다.
+        @Override
+        public void onPostExecute(String result) {
+            try {
+                Log.d("Reservation"," onPostExecute");
+
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("list");
+                int count = 0;
+
+                ArrayList<ReserveEndData> tmp = new ArrayList<>();
+                int menuID, menuCount,reservationProcess, reservationID;
+                String reservationDate;
+
+                while(count < jsonArray.length()) {
+                    JSONObject object = jsonArray.getJSONObject(count);
+
+
+                    menuID = object.getInt("menuID");
+                    menuCount = object.getInt("menuCount");
+                    reservationDate = object.getString("reservationDate");
+                    reservationID = object.getInt("reservationID");
+                    tmp.add(new ReserveEndData(reservationDate, menuID, menuCount,reservationID));
+
+                    count++;
+                }
+                //fragment.SetListData(tmp);
+                SetSearchListData(tmp);
+
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class BackgroundTask_Complete_Search extends AsyncTask<String, Void, String> {
+
+        String target;
+
+        // 전송할 데이터 및 서버의 URL을 사전에 정의합니다.
+        @Override
+        protected void onPreExecute() {
+            try {
+                target = MainActivity.URL + "reservationListCompletedByUserIDView.midas?userID="+ URLEncoder.encode(name,"UTF-8");
                 Log.d("Reservation",target);
             } catch (Exception e) {
                 e.printStackTrace();
