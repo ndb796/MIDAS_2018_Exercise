@@ -1,6 +1,7 @@
 package com.example.misonglee.login_test.pClientReservation;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -16,9 +17,20 @@ import android.widget.TextView;
 import com.example.misonglee.login_test.R;
 import com.example.misonglee.login_test.pClientMenu.Client_Menu_Fragment;
 import com.example.misonglee.login_test.pClientMenu.MenuData;
+import com.example.misonglee.login_test.pMainActivity.MainActivity;
+import com.example.misonglee.login_test.pMainActivity.MainActivity_User;
+import com.example.misonglee.login_test.pNotice.NoticeData;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,12 +40,16 @@ import java.util.Map;
 import java.util.Set;
 
 public class Client_Reservation_Fragment extends Fragment {
+
+    public static Client_Reservation_Fragment fragment = null;
+
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     public static int CODE_RESERVE_LIST = 1001;
     public static int CODE_RESERVE_TOTAL = 1002;
 
     private Context context;
+    private ViewGroup _container;
     private int resource;
     private View root_view;
     private ArrayList<ReserveData> list_items;
@@ -75,6 +91,7 @@ public class Client_Reservation_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.d("Client_Menu_Fragment", "onCreateView-execute");
 
+
         // 여기서 먼저 데이터를 다 받아올까...?
 
         ArrayList<ReserveData> asdf = new ArrayList<>();
@@ -84,6 +101,13 @@ public class Client_Reservation_Fragment extends Fragment {
         asdf.add(b);
 
         SetListData(asdf);
+
+
+        //user의 예약 내용을 가져옴
+        //BackgroundTask_Reservation backgroundTask_reservation = new BackgroundTask_Reservation();
+        //backgroundTask_reservation.execute();
+
+
 
         ArrayList<ReserveEndData> fdsa = new ArrayList<>();
         ReserveEndData aa = new ReserveEndData("2017-03-21", 5, 1);
@@ -99,6 +123,8 @@ public class Client_Reservation_Fragment extends Fragment {
 
         SetListEndData(fdsa);
 
+
+
         // 사용자의 전체 예약 정보 데이터 구분
         for(int i = 0; i<fdsa.size(); i++)
             parsing(list_items_ends.get(i));
@@ -108,11 +134,11 @@ public class Client_Reservation_Fragment extends Fragment {
         reserve_list = (ListView) root_view.findViewById(R.id.user_fragment_reserve_list);
         adapter = new Client_Reservation_ListAdapter(list_items);
         reserve_list.setAdapter(adapter);
-        context = container.getContext();
         reserve_show_year = (TextView) root_view.findViewById(R.id.user_fragment_reserve_show_year);
         reserve_show_month = (TextView) root_view.findViewById(R.id.user_fragment_reserve_show_month);
         left_btn = (Button) root_view.findViewById(R.id.user_fragment_reserve_left_btn);
         right_btn = (Button) root_view.findViewById(R.id.user_fragment_reserve_right_btn);
+
 
         left_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +192,7 @@ public class Client_Reservation_Fragment extends Fragment {
 
         SetView(year, month);
 
+
         return root_view;
     }
 
@@ -179,6 +206,9 @@ public class Client_Reservation_Fragment extends Fragment {
         list_items_ends = data;
         list_items_ends_size = data.size();
     }
+
+
+
 
     public void SetView(String year, String month) {
         Log.d("Client_Notice_Fragment", "SetView-execute");
@@ -209,6 +239,8 @@ public class Client_Reservation_Fragment extends Fragment {
         }
     }
 
+
+
     private void parsing(final ReserveEndData data) {
 
         String date = data.date;
@@ -219,4 +251,87 @@ public class Client_Reservation_Fragment extends Fragment {
         data.year = year;
         data.month = month;
     }
+
+
+    class BackgroundTask_Reservation extends AsyncTask<String, Void, String> {
+
+        String target;
+
+        // 전송할 데이터 및 서버의 URL을 사전에 정의합니다.
+        @Override
+        protected void onPreExecute() {
+            try {
+                target = MainActivity.URL + "reservationListProcessingByUserIDView.midas?userID="+ URLEncoder.encode(((MainActivity_User)context).GetUserID(),"UTF-8");
+                Log.d("Reservation",target);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            Log.d("Reservation"," doInBackground");
+
+            // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
+            try{
+                // URL로 데이터를 전송합니다.
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                // 반환된 문자열을 읽어들입니다.
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                // 읽어들인 문자열을 반환합니다.
+                return stringBuilder.toString().trim();
+            } catch (Exception e){
+                Log.e("Reservation", "Exception: " + e.getMessage());
+            }
+            return null;
+        }
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate();
+        }
+
+        // 문자열을 JSON 형태로 처리합니다.
+        @Override
+        public void onPostExecute(String result) {
+            try {
+                Log.d("Reservation"," onPostExecute");
+
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("list");
+                int count = 0;
+                int menuID, menuCount,reservationProcess;
+                String reservationDate;
+                ArrayList<ReserveData> tmp = new ArrayList<>();
+
+
+                while(count < jsonArray.length()) {
+                    JSONObject object = jsonArray.getJSONObject(count);
+
+                    menuID = object.getInt("menuID");
+                    menuCount = object.getInt("menuCount");
+                    reservationProcess = object.getInt("reservationProcess");
+                    reservationDate = object.getString("reservationDate");
+                    tmp.add(new ReserveData(menuID, menuCount, reservationProcess, reservationDate));
+
+                    count++;
+                }
+                //fragment.SetListData(tmp);
+                SetListData(tmp);
+
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

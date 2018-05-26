@@ -54,7 +54,6 @@ public class Write_Notice_Dialog extends Dialog implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.write_dialog);
 
-
         write_title = (EditText) findViewById(R.id.write_title);
         write_content = (EditText) findViewById(R.id.write_content);
 

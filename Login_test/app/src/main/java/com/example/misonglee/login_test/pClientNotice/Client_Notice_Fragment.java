@@ -157,8 +157,8 @@ public class Client_Notice_Fragment extends Fragment {
                 break;
         }
 
-
     }
+
 
     class BackgroundTask_Notice extends AsyncTask<String, Void, String> {
 

@@ -166,7 +166,7 @@ public class Login extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(result);
                 String verify = jsonObject.getString("verify");
                 String session = jsonObject.getString("session");
-                int user_type = jsonObject.getInt("userType");
+                String user_type = jsonObject.getString("userType");
 
                 //자동 로그인 체크시
                 if(auto_check.isChecked()) {
@@ -184,7 +184,7 @@ public class Login extends AppCompatActivity {
                 switch (verify){
                     case "1" :
                             switch(user_type){
-                                case 0:
+                                case "0":
                                     Log.d("Login", "유저가 접속합니다.");
                                     // 메인 페이지로 이동합니다.
                                     Intent intent_user = new Intent(Login.this, MainActivity_User.class);
@@ -193,7 +193,7 @@ public class Login extends AppCompatActivity {
                                     intent_user.putExtra("session", session);
                                     startActivity(intent_user);
                                     break;
-                                case 1:
+                                case "1":
                                     Log.d("Login", "관리자가 접속합니다.");
                                     // 메인 페이지로 이동합니다.
                                     Intent intent_manager = new Intent(Login.this, MainActivity_Manager.class);
@@ -202,6 +202,8 @@ public class Login extends AppCompatActivity {
                                     intent_manager.putExtra("session", session);
                                     startActivity(intent_manager);
                                     break;
+                                    default:
+                                        failAlert();
                             }
                             break;
                     // 그 외에는 로그인 실패 알림창을 띄웁니다.
