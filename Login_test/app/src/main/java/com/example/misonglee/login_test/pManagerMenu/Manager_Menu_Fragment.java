@@ -2,6 +2,7 @@ package com.example.misonglee.login_test.pManagerMenu;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -109,8 +110,9 @@ public class Manager_Menu_Fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //글쓰기 dialog
-                Write_Menu_Dialog write_dialog = new Write_Menu_Dialog(context,((MainActivity_Manager)context).GetUserID(),((MainActivity_Manager)context).GetUserPW());
-                write_dialog.show();
+                Write_Menu_Dialog write_dialog = new Write_Menu_Dialog();
+                Intent intent = new Intent(getActivity(), Write_Menu_Dialog.class);
+                startActivity(intent);
             }
         });
 
@@ -177,9 +179,10 @@ public class Manager_Menu_Fragment extends Fragment {
                     String detail = ((TextView)v.findViewById(R.id.contents_detailMsg)).getText().toString();
 
                     //글쓰기 dialog
-                    Write_Menu_Dialog write_dialog = new Write_Menu_Dialog(context,((MainActivity_Manager)context).GetUserID(),((MainActivity_Manager)context).GetUserPW());
+                    Write_Menu_Dialog write_dialog = new Write_Menu_Dialog();
                     write_dialog.setContent(name, detail,price, menuID);
-                    write_dialog.show();
+                    Intent intent = new Intent(getActivity(), Write_Menu_Dialog.class);
+                    startActivity(intent);
                 }
             });
 

@@ -54,9 +54,8 @@ public class Account_Change extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_change);
 
-        //세션 값
+        //값
         Intent intent = getIntent();
-        session = intent.getStringExtra("session");
         userID = intent.getStringExtra("userID");
 
         change_name = (EditText) findViewById(R.id.change_name);

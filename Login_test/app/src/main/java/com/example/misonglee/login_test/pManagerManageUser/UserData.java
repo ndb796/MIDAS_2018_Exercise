@@ -5,11 +5,13 @@ public class UserData {
     String pw;
     String depart;
     String birthday;
+    String userID;
 
-    public UserData(String name, String pw, String birthday,String depart) {
+    public UserData(String name, String pw, String birthday,String depart, String userID) {
         this.name = name;
         this.pw = pw;
         this.depart = depart;
         this.birthday = birthday;
+        this.userID = userID;
     }
 }
