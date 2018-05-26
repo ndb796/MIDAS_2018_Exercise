@@ -112,7 +112,7 @@ public class Client_Menu_Dialog extends Dialog {
 
                 ReserveDB reserveDB = new ReserveDB();
                 reserveDB.execute();
-                //MainActivity_User.list_items.add(new ReserveData(menuID, menuCount, 0)))
+
                 //result = true;
                 dismiss();
             }

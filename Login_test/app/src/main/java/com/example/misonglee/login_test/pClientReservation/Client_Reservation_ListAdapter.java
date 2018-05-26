@@ -55,9 +55,23 @@ public class Client_Reservation_ListAdapter extends BaseAdapter {
         TextView menu_count = (TextView) view.findViewById(R.id.reserve_item_menucount);
         TextView process = (TextView) view.findViewById(R.id.reserve_item_process);
 
-        menu.setText(Integer.toString(items.get(position).menuID));
-        menu_count.setText(Integer.toString(items.get(position).menuCount));
-        process.setText(Integer.toString(items.get(position).reservationProcess));
+        //menu.setText(Integer.toString(items.get(position).menuID));
+        menu.setText(Client_Reservation_Fragment.list_menu.get(items.get(position).menuID));
+        menu_count.setText(Integer.toString(items.get(position).menuCount) + "개");
+        switch (items.get(position).reservationProcess) {
+            case 0:
+                process.setText("접수 완료");
+                break;
+
+            case 1:
+                process.setText("진행 중");
+                break;
+
+            case 2:
+                process.setText("제작 완료");
+                break;
+        }
+        //process.setText(Integer.toString(items.get(position).reservationProcess));
 
         return view;
     }

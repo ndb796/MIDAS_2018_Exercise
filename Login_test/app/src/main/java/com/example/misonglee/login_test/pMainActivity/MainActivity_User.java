@@ -55,7 +55,7 @@ public class MainActivity_User extends AppCompatActivity {
     private LinearLayout detailcontents;
     private Button detailcontents_btn;
 
-    public String[] menu = {"아메리카노", "카페라때", "딸기스무디", "카라멜마끼아또", "리얼초코", "초코프라페", "그린티"};
+    public static ArrayList<String> menu;
     public static ArrayList<ReserveData> list_items;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

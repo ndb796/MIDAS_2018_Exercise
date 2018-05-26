@@ -54,6 +54,7 @@ public class Client_Reservation_Fragment extends Fragment {
     private View root_view;
     private ArrayList<ReserveData> list_items;
     private ArrayList<ReserveEndData> list_items_ends;
+    public static HashMap<Integer, String> list_menu;
     private int list_items_size;
     private int list_items_ends_size;
 
@@ -71,11 +72,15 @@ public class Client_Reservation_Fragment extends Fragment {
     public Client_Reservation_Fragment() {
         Log.d("Client_Reservation", "Constructor - execute");
 
+        list_menu = new HashMap<>();
         list_items = null;
         list_items_size = 0;
         list_items_ends = new ArrayList<>();
         list_items_ends_size = 0;
         resource = R.layout.reserve_item_finished;
+
+        BackgroundTask_GetMenu backgroundTask_getMenu = new BackgroundTask_GetMenu();
+        backgroundTask_getMenu.execute();
 
     }
 
@@ -99,6 +104,7 @@ public class Client_Reservation_Fragment extends Fragment {
         backgroundTask_reservation.execute();
 
         list_items = MainActivity_User.list_items;
+        //Log.d("asdfasdf",  " " +list_items.size());
         context = container.getContext();
         root_view = inflater.inflate(R.layout.user_fragment_reserve, container, false);
         reserve_list_end_root = (LinearLayout) root_view.findViewById(R.id.user_fragment_reserve_month_root);
@@ -208,8 +214,10 @@ public class Client_Reservation_Fragment extends Fragment {
                     TextView count = (TextView) view.findViewById(R.id.reserve_item_finished_count);
 
                     date.setText(list_items_ends.get(i).date);
-                    menu.setText(Integer.toString(list_items_ends.get(i).menuNum));
-                    count.setText(Integer.toString(list_items_ends.get(i).menuCount));
+                    menu.setText(list_menu.get(list_items_ends.get(i).menuNum));
+                    //menu.setText(Integer.toString(list_items_ends.get(i).menuNum));
+                    //menu.setText(MainActivity_User.menu[list_items_ends.get(i).menuNum]);
+                    count.setText(Integer.toString(list_items_ends.get(i).menuCount) + "개");
 
                     reserve_list_end_root.addView(view);
                 }
@@ -228,6 +236,83 @@ public class Client_Reservation_Fragment extends Fragment {
         data.month = month;
     }
 
+    class BackgroundTask_GetMenu extends AsyncTask<String, Void, String> {
+
+        String target;
+
+        // 전송할 데이터 및 서버의 URL을 사전에 정의합니다.
+        @Override
+        protected void onPreExecute() {
+            try {
+                target = MainActivity.URL + "menuListView.midas";
+                Log.d("Reservation",target);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            Log.d("Reservation"," doInBackground");
+
+            // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
+            try{
+                // URL로 데이터를 전송합니다.
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                // 반환된 문자열을 읽어들입니다.
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                // 읽어들인 문자열을 반환합니다.
+                return stringBuilder.toString().trim();
+            } catch (Exception e){
+                Log.e("Reservation", "Exception: " + e.getMessage());
+            }
+            return null;
+        }
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate();
+        }
+
+        // 문자열을 JSON 형태로 처리합니다.
+        @Override
+        public void onPostExecute(String result) {
+            try {
+                Log.d("Reservation"," onPostExecute");
+
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("list");
+
+                int menuID;
+                String menuTitle;
+                int count = 0;
+
+
+                while(count < jsonArray.length()) {
+                    JSONObject object = jsonArray.getJSONObject(count);
+
+                    menuID = object.getInt("menuID");
+                    menuTitle = object.getString("menuTitle");
+
+                    list_menu.put(menuID, menuTitle);
+
+                    count++;
+                }
+
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     class BackgroundTask_Reservation extends AsyncTask<String, Void, String> {
 
@@ -285,19 +370,21 @@ public class Client_Reservation_Fragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("list");
                 int count = 0;
+
+                ArrayList<ReserveData> tmp = new ArrayList<>();
                 int menuID, menuCount,reservationProcess;
                 String reservationDate;
-                ArrayList<ReserveData> tmp = new ArrayList<>();
-
 
                 while(count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
+
 
                     menuID = object.getInt("menuID");
                     menuCount = object.getInt("menuCount");
                     reservationProcess = object.getInt("reservationProcess");
                     reservationDate = object.getString("reservationDate");
                     tmp.add(new ReserveData(menuID, menuCount, reservationProcess, reservationDate));
+
 
                     count++;
                 }
