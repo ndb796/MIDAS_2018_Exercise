@@ -6,12 +6,14 @@ public class UserData {
     String depart;
     String birthday;
     String userID;
+    String userType;
 
-    public UserData(String name, String pw, String birthday,String depart, String userID) {
+    public UserData(String name, String pw, String birthday,String depart, String userID, String userType) {
         this.name = name;
         this.pw = pw;
         this.depart = depart;
         this.birthday = birthday;
         this.userID = userID;
+        this.userType = userType;
     }
 }

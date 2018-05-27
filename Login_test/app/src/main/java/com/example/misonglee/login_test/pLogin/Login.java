@@ -50,7 +50,6 @@ public class Login extends AppCompatActivity {
         user_pw = (EditText) findViewById(R.id.user_pw);
         auto_check = (CheckBox)findViewById(R.id.auto_login);
 
-
         //자동로그인
         SharedPreferences autoLogin = getSharedPreferences("auto_login", Activity.MODE_PRIVATE);
         String auto_id = autoLogin.getString("user_id",null);

@@ -4,19 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/subtext"
+            android:id="@+id/usertext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Sub Manager Management" />
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/add_sub_manager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Sub Manager Management" />
+            android:text="ADD"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            custom:pb_colorNormal="@color/colorPrimary"
+            custom:pb_colorPressed="@color/colorPrimaryDark"
+            />
+
 
     </LinearLayout>
 
@@ -26,9 +44,10 @@
         android:layout_weight="1">
 
         <LinearLayout
-            android:id="@+id/manager_fragment_manage_sub_root"
+            android:id="@+id/sub_manager_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="20dp"
             android:orientation="vertical" />
     </ScrollView>
 

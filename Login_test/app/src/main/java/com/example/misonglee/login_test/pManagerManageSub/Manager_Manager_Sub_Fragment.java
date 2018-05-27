@@ -1,6 +1,7 @@
 package com.example.misonglee.login_test.pManagerManageSub;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.misonglee.login_test.R;
+import com.example.misonglee.login_test.pLogin.Register;
 import com.example.misonglee.login_test.pMainActivity.MainActivity;
 import com.example.misonglee.login_test.pManagerManageUser.Manager_Manager_User_ListAdapter;
 import com.example.misonglee.login_test.pManagerManageSub.UserData;
@@ -44,7 +46,7 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
 
     private Manager_Manager_User_ListAdapter adapter;
 
-    private Button search_btn;
+    private Button add_sub_manager;
     private EditText search_text;
 
     public Manager_Manager_Sub_Fragment() {
@@ -68,21 +70,23 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.manager_fragment_manage_sub, container, false);
-        rootLayout = (LinearLayout) rootView.findViewById(R.id.manager_fragment_manage_sub_root);
+        rootLayout = (LinearLayout) rootView.findViewById(R.id.sub_manager_root);
 
         context = container.getContext();
-/*        search_text = (EditText) rootView.findViewById(R.id.manager_fragment_manage_sub_search);
-        search_btn = (Button) rootView.findViewById(R.id.manager_fragment_manage_sub_search_btn);
 
-        search_btn.setOnClickListener(new View.OnClickListener() {
+        add_sub_manager = (Button) rootView.findViewById(R.id.add_sub_manager);
+        add_sub_manager.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                String name = search_text.getText().toString();
-
-                // name 기반으로 정보 받아오기.
+            public void onClick(View v) {
+                //sub register이동!
+                Intent register_intent = new Intent(context, Register.class);
+                register_intent.putExtra("mode","sub");
+                startActivity(register_intent);
             }
-        });*/
+        });
 
+        BackgroundTask_Sub backgroundTask_sub = new BackgroundTask_Sub();
+        backgroundTask_sub.execute();
 
 
         return rootView;
@@ -92,19 +96,25 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for (int i = 0; i < list_items_size; i++) {
-            View view = inflater.inflate(item_resource, rootLayout, false);
+            Log.d("TAG",list_items.get(i).userType);
+            if(list_items.get(i).userType.equals("2")) {
 
-            TextView name = (TextView) view.findViewById(R.id.text_name);
-            TextView pw = (TextView) view.findViewById(R.id.text_pw);
-            TextView birthday = (TextView) view.findViewById(R.id.text_birthday);
-            TextView depart = (TextView) view.findViewById(R.id.text_depart);
+                View view = inflater.inflate(item_resource, rootLayout, false);
 
-            name.setText(list_items.get(i).name);
-            pw.setText(list_items.get(i).pw);
-            birthday.setText(list_items.get(i).birthday);
-            depart.setText(list_items.get(i).depart);
+                TextView name = (TextView) view.findViewById(R.id.text_nameMsg);
+                TextView pw = (TextView) view.findViewById(R.id.text_idMsg);
+                TextView birthday = (TextView) view.findViewById(R.id.text_birthday);
+                TextView depart = (TextView) view.findViewById(R.id.text_depart);
 
-            rootLayout.addView(view);
+                name.setText(list_items.get(i).name);
+                pw.setText(list_items.get(i).pw);
+                birthday.setText(list_items.get(i).birthday);
+                depart.setText(list_items.get(i).depart);
+
+                registerForContextMenu(view);
+
+                rootLayout.addView(view);
+            }
         }
     }
 
@@ -121,7 +131,9 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
         @Override
         protected void onPreExecute() {
             try {
-                target = MainActivity.URL + "noticeListView.midas";
+                target = MainActivity.URL + "userListView.midas";
+                Log.d("TAG",target);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -168,7 +180,7 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("list");
                 int count = 0;
-                String userName, userPassword, userBirthday, userDepart;
+                String userName, userPassword, userBirthday, userDepart, userType;
                 ArrayList<UserData> tmp = new ArrayList<>();
 
                 while (count < jsonArray.length()) {
@@ -177,10 +189,10 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
                     userPassword = object.getString("userPassword");
                     userBirthday = object.getString("userBirthday");
                     userDepart = object.getString("userDepart");
-                    tmp.add(new UserData(userName, userPassword, userBirthday, userDepart));
+                    userType = object.getString("userType");
+                    tmp.add(new UserData(userName, userPassword, userBirthday, userDepart, userType));
                     count++;
                 }
-
                 fragment.SetListData(tmp);
                 SetView();
             } catch (Exception e) {

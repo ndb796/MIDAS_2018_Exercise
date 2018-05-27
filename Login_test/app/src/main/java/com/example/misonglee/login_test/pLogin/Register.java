@@ -45,6 +45,8 @@ public class Register extends AppCompatActivity{
     private String register_depart;
     private String register_birthday;
 
+    private String Mode;
+
     private int register_year, register_month, register_day;
 
 
@@ -61,6 +63,13 @@ public class Register extends AppCompatActivity{
         final ActionProcessButton btnRegister = (ActionProcessButton) findViewById(R.id.btnRegister);
         final Spinner spinner_depart = (Spinner) findViewById(R.id.register_depart);
         final String [] depart = {"개발부서", "영업부서","인사부서"};
+
+
+        Intent intent = getIntent();
+        Mode = intent.getStringExtra("mode");
+
+
+
 
         //부서 보여주기
         ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, depart);
@@ -123,7 +132,12 @@ public class Register extends AppCompatActivity{
 
         //DB에 정보 삽입
         RegisterDB registerDB = new RegisterDB();
-        registerDB.execute();
+        if(Mode == "sub"){
+            registerDB.execute("userJoinSub.midas");
+        }
+        else{
+            registerDB.execute("userJoin.midas");
+        }
 
     }
 
@@ -131,19 +145,6 @@ public class Register extends AppCompatActivity{
 
         String target;
 
-        // 전송할 데이터 및 서버의 URL을 사전에 정의합니다.
-        @Override
-        protected void onPreExecute() {
-
-            String string_id = register_id.getText().toString();
-            String string_pw = register_pw.getText().toString();
-
-            try {
-                target = MainActivity.URL + "userJoin.midas?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8") + "&userName=" + URLEncoder.encode(register_name.getText().toString(), "UTF-8") + "&userBirthday=" + URLEncoder.encode(register_birthday, "UTF-8") + "&userDepartment=" +  URLEncoder.encode(register_depart, "UTF-8");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
         @Override
         protected String doInBackground(String... strings) {
@@ -151,6 +152,13 @@ public class Register extends AppCompatActivity{
 
             // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
             try{
+
+                String string_id = register_id.getText().toString();
+                String string_pw = register_pw.getText().toString();
+
+                target = MainActivity.URL + strings[0] +"?userID=" + URLEncoder.encode(string_id, "UTF-8") + "&userPassword=" + URLEncoder.encode(string_pw, "UTF-8") + "&userName=" + URLEncoder.encode(register_name.getText().toString(), "UTF-8") + "&userBirthday=" + URLEncoder.encode(register_birthday, "UTF-8") + "&userDepartment=" +  URLEncoder.encode(register_depart, "UTF-8");
+
+                Log.d("RegisterDB",target);
                 // URL로 데이터를 전송합니다.
                 URL url = new URL(target);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();

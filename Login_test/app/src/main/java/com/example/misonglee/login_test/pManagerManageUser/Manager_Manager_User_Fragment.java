@@ -88,6 +88,7 @@ public class Manager_Manager_User_Fragment extends Fragment {
         rootLayout = (LinearLayout) rootView.findViewById(R.id.manager_fragment_manage_user_root);
 
         context = container.getContext();
+
         adduser_btn = (Button) rootView.findViewById(R.id.manage_user_adduser);
         adduser_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,22 +110,26 @@ public class Manager_Manager_User_Fragment extends Fragment {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for (int i = 0; i < list_items_size; i++) {
-            View view = inflater.inflate(item_resource, rootLayout, false);
+            if(list_items.get(i).userType.equals("0")) {
 
-            TextView name = (TextView) view.findViewById(R.id.text_nameMsg);
-            TextView id = (TextView) view.findViewById(R.id.text_idMsg);
-            TextView birthday = (TextView) view.findViewById(R.id.text_birthdayMsg);
-            TextView depart = (TextView) view.findViewById(R.id.text_departMsg);
+                View view = inflater.inflate(item_resource, rootLayout, false);
 
-            name.setText(list_items.get(i).name);
-            id.setText(list_items.get(i).userID);
-            birthday.setText(list_items.get(i).birthday);
-            depart.setText(list_items.get(i).depart);
+                TextView name = (TextView) view.findViewById(R.id.text_nameMsg);
+                TextView id = (TextView) view.findViewById(R.id.text_idMsg);
+                TextView birthday = (TextView) view.findViewById(R.id.text_birthdayMsg);
+                TextView depart = (TextView) view.findViewById(R.id.text_departMsg);
 
-            registerForContextMenu(view);
+                name.setText(list_items.get(i).name);
+                id.setText(list_items.get(i).userID);
+                birthday.setText(list_items.get(i).birthday);
+                depart.setText(list_items.get(i).depart);
 
-            rootLayout.addView(view);
+                registerForContextMenu(view);
+
+                rootLayout.addView(view);
+            }
         }
+
     }
 
     @Override
@@ -219,7 +224,7 @@ public class Manager_Manager_User_Fragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("list");
                 int count = 0;
-                String userName, userPassword, userBirthday, userDepart, userID;
+                String userName, userPassword, userBirthday, userDepart, userID, userType;
                 ArrayList<UserData> tmp = new ArrayList<>();
 
                 while (count < jsonArray.length()) {
@@ -230,12 +235,13 @@ public class Manager_Manager_User_Fragment extends Fragment {
                     userDepart = object.getString("userDepartment");
                     userName = object.getString("userName");
                     userID = object.getString("userID");
-                    tmp.add(new UserData(userName, userPassword, userBirthday, userDepart,userID));
+                    userType = object.getString("userType");
+                    tmp.add(new UserData(userName, userPassword, userBirthday, userDepart,userID,userType));
                     count++;
                 }
-
                 fragment.SetListData(tmp);
                 SetView();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
