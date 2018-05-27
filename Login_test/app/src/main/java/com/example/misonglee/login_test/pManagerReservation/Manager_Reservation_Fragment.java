@@ -67,7 +67,7 @@ public class Manager_Reservation_Fragment extends Fragment {
         search_list_items_size = 0;
 
         // 주문이 끝난 layout 정보 획득
-        resource = R.layout.reserve_item_finished;
+        resource = R.layout.reserve_item_finished_manager;
 
         BackgroundTask_GetMenu backgroundTask_getMenu = new BackgroundTask_GetMenu();
         backgroundTask_getMenu.execute();
@@ -109,8 +109,13 @@ public class Manager_Reservation_Fragment extends Fragment {
                 name = search_text.getText().toString();
                 Log.d("ㅁㄴㅇㄻㄴㅇㄹ", name);
 
-                BackgroundTask_Complete_Search backgroundTask_complete_search = new BackgroundTask_Complete_Search();
-                backgroundTask_complete_search.execute();
+                if(name.equals("TOTAL") == true){
+                    BackgroundTask_Reservation backgroundTask_reservation = new BackgroundTask_Reservation();
+                    backgroundTask_reservation.execute();
+                }else {
+                    BackgroundTask_Complete_Search backgroundTask_complete_search = new BackgroundTask_Complete_Search();
+                    backgroundTask_complete_search.execute();
+                }
             }
         });
 
@@ -145,11 +150,13 @@ public class Manager_Reservation_Fragment extends Fragment {
             TextView date = (TextView) view.findViewById(R.id.reserve_item_finished_date);
             TextView menu = (TextView) view.findViewById(R.id.reserve_item_finished_menu);
             TextView count = (TextView) view.findViewById(R.id.reserve_item_finished_count);
+            TextView name = (TextView) view.findViewById(R.id.reserve_item_finished_name);
 
             date.setText(search_list_items.get(i).date);
             menu.setText(list_menu.get(search_list_items.get(i).menuNum));
             //menu.setText(Integer.toString(search_list_items.get(i).menuNum));
             count.setText(Integer.toString(search_list_items.get(i).menuCount) + "개");
+            name.setText(search_list_items.get(i).name);
 
             reserve_search_list_root.addView(view);
         }
@@ -308,6 +315,7 @@ public class Manager_Reservation_Fragment extends Fragment {
                 }
                 //fragment.SetListData(tmp);
                 SetListData(tmp);
+
                 BackgroundTask_Complete_Reservation backgroundTask_complete_reservation = new BackgroundTask_Complete_Reservation();
                 backgroundTask_complete_reservation.execute();
 
@@ -376,17 +384,17 @@ public class Manager_Reservation_Fragment extends Fragment {
 
                 ArrayList<ReserveEndData> tmp = new ArrayList<>();
                 int menuID, menuCount,reservationProcess, reservationID;
-                String reservationDate;
+                String reservationDate, userID;
 
                 while(count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
 
-
+                    userID = object.getString("userID");
                     menuID = object.getInt("menuID");
                     menuCount = object.getInt("menuCount");
                     reservationDate = object.getString("reservationDate");
                     reservationID = object.getInt("reservationID");
-                    tmp.add(new ReserveEndData(reservationDate, menuID, menuCount,reservationID));
+                    tmp.add(new ReserveEndData(reservationDate, menuID, menuCount,reservationID, userID));
 
                     count++;
                 }
@@ -458,17 +466,17 @@ public class Manager_Reservation_Fragment extends Fragment {
 
                 ArrayList<ReserveEndData> tmp = new ArrayList<>();
                 int menuID, menuCount,reservationProcess, reservationID;
-                String reservationDate;
+                String reservationDate, userID;
 
                 while(count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
 
-
+                    userID = object.getString("userID");
                     menuID = object.getInt("menuID");
                     menuCount = object.getInt("menuCount");
                     reservationDate = object.getString("reservationDate");
                     reservationID = object.getInt("reservationID");
-                    tmp.add(new ReserveEndData(reservationDate, menuID, menuCount,reservationID));
+                    tmp.add(new ReserveEndData(reservationDate, menuID, menuCount,reservationID, userID));
 
                     count++;
                 }

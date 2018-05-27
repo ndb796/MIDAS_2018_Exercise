@@ -74,7 +74,7 @@ public class Manager_Reservation_ListAdapter extends BaseAdapter {
         //menu.setText(Integer.toString(items.get(position).menuID));
         menu.setText(Manager_Reservation_Fragment.list_menu.get(items.get(position).menuID));
         menu_count.setText(Integer.toString(items.get(position).menuCount) + "개");
-
+        Log.d("asdf", items.get(position).reservationProcess+" ");
         switch (items.get(position).reservationProcess) {
             case 0:
                 process.setText("접수 완료");
@@ -87,6 +87,9 @@ public class Manager_Reservation_ListAdapter extends BaseAdapter {
             case 2:
                 process.setText("제작 완료");
                 break;
+            case 3:
+                process.setText("Takeout 완료");
+                break;
         }
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +101,7 @@ public class Manager_Reservation_ListAdapter extends BaseAdapter {
                 reservationID = Integer.valueOf(id.getText().toString());
 
                 Log.d("ClientReservation", process.getText().toString());
-                        if (process.getText().toString().equals("제작 완료") == true) {
+                        if (process.getText().toString().equals("Process") == true) {
                     Log.d("ClientReservation", "알람실행!");
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                             context);
@@ -143,7 +146,7 @@ public class Manager_Reservation_ListAdapter extends BaseAdapter {
         @Override
         protected void onPreExecute() {
             try {
-                target = MainActivity_User.URL + "reservationComplete.midas?userID=" + MainActivity_User.GetUserID() + "&session="+MainActivity_User.GetUserPW()+"&reservationID=" + reservationID;
+                target = MainActivity_User.URL + "reservationSet2.midas?userID=" + MainActivity_User.GetUserID() + "&session="+MainActivity_User.GetUserPW()+"&reservationID=" + reservationID;
                 Log.d("Raon",target);
                 Log.d("Raon",reservationID +" ");
             } catch (Exception e) {
