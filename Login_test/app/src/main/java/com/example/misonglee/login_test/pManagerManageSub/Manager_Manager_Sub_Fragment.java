@@ -8,7 +8,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,9 +18,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
+import com.example.misonglee.login_test.Account_Change;
 import com.example.misonglee.login_test.R;
 import com.example.misonglee.login_test.pLogin.Register;
 import com.example.misonglee.login_test.pMainActivity.MainActivity;
+import com.example.misonglee.login_test.pManagerManageUser.Manager_Manager_User_Fragment;
 import com.example.misonglee.login_test.pManagerManageUser.Manager_Manager_User_ListAdapter;
 import com.example.misonglee.login_test.pManagerManageSub.UserData;
 
@@ -30,6 +37,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class Manager_Manager_Sub_Fragment extends Fragment {
@@ -43,6 +51,8 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
     private int item_resource;
     private ArrayList<UserData> list_items;
     private int list_items_size;
+    private String select_id;
+
 
     private Manager_Manager_User_ListAdapter adapter;
 
@@ -106,7 +116,7 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
                 TextView depart = (TextView) view.findViewById(R.id.text_depart);
 
                 name.setText(list_items.get(i).name);
-                pw.setText(list_items.get(i).pw);
+                pw.setText(list_items.get(i).userID);
                 birthday.setText(list_items.get(i).birthday);
                 depart.setText(list_items.get(i).depart);
 
@@ -117,10 +127,104 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
         }
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        TextView tv_id = (TextView)v.findViewById(R.id.text_idMsg);
+        select_id = tv_id.getText().toString();
+
+
+        menu.setHeaderTitle("Menu");
+        menu.add(0, 1, 100, "수정");
+        menu.add(0, 2, 100, "삭제");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 1://수정
+                Intent m_intent = new Intent(context, Account_Change.class);
+                m_intent.putExtra("userID", select_id);
+                startActivity(m_intent);
+                return true;
+            case 2://삭제
+                DeleteDB deleteDB = new DeleteDB();
+                deleteDB.execute(select_id);
+                return true;
+        }
+
+        return super.onContextItemSelected(item);
+    }
+
     public void SetListData(ArrayList<UserData> data) {
         list_items = data;
         list_items_size = data.size();
     }
+
+    class DeleteDB extends AsyncTask<String, Void, String> {
+        String target;
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+            Log.d("Raon", "Delete doInBackground");
+
+            // 특정 URL로 데이터를 전송한 이후에 결과를 받아옵니다.
+            try {
+                //선택한 사용자 id, pw 받아서 삭제 하기
+                target = MainActivity.URL + "userDelete.midas?userID=" + URLEncoder.encode(strings[0], "UTF-8");
+
+                // URL로 데이터를 전송합니다.
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                // 반환된 문자열을 읽어들입니다.
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                // 읽어들인 문자열을 반환합니다.
+                return stringBuilder.toString().trim();
+            } catch (Exception e) {
+                Log.e("Raon", "Exception: " + e.getMessage());
+            }
+            return null;
+        }
+
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate();
+        }
+
+        // 문자열을 JSON 형태로 처리합니다.
+        @Override
+        public void onPostExecute(String result) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                String verify = jsonObject.getString("verify");
+
+                // 서버로부터 반환 된 값이 1이면 회원탈퇴 성공입니다.
+                if (verify.equals("1")) {
+                    // 성공 알림창을 띄우고 로그인 페이지로 이동
+                    delete_successAlert();
+                }
+                //회원탈퇴 실패
+                else {
+                    delete_failAlert();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     class BackgroundTask_Sub extends AsyncTask<String, Void, String> {
 
@@ -179,7 +283,7 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("list");
                 int count = 0;
-                String userName, userPassword, userBirthday, userDepart, userType;
+                String userName, userPassword, userBirthday, userDepart, userType, userID;
                 ArrayList<UserData> tmp = new ArrayList<>();
 
                 while (count < jsonArray.length()) {
@@ -189,7 +293,9 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
                     userBirthday = object.getString("userBirthday");
                     userDepart = object.getString("userDepartment");
                     userType = object.getString("userType");
-                    tmp.add(new UserData(userName, userPassword, userBirthday, userDepart, userType));
+                    userID = object.getString("userID");
+
+                    tmp.add(new UserData(userName, userPassword, userBirthday, userDepart, userType, userID));
                     count++;
                 }
                 fragment.SetListData(tmp);
@@ -198,5 +304,42 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void delete_successAlert() {
+        new AwesomeSuccessDialog(context)
+                .setTitle("회원탈퇴 성공")
+                .setMessage("회원탈퇴가 정상적으로 완료되었습니다.")
+                .setColoredCircle(R.color.dialogSuccessBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                .setCancelable(true)
+                .setPositiveButtonText("확인")
+                .setPositiveButtonbackgroundColor(R.color.dialogSuccessBackgroundColor)
+                .setPositiveButtonTextColor(R.color.white)
+                .setPositiveButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+
+                    }
+                })
+                .show();
+    }
+
+    public void delete_failAlert() {
+        new AwesomeWarningDialog(context)
+                .setTitle("회원탈퇴 실패")
+                .setMessage("회원 탈퇴에 실패했습니다.\n 다시 시도 해주세요")
+                .setColoredCircle(R.color.dialogWarningBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_warning, R.color.black)
+                .setCancelable(true)
+                .setButtonText("확인")
+                .setButtonBackgroundColor(R.color.dialogWarningBackgroundColor)
+                .setWarningButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        // click
+                    }
+                })
+                .show();
     }
 }
