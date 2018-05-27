@@ -96,7 +96,6 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for (int i = 0; i < list_items_size; i++) {
-            Log.d("TAG",list_items.get(i).userType);
             if(list_items.get(i).userType.equals("2")) {
 
                 View view = inflater.inflate(item_resource, rootLayout, false);
@@ -188,7 +187,7 @@ public class Manager_Manager_Sub_Fragment extends Fragment {
                     userName = object.getString("userName");
                     userPassword = object.getString("userPassword");
                     userBirthday = object.getString("userBirthday");
-                    userDepart = object.getString("userDepart");
+                    userDepart = object.getString("userDepartment");
                     userType = object.getString("userType");
                     tmp.add(new UserData(userName, userPassword, userBirthday, userDepart, userType));
                     count++;
